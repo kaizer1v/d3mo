@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+  <title>Data Structures</title>
+<body>
+<script type="text/javascript" src="d3-3.5.7.min.js"></script>
+
+<!-- Sample Data -->
+<script type="text/javascript">
+  var sampleData = [{
+    date: "Dec-15",
+    nyc: 63.4,
+    sf: 62.7,
+    au: 72.2
+  }, {
+    date: "Jan-16",
+    nyc: 58.0,
+    sf: 59.9,
+    au: 67.7
+  }, {
+    date: "Feb-16",
+    nyc: 53.3,
+    sf: 59.1,
+    au: 69.4
+  }, {
+    date: "Mar-16",
+    nyc: 55.7,
+    sf: 58.8,
+    au: 68.0
+  }];
+</script>
+
+<!-- Data Structures -->
+<script type="text/javascript">
+
+  d3.map(sampleData, function(data, index) {
+    console.log(data, index);
+  });
+
+</script>
+</body>
+</head>
+</html>

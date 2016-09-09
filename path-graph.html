@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+  <title>Path / Line Graph</title>
+</head>
+<body>
+<svg></svg>
+<script type="text/javascript" src="d3-3.5.7.min.js"></script>
+<script type="text/javascript">
+  var svg = d3.select('svg')
+    .attr('width', 400)
+    .attr('height', 350);
+
+  var numbers = [
+    { x: 12, y: 5 },
+    { x: 64, y: 54 },
+    { x: 24, y: 6 },
+    { x: 28, y: 87 },
+    { x: 16, y: 84 },
+    { x: 76, y: 87 }];
+  var svg = d3.select('svg');
+
+  // ===== Scales
+  var myScaleX = d3.scale.linear()
+    .domain([0, 100])
+    .range([0, 400]);
+
+  var myScaleY = d3.scale.linear()
+    .domain([0, 100])
+    .range([0, 350]);
+  // END ===== Scales
+
+  var getCoords = d3.svg.line()
+    .x(function(num) { return myScaleX(num.x); })
+    .y(function(num) { return myScaleY(num.y); })
+    .interpolate("step");
+
+  svg.append("path")
+    .attr('d', getCoords(numbers))
+    .attr("stroke", "steelblue")
+    .attr("stroke-width", 2)
+    .attr("fill", "none");
+
+</script>
+</body>
+</html>

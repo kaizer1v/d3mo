@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+  <title>Date Scales</title>
+  <style type="text/css">
+    #mySVG {
+      width: 500px;
+      height: 400px;
+      background: #eee;
+    }
+  </style>
+</head>
+<body>
+
+<svg id="mySVG"></svg>
+
+<script type="text/javascript" src="d3-3.5.7.min.js"></script>
+<script type="text/javascript">
+  
+  // Create a parser to convert given date to a desired format date
+  var dateParser = d3.time.format("%B %Y").parse;
+
+  // A scale between July 2015 and July 2016
+  var myScale = d3.time.scale()
+    .domain([dateParser('July 2015'), dateParser('July 2016')])
+    .range([0, 500]);
+
+  // An axis that uses the above scale with 5 ticks 
+  var myAxis = d3.svg.axis().scale(myScale)
+    .orient('bottom').ticks(5);
+
+  // You can now call the axis that you created on your SVG
+  d3.select('#mySVG').append("g")
+    .attr("transform", "translate(0, " + 300 + ")")
+    .call(myAxis);
+
+</script>
+</body>
+</html>

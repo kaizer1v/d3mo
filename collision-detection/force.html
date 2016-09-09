@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+  <title>Force Layout Experiment</title>
+  <style type="text/css">
+    svg {
+      width: 500px;
+      height: 400px;
+      background: #eee;
+      border: 1px solid #000;
+    }
+
+  </style>
+</head>
+<body>
+
+<svg></svg>
+
+<script type="text/javascript" src="d3-3.5.7.min.js"></script>
+<script type="text/javascript">
+  
+  var svgWidth = 500,
+      svgHeight = 400
+      numNodes = 50,
+      minR = 5
+      maxR = 40,
+      forceData = { nodes: [], links: [] };
+
+  var scales = {
+    x: d3.scale.linear()
+      .domain([0, numNodes])
+      .range([svgWidth, svgHeight]),
+    colorX: d3.scale.linear()
+      .domain([0, 10])
+      .range([svgWidth, svgHeight]),
+    y: d3.scale.linear()
+      .domain([0, numNodes])
+      .range([svgWidth, svgHeight]),
+    r: d3.scale.sqrt()
+      .domain([1, 10])
+      .range([minR, maxR])
+  };
+
+  // Creates random radius value for the circles
+  function randomRadius() {
+    return scales.r(Math.floor(Math.random() * 10) + 1);
+  }
+
+  // Creates an array of nodes with random property values
+  for(var i = 0; i < numNodes; i++) {
+    forceData.nodes.push({
+      id: i,
+      r: randomRadius(),
+      cx: scales.x(i),
+      cy: scales.y(Math.floor(Math.random() * numNodes)),
+    });
+  }
+
+  // ???
+  var force = d3.layout.force()
+    .nodes(nodes)
+    .links([])
+    .start()
+    .size([svgWidth, svgHeight])
+    .charge(function(d) {
+      return -1 * (Math.pow(d.r * 5.0, 2.0) / 8);
+    })
+    .gravity(2.75)
+    // .on("tick", tick);
+
+</script>
+</body>
+</html>

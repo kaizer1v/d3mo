@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+<head>
+  <title>Tree Layout using Force</title>
+  <style type="text/css">
+    svg {
+      background: #eee;
+      width: 600px;
+      height: 400px;
+    }
+  </style>
+</head>
+<body>
+<svg></svg>
+
+
+
+<script src="d3-3.5.7.min.js"></script>
+<script>
+  var g,
+      numNodes = 10,
+      nodes = [],
+      width = 200,
+      height = 200,
+      padding = 10,
+      minR = 5,
+      maxR = 40,
+      scales = {
+        x: d3.scale.linear()
+          .domain([0, numNodes])
+          .range([((width / 12.5) - padding) * -1, (width - 20) / 12.5]),
+        y: d3.scale.linear()
+          .domain([0, numNodes])
+          .range([(height / 25) * -1, height / 25]),
+        r: d3.scale.sqrt()
+          .domain([1, 10])
+          .range([minR, maxR])
+      };
+
+  function randomRadius() {
+    return scales.r(Math.floor(Math.random() * 10) + 1);
+  }
+
+  for (i = 0; i < numNodes; i++) {
+    nodes.push({
+      id: i,
+      r: randomRadius(),
+      cx: scales.x(i),
+      cy: scales.y(Math.floor(Math.random() * numNodes)),
+    });
+  }
+
+  var svg = d3.select("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+  var force = d3.layout.force()
+      .nodes(nodes)
+      .links([])
+      .size([width, height])
+      .charge(function(d) {
+        return -1 * (Math.pow(d.r * 5.0, 2.0) / 8);
+      })
+      .gravity(2.75)
+      .on("tick", tick);
+
+  function update(nodes) {
+    g = svg.selectAll("g.node")
+      .data(nodes, function(d, i) { return d.id; })
+      .enter().append("g")
+      .attr("class", "node");
+
+    circle = g.append("circle")
+      .attr('r', function(d) { return d.r; })
+      .attr('fill', 'steelblue');
+
+    force.nodes(nodes).start();
+  }
+
+  function collide(alpha, nodes, scale) {
+    quadtree = d3.geom.quadtree(nodes);
+    return function(d) {
+      r = d.r + scale.domain()[1] + padding;
+      nx1 = d.x - r;
+      nx2 = d.x + r;
+      ny1 = d.y - r;
+      ny2 = d.y + r;
+      return quadtree.visit(function(quad, x1, y1, x2, y2) {
+        var l, x, y;
+        if (quad.point && quad.point !== d) {
+          x = d.x - quad.point.x;
+          y = d.y - quad.point.y;
+          l = Math.sqrt(x * x + y * y);
+          r = d.r + quad.point.r + padding;
+          if (l < r) {
+            l = (l - r) / l * alpha;
+            d.x -= x *= l;
+            d.y -= y *= l;
+            quad.point.x += x;
+            quad.point.y += y;
+          }
+        }
+        return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+      });
+    };
+  };
+
+  // See https://github.com/mbostock/d3/wiki/Force-Layout
+  function tick(e) {
+    k = 10 * e.alpha;
+    nodes.forEach(function(d, i) {
+      d.x += k * d.cx;
+      d.y += k * d.cy;
+    });
+
+    g.each(collide(.1, nodes, scales.r))
+      .attr({
+        transform: function(d, i) {
+          return "translate(" + d.x + "," + d.y + ")";
+        }
+      });
+  };
+
+  update(nodes);
+</script>
+</body>
+</html>

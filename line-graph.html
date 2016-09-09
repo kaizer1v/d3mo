@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+  <title>Line Graph</title>
+  <style type="text/css">
+    body { font: 12px Arial;}
+    path { 
+        stroke: steelblue;
+        stroke-width: 2;
+        fill: none;
+    }
+
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: grey;
+        stroke-width: 1;
+        shape-rendering: crispEdges;
+    }
+
+  </style>
+</head>
+<body>
+  
+<script type="text/javascript" src="d3-3.5.7.min.js"></script>
+<script type="text/javascript">
+
+var margin = {top: 30, right: 20, bottom: 30, left: 50},
+    width = 600,
+    height = 300,
+    parseDate = d3.time.format("%d-%b-%y").parse;
+
+// create scales for fitting your data within this scale
+var xScale = d3.time.scale().range([0, width]);
+var yScale = d3.scale.linear().range([height, 0]);
+
+// Create the axes using appropriate scales
+var xAxis = d3.svg.axis().scale(xScale)
+  .orient("bottom").ticks(5);
+var yAxis = d3.svg.axis().scale(yScale)
+  .orient("left").ticks(5);
+
+// Create the line for the graph
+var valueline = d3.svg.line()
+  .x(function(d) { return xScale(d.date); })
+  .y(function(d) { return yScale(d.close); });
+
+// Create an svg object within which you will be adding your graph
+var svg = d3.select("body")
+  .append("svg")
+    .attr("width", width)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// Loop through the data from a csv file.
+d3.csv("lineGraphData.csv", function(error, data) {
+  // Parse through data and convert them appropriately
+  data.forEach(function(d) {
+    d.date = parseDate(d.date);
+    d.close = +d.close;
+  });
+
+  // Scale the range of the data
+  xScale.domain(d3.extent(data, function(d) { return d.date; }));
+  yScale.domain([0, d3.max(data, function(d) { return d.close; })]);
+
+  // Add the valueline path.
+  svg.append("path")
+      .attr("class", "line")
+      .attr("d", valueline(data));
+
+  // Add the X Axis
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  // Add the Y Axis
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis);
+});
+
+</script>
+</body>
+</html>

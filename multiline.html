@@ -1,0 +1,136 @@
+<!--
+  Reference Link: https://bl.ocks.org/mbostock/3884955
+  STATUS: Incomplete
+
+  TODO:
+    1. plot the graph
+-->
+<!doctype html>
+<html>
+<head>
+<title>Multiline Graph Example</title>
+<style type="text/css">
+  svg {
+    width: 600px;
+    height: 400px;
+    border: 1px solid #000;
+    background: #eee;
+  }
+</style>
+<body>
+
+  <svg id="multiline"></svg>
+
+<script type="text/javascript" src="d3-3.5.7.min.js"></script>
+<script type="text/javascript">
+  var sampleData = [{
+    date: "Dec-15",
+    nyc: 63.4,
+    sf: 62.7,
+    au: 72.2
+  }, {
+    date: "Jan-16",
+    nyc: 58.0,
+    sf: 59.9,
+    au: 67.7
+  }, {
+    date: "Feb-16",
+    nyc: 53.3,
+    sf: 59.1,
+    au: 69.4
+  }, {
+    date: "Mar-16",
+    nyc: 55.7,
+    sf: 58.8,
+    au: 68.0
+  }];
+
+  var sampleCities = {
+    "nyc": [{
+        date: "Dec-15",
+        temprature: 63.4
+      }, {
+        date: "Jan-16",
+        temprature: 58.0
+      }, {
+        date: "Feb-16",
+        temprature: 53.3
+      }, {
+        date: "Mar-16",
+        temprature: 55.7
+      }],
+    "sf": [{
+        date: "Dec-15",
+        temprature: 62.7
+      }, {
+        date: "Jan-16",
+        temprature: 59.9
+      }, {
+        date: "Feb-16",
+        temprature: 59.1
+      }, {
+        date: "Mar-16",
+        temprature: 58.8
+      }],
+    "au": [{
+        date: "Dec-15",
+        temprature: 72.2
+      }, {
+        date: "Jan-16",
+        temprature: 67.7
+      }, {
+        date: "Feb-16",
+        temprature: 69.4
+      }, {
+        date: "Mar-16",
+        temprature: 68.0
+      }]
+  };
+</script>
+<script type="text/javascript">
+// sample data in above script tag
+var data = sampleData;
+
+var svg = d3.select("svg"),
+  margin = { top: 20, right: 80, bottom: 30, left: 50 },
+  width = svg.attr("width") - margin.left - margin.right,
+  height = svg.attr("height") - margin.top - margin.bottom,
+  g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")"),
+  parseDate = d3.time.format("%b-%y").parse,
+  scales = {
+    x: d3.time.scale().range([0, width])
+      .domain(d3.extent(data, function(d) { return parseDate(d.date); })),
+    y: d3.scale.linear().range([height, 0])
+      .domain([0, 100]),
+    z: d3.scale.ordinal(d3.schemeCategory10)  
+  };
+
+var line = d3.svg.line()
+  .x(function(d) { return scales.x(d.date); })
+  .y(function(d) { return scales.y(d.temperature); });
+
+// Get city wise temprature data
+// Assume you have it for now (use static object)
+var cities = sampleCities;
+
+scales.x.domain(d3.extent(data, function(d) { return d.date; }));
+scales.y.domain([55, 75]);
+// scales.z.domain
+
+g.append("g")
+  .call(d3.axisLeft(scales.y))
+  .append("text")
+  .attr({
+    "y": 6,
+    "dy": "0.71em",
+    "fill": "#000"
+  });
+
+g.append("g")
+  .call(d3.axisBottom(scales.x));
+
+
+</script>
+</body>
+</head>
+</html>

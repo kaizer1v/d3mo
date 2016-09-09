@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+  <style type="text/css">
+    svg { width: 600px; background: #eee; }
+  </style>
+  <title>Ordinal Scale</title>
+  <svg></svg>
+</head>
+<body>
+<script type="text/javascript" src="d3-3.5.7.min.js"></script>
+<script type="text/javascript">
+var svg = d3.select('svg');
+
+var colourScale = d3.scale.category20b();
+
+var ordinalScale = d3.scale.ordinal()
+  .domain(colourScale.range())
+  .rangeBands([0, svg[0][0].width.baseVal.value], 0.1, 0.3);
+
+// Add colour palette via rect
+svg.selectAll('rect')
+  .data(colourScale.range())
+  .enter()
+  .append('rect')
+  .attr('width', ordinalScale.rangeBand())
+  .attr('height', '50px')
+  .attr('x', function(d, index) { return ordinalScale(d); })
+  .attr('fill', function(d) { return d; });
+
+</script>
+</body>
+</html>

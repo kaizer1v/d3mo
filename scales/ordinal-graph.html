@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+  <title>Ordinal Graph</title>
+  <style type="text/css">
+    svg {
+      width: 900px;
+      height: 550px;
+    }
+    text { color: red; }
+  </style>
+</head>
+<body>
+<svg></svg>
+<svg id="legend"></svg>
+<script type="text/javascript" src="d3-3.5.7.min.js"></script>
+<script type="text/javascript">
+
+var svg = d3.select('svg');
+var legend = d3.select('#legend');
+
+d3.json('elements.json', function(data) {
+
+  // var elemNames = data.map(function(d) { return d.name; });
+  var atomicWeights = data.map(function(d) { return d.electronegativity; });
+  var elemGroups = d3.map(data, function(d) { return d.group; }).keys();
+
+  var colourScale = d3.scale.ordinal()
+    .domain(elemGroups)
+    .range(d3.scale.category10().range());
+
+  var elemScale = d3.scale.ordinal()
+    .domain(atomicWeights)
+    .rangeBands([10, 550], 0.3, 0);
+
+  svg.selectAll('rect')
+    .data(data)
+    .enter()
+    .append('rect')
+    .attr('width', elemScale.rangeBand())
+    .attr('height', function(d) { return elemScale(d.electronegativity); })
+    .attr('fill', function(d) { return colourScale(d.group); })
+    .attr('x', function(d, index) { return elemScale(d.electronegativity); })
+  .append('text')
+    .text(function(d) { return d.name; })
+    .attr('dy', '0.35em')
+    .attr('x', function(d, index) { return elemScale(d.electronegativity); })
+    .attr('y', 30)
+  
+  console.log(colourScale.range());
+  // console.log(colourScale.invert('#e377c2'));
+  // debugger;  
+
+  legend.selectAll('rect')
+    .data(colourScale.range())
+    .enter()
+    .append('rect')
+    .attr('width', '30px')
+    .attr('height', '30px')
+    .attr('x', function(d, index) { return index*30; })
+    .attr('fill', function(d) { return d; })
+  .append('text')
+    .attr('x', 20)
+    .attr('y', 20)
+    .attr('dy', '0.35em')
+    .attr('text-anchor', 'middle')
+    .attr('font-size', '20px')
+    .text(function(d) { return colourScale.domain()[colourScale.range().indexOf(d)]; })
+
+});
+
+
+</script>
+</body>
+</html>

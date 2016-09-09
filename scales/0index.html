@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+<head>
+  <title>D3 Scales</title>
+  <style type="text/css">
+    .box {
+      background: #f00;
+      width: 50px;
+      height: 50px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box"></div>
+<svg></svg>
+
+<script type="text/javascript" src="d3-3.5.7.min.js"></script>
+<script type="text/javascript">
+
+var svg = d3.select('svg');
+
+// 1. A simple linear scale with domain and range
+var simpleScale = d3.scale.linear()
+  .domain([-1000, 1000])
+  .range([-1, 1]);
+// console.log(simpleScale(-245), simpleScale(725), simpleScale(0));
+
+
+
+// 2. You can also have inverse scales
+var inverseScale = d3.scale.linear()
+  .domain([-100, 0])
+  .range([900, 700]);
+// console.log(inverseScale(-79));
+
+
+
+// 3. You can have colour ranges
+var colorRange = d3.scale.linear()
+  .domain([10, 100])
+  .range(["brown", "steelblue"]);       // output between this colour range
+// console.log(colorRange(90));
+
+
+
+// 4. One can derive the possible domain value from a range value using 'invert'
+var invertScale = d3.scale.linear()
+  .domain([100, -100])
+  .range([-1, 1]);
+// console.log(invertScale(-10));         // will output between given range
+// console.log(invertScale.invert(0.846));    // will output between given domain
+
+
+
+// 5. The domain must always be a number, if not it will be coerced into one.
+var wrongScale = d3.scale.linear()
+  .domain(["blue", "red"])
+  .range([111, 222])
+// console.log(wrongScale("yellow"));      // NaN
+
+
+
+// 6. Creating piece-wise scale by mentioning more than 2 values in the domain.
+// Here, you can create piecewise scale -1 to 0 between blue and white and
+//  between 0 - 2, with range white and green.
+// Also, you can only invert a scale if the range mentioned is numeric.
+var piecewiseScale = d3.scale.linear()
+  .domain([-1, 0, 2])
+  .range(["blue", "white", "green"]);
+// console.log(piecewiseScale(0));
+// console.log(piecewiseScale(0.79));
+// console.log(piecewiseScale(1.79));
+
+
+
+// 7. rangeRound rounds off the value to the closest integer.
+var roundScale = d3.scale.linear()
+  .domain([-3000, 2700])
+  .rangeRound([0, 100]);
+// console.log(roundScale(-2861));
+
+
+
+// 8. Clamp restricts you to given an output beyond the mentioned range values
+var clampedScale = d3.scale.linear()
+  .domain([0, 100])
+  .range([20, 50])
+  .clamp(true);
+// console.log(clampedScale(-14));
+// console.log(clampedScale(400));
+
+
+
+// 9. Ticks will return an array of values when the domain is uniformly distributed
+//  by the number of ticks. Ticks always work on domains not ranges.
+// The number you mention is only a hint, it can me more or less depending on the domain.
+var tickedScale = d3.scale.linear()
+  .domain([-100, 100])
+  .ticks(7)
+  // .tickFormat(10, +"%");      // You can also add a tick format
+// console.log(tickedScale);
+
+
+
+// 10. Identity Scales - their domain and range are the same. (Why/when is it used?)
+var identityScale = d3.scale.identity()
+  .domain([1, 26])
+  .range([-250, 468])
+// console.log(identityScale(10));
+// console.log(identityScale.invert(14));
+
+
+
+// 11. Log Scale
+var logScale = d3.scale.log()
+  .domain([1, 100])
+  // .range([101, 200])
+  .base(4);
+// console.log(logScale(33));
+
+
+
+// 12. Time Scales
+// This example tries to range a domain as date i.e. 
+// Domain of dates from 1st Jan 2015 to 31st Dec 2015 ranging to number of days in an year.
+var timeScale = d3.time.scale()
+  .domain([new Date(2015, 0, 1), new Date(2015, 11, 31)])
+  .clamp(true)
+  .rangeRound([1, 365]);
+// console.log(timeScale(new Date(2015, 0, 15)));
+//  You can also check the tick scale
+// console.log(timeScale.ticks(12));
+// You can also have ticks every fixed time interval like so
+// console.log(timeScale.ticks(5));
+
+
+
+// 13. Range Bands, help to match every element in the domain with the range
+var bandScale = d3.scale.ordinal()
+    .domain("abcdefghijklmnopqrstuvwxyz".split(''))
+    .rangeBands([1, 27]);
+// console.log(bandScale('m'));
+</script>
+</body>
+</html>
