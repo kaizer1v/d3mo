@@ -152,14 +152,14 @@ bar.append("rect")
   .attr("width", xScale.rangeBand())
   // first place the y position of the rect to the point where it will start expanding towards the bottom. (remember: when you increase the height of a rect, it will expand/collapse from under the starting point not above the starting point)
   .attr("y", svgHeight)
+  .attr("height", 0)
   // now substract it from the part above the "y" point, so what remains is the bottom part, so it will look like you made the graph from bottom to top and not top to bottom (visual magic :^)
   // adding a simple transition where original height is 0 and then transitioning to original height
-  .attr("height", 0)
   .transition()
     .duration(700)
     .ease("linear")
     .attr("height", function(d) { return svgHeight - yScale(d.freq); })
-    .attr("y", function(d) { return yScale(d.freq); })
+    .attr("y", function(d) { return yScale(d.freq); });
 
 // now let's append some text to the bars
 // Once after you implement the axis, you can comment/remove the labels from the bars.
@@ -192,10 +192,10 @@ chart.append("g")
   .append("text")
     .attr("transform", "rotate(-90)") // remember, when you rotate something, it's axis also rotates with it.
     .attr("y", -margin.top*2.5)
-    .attr("x", -svgHeight / 2)
+    .attr("x", -svgHeight / 2.8)
     .attr("dy", ".71em")
     .style("text-anchor", "end")
-    .text("Frequency");
+    .text("Frequency of occurance");
 
 </script>
 </body>

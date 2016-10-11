@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+  <title>D3 Transitions</title>
+  <style type="text/css">
+  .box {
+    width: 50px;
+    height: 50px;
+    fill: #aa1357;
+  }
+  svg {
+    width: 600px;
+    height: 450px;
+    background: #eee;
+    border: 1px solid #000;
+  }
+  </style>
+<body>
+  <svg></svg>
+
+<script type="text/javascript" src="d3-3.5.7.min.js"></script>
+<script type="text/javascript">
+  
+  // This is an instant transition
+  var svg = d3.select("svg").attr("width", 600).attr("height", 450);
+
+  var box = svg.append("rect").attr("class", "box")
+    .transition().delay(1000)       // after a 1 sec delay, 
+    .attr("x", 140)                 // move the box to these positions
+    .attr("y", 200);
+
+
+  // this will transit the box from point A to B after 1 second. A is the default poisition
+  var box2 = svg.append("rect").attr("class", "box")
+    .attr({ x: 350, y: 100 })
+    .transition()
+    .duration(3000)         // this means it will take 3 seconds for the transition
+    .attr({ x: 400, y: 150 });
+
+
+  // this will transit the box from point A to B after 1 second. A is the default poisition
+  var box3 = svg.append("rect").attr("class", "box")
+    .attr({ x: 30, y: 40 })
+    .transition()
+    .duration(3000)         // this means it will take 3 seconds for the transition
+    .ease("d3_ease_poly")
+    .attr({ x: 400, y: 150 });
+
+
+  // one can use a styleTween in which you can return a custom interpolator for your transition
+  var box4 = svg.append("rect").attr("class", "box")
+    .attr({ x: 500, y: 0 })
+    .transition()
+    .duration(2000)
+    .styleTween("fill", function() { return d3.interpolate("green", "red"); });
+
+</script>
+</body>
+</head>
+</html>

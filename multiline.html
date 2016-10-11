@@ -2,8 +2,9 @@
   Reference Link: https://bl.ocks.org/mbostock/3884955
   STATUS: Incomplete
 
-  TODO:
-    1. plot the graph
+  This graphic shows the comparison of rise and fall in tempratures of 3 cities over time.
+  The x-axis shows the time in months, and the y-axis shows the tempratures in deg-celcius.
+  There is also a z-axis which will define the colour of the line for every city.
 -->
 <!doctype html>
 <html>
@@ -89,18 +90,18 @@
 </script>
 <script type="text/javascript">
 // sample data in above script tag
-var data = sampleData;
+var cities = sampleData;
 
 var svg = d3.select("svg"),
   margin = { top: 20, right: 80, bottom: 30, left: 50 },
-  width = svg.attr("width") - margin.left - margin.right,
-  height = svg.attr("height") - margin.top - margin.bottom,
+  grahpicWidth = svg.attr("width") - margin.left - margin.right,
+  graphicHeight = svg.attr("height") - margin.top - margin.bottom,
   g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")"),
   parseDate = d3.time.format("%b-%y").parse,
   scales = {
-    x: d3.time.scale().range([0, width])
-      .domain(d3.extent(data, function(d) { return parseDate(d.date); })),
-    y: d3.scale.linear().range([height, 0])
+    x: d3.time.scale().range([0, grahpicWidth])
+      .domain(d3.extent(cities, function(d) { return parseDate(d.date); })),
+    y: d3.scale.linear().range([graphicHeight, 0])
       .domain([0, 100]),
     z: d3.scale.ordinal(d3.schemeCategory10)  
   };
@@ -108,26 +109,6 @@ var svg = d3.select("svg"),
 var line = d3.svg.line()
   .x(function(d) { return scales.x(d.date); })
   .y(function(d) { return scales.y(d.temperature); });
-
-// Get city wise temprature data
-// Assume you have it for now (use static object)
-var cities = sampleCities;
-
-scales.x.domain(d3.extent(data, function(d) { return d.date; }));
-scales.y.domain([55, 75]);
-// scales.z.domain
-
-g.append("g")
-  .call(d3.axisLeft(scales.y))
-  .append("text")
-  .attr({
-    "y": 6,
-    "dy": "0.71em",
-    "fill": "#000"
-  });
-
-g.append("g")
-  .call(d3.axisBottom(scales.x));
 
 
 </script>
