@@ -53,13 +53,54 @@ var colorScale = d3.scale.linear()
 
 // Create a tooltip for showing interactive information
 var tip = d3.tip()
-  .attr('class', 'd3-tip')
+  .attr('class', 'tooltip')
   .offset([-10, 0])
   .html(function(d) {
     var state_count = (states_data[d.properties.ST_ID]) ? states_data[d.properties.ST_ID] : 0;
     return "<span>"+ d.properties.ST_NM +": "+ state_count +"</span>";
   });
-svg.call(tip);
+  // Append the tooltip to the svg
+  svg.call(tip);
+
+// Create a legend
+var g = svg.insert("g", ":first-child")
+  .attr("class", "key")
+  .attr("transform", "translate(50, 70)");
+
+g.selectAll("rect")
+  .data(colorScale.range().map(function(d) {
+      if (d[0] == null) d[0] = colorScale.domain()[0];
+      if (d[1] == null) d[1] = colorScale.domain()[colorScale.domain.length - 1];
+      return d;
+    }))
+  .enter().append("rect")
+    .attr("height", 8)
+    .attr("width", 50)
+    .attr("x", function(d, i) { return i*50; })
+    .attr("fill", function(d) { return d; });
+
+// Labels to the Legend
+g.append("text")
+  .attr("class", "caption")
+  .attr("x", colorScale.range()[0])
+  .attr("y", -6)
+  .attr("fill", "#000")
+  .attr("text-anchor", "start")
+  .attr("font-weight", "bold")
+  .text("Random Legend Heat Map");
+
+var legendScale = d3.scale.ordinal()
+  .domain(colorScale.range())
+  .range([0, colorScale.domain().length * 50]);
+
+var xAxis = d3.svg.axis()
+  .scale(legendScale)
+  .ticks(5)
+  .tickFormat(function(x, i) { return x; })
+  .tickValues(colorScale.domain())
+  .orient("bottom");
+// Call the axis on the map
+g.call(xAxis);
 
 // Read the paths of every state and append it to the map/svg.
 d3.json("assets/india-coordinates.json", function(error, coords) {
@@ -83,7 +124,7 @@ d3.json("assets/india-coordinates.json", function(error, coords) {
     .attr("fill", function(d) {
       if(states_data[d.properties.ST_ID])
         return colorScale(states_data[d.properties.ST_ID]);
-      return "#999"
+      return "#999";
     })
     .attr("stroke-width", 0.6)
     .attr("stroke", "#333")

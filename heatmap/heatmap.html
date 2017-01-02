@@ -11,16 +11,16 @@ Ref Link: https://bost.ocks.org/mike/map/
       stroke: #777;
     }
 
-    .d3-tip {
+    .tooltip {
       line-height: 1;
       font-weight: bold;
       padding: 10px;
       background: rgba(0, 0, 0, 0.8);
-      color: #fff;
+      color: orange;
       border-radius: 2px;
     }
       /* Creates a small triangle extender for the tooltip */
-      .d3-tip:after {
+      .tooltip:after {
         box-sizing: border-box;
         display: inline;
         font-size: 10px;
@@ -33,11 +33,18 @@ Ref Link: https://bost.ocks.org/mike/map/
       }
 
       /* Style northward tooltips differently */
-      .d3-tip.n:after {
+      .tooltip.n:after {
         margin: -1px 0 0 0;
         top: 100%;
         left: 0;
       }
+
+    .tick path, .tick line {
+      fill: none;
+      stroke: #000;
+      height: 1px;
+      shape-rendering: crispEdges;
+    }
   </style>
 <body>
   <h1>This example shows a heatmap of India - </h1>
