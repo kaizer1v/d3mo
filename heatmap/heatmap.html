@@ -5,15 +5,39 @@ Ref Link: https://bost.ocks.org/mike/map/
 <html>
 <head>
   <title>India Heat Map</title>
-
-  <link rel="stylesheet" href="assets/leafletjs/leaflet.css" />
   <style type="text/css">
     .subunit-boundary {
       fill: none;
       stroke: #777;
-      stroke-dasharray: 2,2;
-      stroke-linejoin: round;
     }
+
+    .d3-tip {
+      line-height: 1;
+      font-weight: bold;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      border-radius: 2px;
+    }
+      /* Creates a small triangle extender for the tooltip */
+      .d3-tip:after {
+        box-sizing: border-box;
+        display: inline;
+        font-size: 10px;
+        width: 100%;
+        line-height: 1;
+        color: rgba(0, 0, 0, 0.8);
+        content: "\25BC";
+        position: absolute;
+        text-align: center;
+      }
+
+      /* Style northward tooltips differently */
+      .d3-tip.n:after {
+        margin: -1px 0 0 0;
+        top: 100%;
+        left: 0;
+      }
   </style>
 <body>
   <h1>This example shows a heatmap of India - </h1>
@@ -21,6 +45,7 @@ Ref Link: https://bost.ocks.org/mike/map/
   <div id="india"></div>
 
   <script src="assets/d3.min.js"></script>
+  <script src="assets/d3tip.js"></script>
   <script src="assets/topojson.min.js"></script>
   <script src="assets/heatmap.js"></script>
 </body>
