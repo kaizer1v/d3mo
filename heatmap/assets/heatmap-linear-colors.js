@@ -48,8 +48,8 @@ var svg = d3.select("#india")
 
 // Create a scale for heatmap
 var colorScale = d3.scale.linear()
-  .domain([min_state_value, (min_state_value + mean_state_value)/2, mean_state_value, (mean_state_value + max_state_value)/2, max_state_value])
-  .range(["#f2f0f7", "#dadaeb", "#bcbddc", "#9e9ac8", "#756bb1", "#54278f"]);
+  .domain([min_state_value, mean_state_value, max_state_value])
+  .range(['#1A9850', '#FFFFBF', '#D73027']);
 
 // Create a tooltip for showing interactive information
 var tip = d3.tip()
@@ -68,8 +68,7 @@ var g = svg.insert("g", ":first-child")
   .attr("transform", "translate(50, 70)");
 
   // the legend itself
-  var colorsg = g.append("g").attr("class", "legend-colors")
-  colorsg.selectAll("rect")
+  g.selectAll("rect")
     .data(colorScale.range().map(function(d) {
         if (d[0] == null) d[0] = colorScale.domain()[0];
         if (d[1] == null) d[1] = colorScale.domain()[colorScale.domain.length - 1];
@@ -81,27 +80,27 @@ var g = svg.insert("g", ":first-child")
       .attr("x", function(d, i) { return i*50; })
       .attr("fill", function(d) { return d; });
   // labels to the legend
-  var titleg = g.append("g").attr("class", "title")
-  titleg.append("text")
+  g.append("text")
     .attr("class", "caption")
     .attr("x", colorScale.range()[0])
     .attr("y", -6)
     .attr("fill", "#000")
     .attr("text-anchor", "start")
     .attr("font-weight", "bold")
-    .text("Lgend of Purples");
+    .text("Random Legend Heat Map");
+  // legend scale
+  var legendScale = d3.scale.ordinal()
+    .domain(colorScale.range())
+    .range([0, colorScale.domain().length * 50]);
   // axis for the legend
-  axisScale = d3.scale.ordinal()
-    .domain([d3.min(colorScale.domain()), d3.max(colorScale.domain())])
-    .range([0, 300]);
   var xAxis = d3.svg.axis()
-    // .scale(axisScale)
-    .tickSize(13, 0)
+    .scale(legendScale)
+    .ticks(5)
+    .tickFormat(function(x, i) { return x; })
     .tickValues(colorScale.domain())
     .orient("bottom");
   // Call the axis on the map
-  var axisg = g.append("g").attr("class", "axis x")
-  axisg.call(xAxis);
+  g.call(xAxis);
 
 // Read the paths of every state and append it to the map/svg.
 d3.json("assets/india-coordinates.json", function(error, coords) {

@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+  <title>Viewports in svg</title>
+  <style type="text/css">
+    svg {
+      background: #aeb7c6;
+      border: 1px solid #333;
+    }
+    #svg-2 {
+      width: 400px;
+      height: 400px;
+      margin: 10px 12px;
+      /*padding: 5px;*/ /* This will mean the svg height and width will increase by 5px. NOT A GOOD PRACTICE. */
+    }
+
+  </style>
+<body>
+  <div id="controls">
+    <p>
+      <h4>Control View Port Window</h4>
+      <input id="control-viewport" type="range" />
+    </p>
+  </div>
+
+  <!-- SVG 1: with no viewport set -->
+  <h4>svg-1</h4>
+  <svg id="svg-1" width=160 height="120px">
+    <rect x="0" y="0" width="50px" height="50px" fill="#f00"></rect>
+  </svg>
+
+  <!-- SVG 2: with viewport preset -->
+  <!-- starts at (127, 138) and goes uptil (127+40, 138+50) is what the viewport means -->
+  <h4>svg-2</h4>
+  <svg id="svg-2" viewBox="127 138 40 50">
+    <circle cx="127" cy="138" r="40" fill="#0ff"></circle>
+  </svg>
+
+<!-- <script type="text/javascript" src="../../bower_test/bower_components/jquery/dist/jquery.min.js"></script> -->
+<script type="text/javascript" src="../../bower_test/bower_components/d3/d3.min.js"></script>
+<script type="text/javascript">
+
+  console.log("#svg-1 width: ", d3.select("#svg-1").style("width"));
+  console.log("#svg-2 width: ", d3.select("#svg-2").style("width"));
+
+</script>
+</body>
+</head>
+</html>
