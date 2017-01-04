@@ -25,23 +25,25 @@
 
   <!-- SVG 1: with no viewport set -->
   <h4>svg-1</h4>
-  <svg id="svg-1" width=160 height="120px">
-    <rect x="14" y="24" width="50px" height="50px" fill="#f00"></rect>
+  <svg id="svg-1" width="500" height="200" viewbox="0 0 50 90">
+    <rect x="20" y="60" width="50px" height="50px" fill="#f00"></rect>
   </svg>
 
   <!-- SVG 2: with viewport preset -->
-  <!-- starts at (127, 138) and goes uptil (127+40, 138+50) is what the viewport means -->
-  <h4>svg-2</h4>
-  <svg id="svg-2" viewBox="127 138 40 50">
-    <circle cx="127" cy="138" r="40" fill="#0ff"></circle>
+  <!-- <h4>svg-2</h4>
+  <svg id="svg-2" width="500" height="200" viewbox="0 0 50 90" preserveAscepctRation="xMidYMid meet">
+    <rect x="20" y="60" width="50px" height="50px" fill="#f00"></rect>
+  </svg> -->
+
+  <h4>svg-3</h4>
+  <svg width="500" height="75" viewBox="0 0 200 75" preserveAspectRatio="xMinYMin meet">
+    <rect x="1" y="1" width="50" height="50" fill="#0ff"/>
   </svg>
 
 <!-- <script type="text/javascript" src="../../bower_test/bower_components/jquery/dist/jquery.min.js"></script> -->
 <script type="text/javascript" src="../../bower_test/bower_components/d3/d3.min.js"></script>
 <script type="text/javascript">
 
-  console.log("#svg-1 width: ", d3.select("#svg-1").style("width"));
-  console.log("#svg-2 width: ", d3.select("#svg-2").style("width"));
 
 </script>
 </body>

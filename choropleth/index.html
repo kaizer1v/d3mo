@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+  <title>Choropleth using G.js</title>
+  <style>
+    svg {
+      background: #aeb7c6;
+      border: 1px solid #333;
+      width: 35em;
+      height: 30em;
+    }
+  </style>
+<body>
+  <h1>Choropleth Example using G.js</h1>
+  <p>G.js is a gramener written svg visualation toolkit written on top of d3.</p>
+
+  <svg id="india">
+  </svg>
+
+  <script src="../../bower_test/bower_components/d3/d3.min.js"></script>
+  <script src="topojson.js"></script>
+  <script src="g.min.js"></script>
+  <script>
+
+    d3.json("india-states-coords.json", function(error, coords) {
+      if(error) return console.error(error);
+
+      var shape = topojson.feature(coords, d3.values(coords.objects)[0]);
+
+      var svg = {
+        width: d3.select("#india").style("width"),
+        height: d3.select("#india").style("height")
+      };
+      var W = parseFloat(svg.width.substr(0, svg.width.length - 2))
+      var H = parseFloat(svg.height.substr(0, svg.height.length - 2))
+
+      G.map()
+        .width(W)
+        .height(H)
+        .shape(shape)
+        .map(d3.select('#india'))
+    });
+
+  </script>
+</body>
+</head>
+</html>

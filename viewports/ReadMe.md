@@ -1,4 +1,4 @@
-# Viewports in SVGs
+# Viewboxs in SVGs
 
 Let us have a look at svgs and attributes that it accepts
 
@@ -30,7 +30,7 @@ Now, let us assume you have the following html with an svg and a rect inside it.
 <!doctype html>
 <html>
 <head>
-  <title>Viewports in SVG</title>
+  <title>Viewboxs in SVG</title>
   <style type="text/css">
     /* Minimal styling to svg */
     svg {
@@ -60,18 +60,18 @@ This means that
 But what if we want to set the height and width of an svg dynamically based no-matter what the screen size is - the graph should
 look good enough.
 
-Enter viewports
+Enter viewboxs
 
 
-## Viewports
+## Viewboxs
 
-A viewport is the area cross-section within which you limit your "eye". In other words, It is a piece of a cake from the whole cake or
+A viewbox is the area cross-section within which you limit your "eye". In other words, It is a piece of a cake from the whole cake or
 think of it as a window on a wall, you will be able to view only what you see through the window - but in this case you have the power
 to move the window from one point to another but will limit you within the size of the wall.
 
 In svg, it is defined as
 ```html
-<!-- starts at A(127, 138) and goes uptil B(127+40, 138+50) is what the viewport means -->
+<!-- starts at A(127, 138) and goes uptil B(127+40, 138+50) is what the viewbox means -->
 <h4>svg-2</h4>
 <svg id="svg-2" width="400" height="350" viewBox="127 138 40 50">
   <circle cx="127" cy="138" r="40" fill="#0ff"></circle>
@@ -79,8 +79,11 @@ In svg, it is defined as
 ```
 
 This svg is actually `400px` wide and `350px` by height. But what the user will only be able to view is whatever lies
-within the cross-section starting from point `(127, 138)` uptil `(127+40, 138+50)`. Thus, the viewport syntax looks like
+within the cross-section starting from point `(127, 138)` uptil `(127+40, 138+50)`. Thus, the viewbox syntax looks like
 
 ```
-viewBox=" __starting-x-coordinate__, __starting-y-coordinate__, __width-of-viewbox__, __height-of-viewbox__ "
+viewBox=" starting-x-coordinate   starting-y-coordinate   width-of-viewbox   height-of-viewbox "
 ```
+
+in that order.
+
