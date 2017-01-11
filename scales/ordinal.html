@@ -10,6 +10,26 @@
 <body>
 <script type="text/javascript" src="d3-3.5.7.min.js"></script>
 <script type="text/javascript">
+
+var data = [
+  145,
+  36,
+  349,
+  279,
+  435,
+  192,
+  304,
+  125,
+  57,
+  292,
+  479,
+  89,
+  446,
+  296,
+  499
+];
+
+
 var svg = d3.select('svg');
 
 var colourScale = d3.scale.category20b();
@@ -27,6 +47,16 @@ svg.selectAll('rect')
   .attr('height', '50px')
   .attr('x', function(d, index) { return ordinalScale(d); })
   .attr('fill', function(d) { return d; });
+
+
+function generateData(len=15, range=500) {
+  var toReturn = [];
+  for(var i = 0; i < len; i++) {
+    toReturn.push(Math.floor(Math.random() * range))
+  }
+
+  return toReturn;
+}
 
 </script>
 </body>

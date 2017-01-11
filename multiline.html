@@ -19,7 +19,7 @@
     font: 12px Arial;
   }
 
-  path { 
+  path {
       stroke: steelblue;
       stroke-width: 2;
       fill: none;
@@ -2511,7 +2511,7 @@ var margin = { top: 30, right: 20, bottom: 30, left: 50 },
     width = 600 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 
-var parseDate = d3.time.format("%b %Y").parse; 
+var parseDate = d3.time.format("%b %Y").parse;
 
 var x = d3.time.scale().range([0, width]);
 var y = d3.scale.linear().range([height, 0]);
@@ -2526,7 +2526,7 @@ var yAxis = d3.svg.axis().scale(y)
 var priceline = d3.svg.line()
   .x(function(d) { return x(d.date); })
   .y(function(d) { return y(d.price); });
-    
+
 var svg = d3.select("#multiline")
   .attr("width", width)
   .attr("height", height)
@@ -2543,7 +2543,7 @@ var svg = d3.select("#multiline")
 
   // Scale the range of the data
   x.domain(d3.extent(data, function(d) { return d.date; }));
-  y.domain([0, d3.max(data, function(d) { return d.price; })]); 
+  y.domain([0, d3.max(data, function(d) { return d.price; })]);
 
   // Nest the entries by symbol
   var dataNest = d3.nest()

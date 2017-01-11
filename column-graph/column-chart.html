@@ -90,17 +90,12 @@ var svg = d3.select("body").append("svg")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-// d3.csv("data.csv", function(error, data) {
-  // if(error) throw error;
-  console.log(data);
-
   // get all the value columns
   var value_columns = d3.keys(data[0]).filter(function(key) { return key !== "period"; });
 
   data.forEach(function(d) {
     d.total = value_columns.map(function(name) { return {name: name, value: +d[name]}; });
   });
-
 
   x0.domain(data.map(function(d) { return d.period; }));
   x1.domain(value_columns).rangeRoundBands([0, x0.rangeBand()]);
@@ -125,7 +120,7 @@ var svg = d3.select("body").append("svg")
     .data(data)
     .enter().append("g")
     .attr("class", "gender")
-    .attr("transform", function(d) { return "translate(" + x0(d.period) + ", 0)"; });
+    .attr("transform", function(d) { debugger; return "translate(" + x0(d.period) + ", 0)"; });
 
   gender.selectAll("rect")
     .data(function(d) { return d.total; })
@@ -154,7 +149,6 @@ var svg = d3.select("body").append("svg")
     .attr("dy", ".35em")
     .style("text-anchor", "end")
     .text(function(d) { return d; });
-// });
 
 </script>
 </body>
