@@ -24,7 +24,7 @@ the `x` co-ordinate value keeps increasing.
 
 SVG provides basic shapes that can be used as a tag with respective attributes. This helps you create
 from simple shapes like rectangle, circles, lines to complex shapes like bezier curves, sine waves and
-lot of other (cool stuff)[https://d3js.org/].
+lot of other [cool stuff](https://d3js.org/).
 
 Let us look the different kinds of shapes and their attributes.
 
@@ -104,5 +104,5 @@ The line does not have a `fill` attribute since it is just a stroke itslef.
 
 ### References
 
-- (Curran Kelleher's d3 presentation)[https://youtu.be/8jvoTV54nXw]
-- (SVG Documentation on MDN)[https://developer.mozilla.org/en-US/docs/Web/SVG]
+- [Curran Kelleher's d3 presentation](https://youtu.be/8jvoTV54nXw)
+- [SVG Documentation on MDN](https://developer.mozilla.org/en-US/docs/Web/SVG)
