@@ -16,7 +16,8 @@
 <body>
   <svg id="pie-graphic"></svg>
   
-<script src="d3-3.5.7.min.js"></script>
+<!-- <script src="../d3-3.5.7.min.js"></script> -->
+<script src="../node_modules/d3v4/build/d3.min.js"></script>
 <script>
 var data = [
   { 
@@ -39,7 +40,7 @@ var data = [
     population: 8819342
   }, {
     age: "≥65",
-    population: 123
+    population: 612463
   }
 ];
 
@@ -47,23 +48,22 @@ var width = 960,
     height = 500,
     radius = Math.min(width, height) / 2;
 
-var color = d3.scale.ordinal()
+var color = d3.scaleOrdinal()
     .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
-
-var arc = d3.svg.arc()
+var arc = d3.arc()
     .outerRadius(radius - 10)
-    // .innerRadius(250);
+    .innerRadius(250);
 
-var labelArc = d3.svg.arc()
+var labelArc = d3.arc()
     .innerRadius(radius - 40)
     .outerRadius(radius - 40);
 
-var pie = d3.layout.pie()
+var pie = d3.pie()
   .sort(null)
-  .value(function(d) { return (d.population < 1000000) ? 1000000 : d.population; })
-  // uncomment below properties if you want semi-circular pie
+  .value(function(d) { return d.population; })
   .startAngle(0.5 * Math.PI * -1)
   .endAngle(0.5 * Math.PI);
+
 
 var svg = d3.select("body").append("svg")
   .attr("width", width)
