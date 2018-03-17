@@ -1,0 +1,25 @@
+{
+  "name": "d3-experiments",
+  "version": "1.0.0",
+  "description": "This repo is a playgroud of my experiments with d3.",
+  "main": "d3-3.5.7.min.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kaizer1v/d3.git"
+  },
+  "author": "kaizer1v <kaizer1v@gmail.com> (kaizer1v.github.io)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kaizer1v/d3/issues"
+  },
+  "homepage": "https://github.com/kaizer1v/d3#readme",
+  "dependencies": {
+    "d3v3": "^1.0.3",
+    "d3v4": "^4.2.2",
+    "jquery": "^3.3.1",
+    "npm": "^5.7.1"
+  }
+}

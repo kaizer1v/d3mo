@@ -1,0 +1,22 @@
+{
+  "name": "wordcloud",
+  "authors": [
+    "vivek.shrinivasan <vivek.shrinivasan@gramener.com>"
+  ],
+  "description": "wordcloud experimenatation",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "d3": "^3.5.9",
+    "jquery": "1.9.1 - 2",
+    "bootstrap": "^3.3.7"
+  }
+}

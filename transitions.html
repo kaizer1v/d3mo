@@ -54,6 +54,11 @@
     .duration(2000)
     .styleTween("fill", function() { return d3.interpolate("green", "red"); });
 
+
+  // lets try and change the shape of an object into another
+  var box5 = svg.append("rect").attr("class", "box")
+    .attr({ x: 70, y: 300 })
+
 </script>
 </body>
 </head>

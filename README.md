@@ -102,6 +102,16 @@ A line, just like in mathematical co-ordinate system, takes 2 points as argument
 
 The line does not have a `fill` attribute since it is just a stroke itslef.
 
+You can have multiple lines together like so
+
+```html
+<svg>
+  <line x1="50" y1="50" x2="100" y2="150" stroke-width="10"></line>
+  <line x1="100" y1="150" x2="150" y2="100" stroke-width="10"></line>
+  <line x1="150" y1="100" x2="200" y2="150" stroke-width="10"></line>
+</svg>
+```
+
 ### References
 
 - [Curran Kelleher's d3 presentation](https://youtu.be/8jvoTV54nXw)

@@ -39,7 +39,7 @@ var data = [
     population: 8819342
   }, {
     age: "≥65",
-    population: 612463
+    population: 123
   }
 ];
 
@@ -52,15 +52,18 @@ var color = d3.scale.ordinal()
 
 var arc = d3.svg.arc()
     .outerRadius(radius - 10)
-    .innerRadius(0);
+    // .innerRadius(250);
 
 var labelArc = d3.svg.arc()
-    .outerRadius(radius - 40)
-    .innerRadius(radius - 40);
+    .innerRadius(radius - 40)
+    .outerRadius(radius - 40);
 
 var pie = d3.layout.pie()
   .sort(null)
-  .value(function(d) { return d.population; });
+  .value(function(d) { return (d.population < 1000000) ? 1000000 : d.population; })
+  // uncomment below properties if you want semi-circular pie
+  .startAngle(0.5 * Math.PI * -1)
+  .endAngle(0.5 * Math.PI);
 
 var svg = d3.select("body").append("svg")
   .attr("width", width)

@@ -62,7 +62,7 @@
 
     var layers = d3.layout.stack()(causes.map(function(c) {
       return crimea.map(function(d) {
-        return {x: d.date, y: d[c]};
+        return { x: d.date, y: d[c] };
       });
     }));
 
