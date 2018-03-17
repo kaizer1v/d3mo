@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+  <title>Paths & Lines</title>
+  <style type="text/css">
+
+    .svg-container {
+      width: 500px;
+      height: 500px;
+      border: 1px solid #000;
+    }
+    svg {
+      width: 100%;
+      height: 100%;
+      background: #eee;
+    }
+    path {
+      stroke-width: 2;
+      stroke: steelblue;
+      fill: none;
+    }
+
+  </style>
+</head>
+<body>
+
+  <p>Click on interpolate types to change the graph</p>
+  <ul id="types">
+    <li id="linear">linear</li>
+    <li id="step-before">step-before</li>
+    <li id="step-after">step-after</li>
+    <li id="basis">basis</li>
+    <li id="basis-open">basis-open</li>
+    <li id="basis-closed">basis-closed</li>
+    <li id="bundle">bundle</li>
+    <li id="cardinal">cardinal</li>
+    <li id="cardinal-open">cardinal-open</li>
+    <li id="cardinal-closed">cardinal-closed</li>
+    <li id="monotone">monotone</li>
+  </ul>
+
+  <div class="svg-container">
+    <svg id="paths"></svg>
+  </div>
+
+<script type="text/javascript" src="../bower_test/bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="d3-3.5.7.min.js"></script>
+<!-- Data -->
+<script>
+var linesData = [
+  { "x": 1,   "y": 5},  { "x": 20,  "y": 20},
+  { "x": 40,  "y": 10}, { "x": 60,  "y": 40},
+  { "x": 80,  "y": 5},  { "x": 100, "y": 60}
+];
+</script>
+<script type="text/javascript">
+  var svg = d3.select("#paths");
+
+  var xScale = d3.scale.linear()
+    .domain(d3.extent(linesData, function(d) {
+      return d.x;
+    }))
+    .range([30, 470]);
+
+  var yScale = d3.scale.linear()
+    .domain(d3.extent(linesData, function(d) {
+      return d.y;
+    }))
+    .range([30, 470]);
+
+  // path generator function
+  var lineFunction = d3.svg.line()
+    .interpolate("basis")
+    .x(function(d) { return xScale(d.x); })
+    .y(function(d) { return yScale(d.y); });
+
+  // generate path based on the complete dataset
+  svg.append("path")
+    .attr("d", lineFunction(linesData));
+  
+
+  function updateGraph(type="basis") {
+    lineFunction = d3.svg.line()
+      .interpolate(type)
+      .x(function(d) { return xScale(d.x); })
+      .y(function(d) { return yScale(d.y); });
+
+    // update path with new interpolate type
+    svg.selectAll("path").remove();
+    svg.append("path")
+      .attr("d", lineFunction(linesData));
+  }
+
+
+  // clicking on interpolate types
+  $("ul").on("click", "li", function(evt) {
+    var type = $(this).attr("id");
+    updateGraph(type);
+  });
+
+
+</script>
+</body>
+</html>

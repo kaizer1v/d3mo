@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+<title>Polygons</title>
+<style type="text/css">
+  svg {
+    width: 250px;
+    height: 250px;
+    background: #eee;
+    border: 1px solid #000;
+  }
+</style>
+<body>
+  <svg id="graph"></svg>
+
+<script type="text/javascript" src="d3-3.5.7.min.js"></script>
+<script type="text/javascript">
+
+var numbers = [1, 2, 3, 4, 5]
+
+var scale = d3.scale.linear()
+  .domain([1, 5])
+  .range([0, 200]);
+
+var svg = d3.select("svg");
+
+var rects = svg.selectAll("rect").data(numbers);
+
+
+// remember, `enter` only works when there are new data elements added
+//  it doesn't work if the data itself is updated or if any data is removed
+function render(data, color) {
+  var rects = svg.selectAll("rect").data(data);
+
+  rects.enter().append("rect")
+    .attr("x", scale)
+    .attr("y", 50)
+    .attr("width", 20)
+    .attr("height", 20)
+    .attr("fill", color)
+}
+
+render([1, 2, 3], "red")
+render([1, 2, 3, 4, 5], "blue")
+render([6, 7], "purple")
+
+</script>
+</body>
+</head>
+</html>

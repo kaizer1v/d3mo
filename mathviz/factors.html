@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+<head>
+<title>Factors</title>
+<style type="text/css">
+
+input {
+  display: block;
+  width: 100px;
+  margin: 0 auto;
+}
+
+#issquare {
+  width: 35px;
+  height: 35px;
+  background: #fff;
+}
+
+</style>
+<body>
+
+<input
+  id="input"
+  type="number"
+  placeholder="Enter a number"
+  min="1"
+  autofocus="true"
+  value="34"
+/>
+
+<div id="issquare"></div>
+<ul id="factors"></ul>
+
+<script src="../jquery.min.js"></script>
+<script src="../d3-3.5.7.min.js"></script>
+<script>
+
+var input = d3.select("#input");
+var output = d3.select("#output");
+
+function factors(n) {
+  var factors = [1, n];
+  for(var i = 2; i <= Math.floor(n/i); i++) {
+    if(n % i === 0)
+      if(i === n/i) {
+        factors.push(i);
+      }
+      else
+        factors.push(i, n/i);
+  }
+  return factors;
+}
+
+function isPerfectSq(n) {
+  var i;
+  for(i = 1; i <= Math.floor(n/i); i++) {
+    if(n % i === 0)
+      if(i === n/i)
+        return true;
+  }
+  return false;
+}
+
+$("#input").on("change", function(evt) {
+  var number = parseInt($(this).val());
+  var numFactors = factors(number);
+  var numIsSquare = isPerfectSq(number);
+
+  // if the num is a perfect square - box light goes on else off
+  if(numIsSquare) {
+    $("#issquare").css("background", "red");
+    $("#issquare").html(Math.sqrt(number));
+  }
+  else {
+    $("#issquare").css("background", "#fff");
+    $("#issquare").html("");
+  }
+
+  var flist = $("#factors").html("")
+  for (var i = numFactors.length - 1; i >= 0; i--) {
+    var f = $("<li></li>", {
+      "html": "<a class='number' href='#'>"+ numFactors[i] +"</a>"
+    }).on("click", "a", function(evt) {
+      $("#input").val(parseInt($(this).html()));
+      $("#input").trigger("change")
+    });
+    flist.append(f);
+  }
+});
+
+
+</script>
+</body>
+</head>
+</html>

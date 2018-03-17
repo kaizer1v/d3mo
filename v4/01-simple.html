@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+  <title>Simple use of d3 version 4</title>
+</head>
+<body>
+
+<script type="text/javascript" src="../d3-v4.js"></script>
+<script type="text/javascript">
+
+var x = [6];
+
+var svg = d3.select("body")
+  .append("svg")
+  .attr("width", 400)
+  .attr("height", 350)
+
+
+svg.append("circle")
+  .attr("cx", 20)
+  .attr("cy", 100)
+  .attr("r", 10)
+  .attr("fill", "green")
+
+svg.append("circle")
+  .attr("cx", 20)
+  .attr("cy", 170)
+  .attr("r", 10)
+  .attr("fill", "purple")
+
+
+svg.selectAll("circle")
+  .data(x)
+    .attr("fill", "red")      // existing ones (update)
+  // .enter()                    // new ones      (enter)
+  //   .append("circle")
+  //     .attr("cx", 20)
+  //     .attr("cy", 20)
+  //     .attr("r", 10)
+  //     .attr("fill", "blue")
+  .exit().remove();
+  
+</script>
+</body>
+</html>

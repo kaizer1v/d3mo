@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+<title>D3 v4 Transitions</title>
+<style type="text/css">
+
+svg {
+  width: 500px;
+  height: 350px;
+  background: #eee;
+  border: 1px solid #333; 
+}
+
+.exit { fill: red; }
+.enter { fill: green;  }
+.update { fill: blue; }
+
+</style>
+</head>
+<body>
+
+<button>Update</button>
+
+  <svg></svg>
+
+<script type="text/javascript" src="../d3-v4.js"></script>
+<script type="text/javascript">
+
+var g = d3.select("svg").append("g").attr("transform", "translate(10, 100)"),
+    alphabets = "abcdefghijklmnopqrstuvwxyz".split(""),
+    t = d3.transition()
+      .duration(750)
+
+function moveAlphabet(d, i) { return i * 12; }
+
+function update(data) {
+
+  var text = g.selectAll("text")
+    .data(data);
+
+  // 1. remove all additional text elem which already exist
+  text.exit()
+    .attr("class", "exit")
+    .transition(t)
+      .remove()
+
+  // 2. update all existing text elems which have changed
+  text
+    .attr("class", "update")
+    .attr("x", moveAlphabet);
+
+  // 3. add any extra elems based on data
+  text
+    .enter()
+      .append("text")
+      .attr("x", moveAlphabet)
+      .attr("class", "enter")
+      .text(function(d) { return d; })
+      .transition(t)
+        .attr("y", 0)
+        .style("fill-opacity", 1)
+}
+
+// first time update
+update(alphabets);
+
+d3.interval(function() {
+  update(
+    d3.shuffle(alphabets).slice(0, Math.random() * 26 | 1).sort()
+  );
+}, 1500);
+
+</script>
+</body>
+</html>

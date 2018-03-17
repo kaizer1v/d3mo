@@ -1,0 +1,180 @@
+<!doctype html>
+<html>
+<head>
+  <style type="text/css">
+    rect { fill: #ff1357; }
+    svg {
+      background: #eee;
+      border: 1px solid #000;
+    }
+    text {
+      font-size: 0.7em;
+      font-family: sans-serif;
+    }
+    rect:hover {
+      background: #ff9999;
+      stroke-width: 1;
+      stroke: #000;
+      cursor: pointer;
+    }
+
+    .axis path, .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+  </style>
+  <title>Bar Graph</title>
+</head>
+<body>
+<svg class="chart"></svg>
+<!-- <script type="text/javascript" src="d3-3.5.7.min.js"></script> -->
+<script type="text/javascript" src="../d3-v4.min.js"></script>
+<script type="text/javascript">
+  var data = [{
+      letter: "A",
+      freq: .08167
+    }, {
+      letter: "B",
+      freq: .01492
+    }, {
+      letter: "C",
+      freq: .02782
+    }, {
+      letter: "D",
+      freq: .04253
+    }, {
+      letter: "E",
+      freq: .12702
+    }, {
+      letter: "F",
+      freq: .02288
+    }, {
+      letter: "G",
+      freq: .02015
+    }, {
+      letter: "H",
+      freq: .06094
+    }, {
+      letter: "I",
+      freq: .06966
+    }, {
+      letter: "J",
+      freq: .00153
+    }, {
+      letter: "K",
+      freq: .00772
+    }, {
+      letter: "L",
+      freq: .04025
+    }, {
+      letter: "M",
+      freq: .02406
+    }, {
+      letter: "N",
+      freq: .06749
+    }, {
+      letter: "O",
+      freq: .07507
+    }, {
+      letter: "P",
+      freq: .01929
+    }, {
+      letter: "Q",
+      freq: .00095
+    }, {
+      letter: "R",
+      freq: .05987
+    }, {
+      letter: "S",
+      freq: .06327
+    }, {
+      letter: "T",
+      freq: .09056
+    }, {
+      letter: "U",
+      freq: .02758
+    }, {
+      letter: "V",
+      freq: .00978
+    }, {
+      letter: "W",
+      freq: .02360
+    }, {
+      letter: "X",
+      freq: .00150
+    }, {
+      letter: "Y",
+      freq: .01974
+    }, {
+      letter: "Z",
+      freq: .00074
+  }];
+</script>
+<script type="text/javascript">
+
+var outerWidth = 600,
+    outerHeight = 450,
+    margin = {
+      top: 20,
+      right: 30,
+      bottom: 30,
+      left: 60
+    },
+    placeholder = ".chart",
+    svgWidth = outerWidth - margin.left - margin.right,
+    svgHeight = outerHeight - margin.top - margin.bottom
+;
+
+var chart = d3.select(placeholder)
+  .attr("width", outerWidth)
+  .attr("height", outerHeight)
+  .append("g").attr("transform", "translate("+ margin.left +", "+ margin.top +")");
+
+var xScale = d3.scaleBand()
+  .domain(data.map(function(d) { return d.letter; }))
+  .range([0, svgWidth])
+  .padding(0.1);
+
+// we will define a scale that will help us scale our data to y-axis
+var yScale = d3.scaleLinear()
+  .domain([0, d3.max(data, function(d) { return d.freq; })])
+  .range([svgHeight, 0]);
+
+// Based on the data, we can determine the max width of a single bar for the chart, like so
+var barWidth = svgWidth / data.length;
+
+var bar = chart.selectAll("g")
+  .data(data).enter()
+  .append("g")
+  .attr("transform", function(d) { return "translate("+ xScale(d.letter) +", 0)"; });
+
+bar.append("rect")
+  .attr("width", xScale.bandwidth())
+  .attr("y", svgHeight)
+  .attr("height", function(d) { return svgHeight - yScale(d.freq); })
+  .attr("y", function(d) { return yScale(d.freq); });
+
+// now let's append some text to the bars
+// Once after you implement the axis, you can comment/remove the labels from the bars.
+/*bar.append("text")
+  .attr("x", xScale.bandwidth() / 2)      // center align the text with the bar
+  .attr("y", function(d) { return yScale(d.freq) - 10; })
+  .attr("dy", "0.75em")
+  .text(function(d) { return d.letter; });*/
+
+chart.append("g")
+  .attr("transform", "translate(0," + svgHeight + ")")
+  .call(d3.axisBottom(xScale));
+
+var yAxis = d3.axisLeft(yScale)
+  .ticks(10)
+  .tickSize(5)
+  .tickFormat(d3.format(".0%"));
+
+chart.append("g")
+  .call(yAxis);
+
+</script>
+</body>
+</html>
