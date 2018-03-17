@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Scrolling Sections</title>
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+  <style type="text/css">
+               svg { background: #eee; }
+      .exit circle { fill: red; }
+     .enter circle { fill: green; }
+    .update circle { fill: blue; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>bUGGIES</h1>
+  <svg id='vis' width="500" height="450">
+    <!-- graphs here are rendered via javascript -->
+  </svg>
+  <br />
+  <button id='enter'>Enter (green)</button>
+  <button id='exit'>Exit (red)</button>
+  <button id='update'>Update (blue)</button>
+</div>
+
+<p>View <code>console.log</code> for more info</p>
+<a href="https://bost.ocks.org/mike/join/">Ref Link</a>
+
+<script src="../node_modules/d3v4/build/d3.min.js"></script>
+<script type="text/javascript">
+  var svg = d3.select('#vis')
+  var margin = {
+    top: 10,
+    right: 10,
+    bottom: 40,
+    left: 40
+  }
+  var xScale = d3.scaleLinear()
+    .domain([0, 6])
+    .range([margin.left, svg.attr('width') - (margin.left + margin.right)])
+
+  var yScale = d3.scaleLinear()
+    .domain([0, 20])
+    .range([margin.top, svg.attr('width') - (margin.top*2 + margin.bottom)])
+
+  function update(data) {
+    var t = d3.transition()
+      .duration(750);
+
+    // join the data with the elements
+    var c_data = svg.selectAll('g')
+      .data(data, function(d) { return d; })
+    console.log('-->> updated', c_data._groups);
+    c_data
+      .transition(t)
+        .attr('class', 'update')
+        .attr('log', function(d) { console.log('updated', d); })
+
+    var c_enter = c_data.enter() // `enter` the new ones
+    console.log('--> enter', c_enter._groups);      
+    c_enter.append('g')
+      .attr('id', function(d) { return 'id_'+d })
+      .attr('class', 'enter')
+    .append('circle')
+    .transition(t)
+      .attr('r', 5)
+      .attr('log', function(d) { console.log('added', d); })
+      .attr('cx', function(d, i) { return (i * 50) + margin.left })
+      .attr('cy', function(d)    { return yScale(d) })
+
+    var c_exit = c_data.exit()               // `exit` the ones which are'nt the same as new values
+      .transition(t)
+      .attr('class', 'exit')
+      .attr('log', function(d) { console.log('removed', d); })
+    console.log('--> exit', c_exit._groups);
+    c_exit.remove();
+
+  }
+
+
+function get_data() {
+  var data = []
+  for(var i = 0; i <= 6; i++) {
+    data.push(Math.floor(Math.random() * 10))
+  }
+  return data
+}
+
+// default
+update([15, 8, 4, 7, 13])
+
+d3.select('#enter').on('click', function() {
+  // add new element
+  update([15, 8, 4, 7, 13, 19])
+})
+
+d3.select('#exit').on('click', function() {
+  // remove two elements
+  update([15, 8, 4, 7])
+})
+
+d3.select('#update').on('click', function() {
+  update([15, 8, 17, 3])
+})
+</script>
+</body>
+</html>

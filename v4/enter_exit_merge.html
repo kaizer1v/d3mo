@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Scrolling Sections</title>
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+  <style type="text/css">
+    svg     { width: 600px; height: 250px; background: #eee; }
+    text    { font: bold 35px monospace; }
+    .enter  { fill: green; }
+    .exit   { fill: red; }
+    .merge { fill: #333; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Enter Exit and Update</h1>
+  <svg id='vis' width="500" height="250"><!-- graphs here are rendered via javascript --></svg>
+  <br />
+  <button>Update</button>
+</div>
+
+<a href="http://d3indepth.com/enterexit/">Ref link 1</a><br />
+<a href="https://github.com/d3/d3/blob/master/CHANGES.md#selections-d3-selection">Ref link 2</a>
+
+<script src="../node_modules/d3v4/build/d3.min.js"></script>
+<script type="text/javascript">
+var svg = d3.select('svg')
+
+function update(data) {
+
+  // UPDATE (BIND DATA)
+  var c_data = svg.selectAll("circle").data(data)
+    .style("fill", "pink");
+
+   // ENTER
+  var c_enter = c_data.enter().append("circle")
+    .attr("class", "enter")
+    .attr('r', 5)
+    .attr('cx', function(d) { return d*10; })
+    .attr('cy', function(d) { return d*10; })
+  console.log('--> enter', c_enter._groups);
+
+  // ENTER + UPDATE
+  var c_merge = c_enter.merge(c_data)
+    .attr("class", "merge")
+  console.log('--> merge', c_merge._groups);
+
+  // EXIT
+  var c_exit = c_data.exit().remove();
+  console.log('--> exit', c_exit._groups);
+}
+
+
+update([7, 16, 13, 5, 9])
+d3.select('button').on('click', function() {
+  update([17, 6, 3, 5, 9])
+})
+
+</script>
+</body>
+</html>
