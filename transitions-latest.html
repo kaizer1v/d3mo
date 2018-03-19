@@ -2,7 +2,6 @@
 <html>
 <head>
   <title>Scrolling Sections</title>
-  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
   <style type="text/css">
     svg     { background: #eee; }
     text    { font: bold 35px monospace; }
@@ -22,7 +21,7 @@
 
 <a href="https://bost.ocks.org/mike/join/">Ref Link</a>
 
-<script src="lib/d3.js"></script>
+<script src="node_modules/d3v4/build/d3.min.js"></script>
 <script type="text/javascript">
 
   var svg = d3.select('#vis')
@@ -55,12 +54,11 @@
       .attr('class', 'exit')
     .transition(t)
       .attr('r', 0)
-      .style("fill-opacity", 1e-6)
       .remove()
 
     circle.enter()      // `enter` the new ones
       .append('circle')
-      .attr('r', 0)
+      // .attr('r', 0)
     .merge(circle)      // `update` the existing ones, if changed
       .attr('cx', function(d) { return xScale(d.alpha) })
       .attr('cy', function(d) { return yScale(d.value) })
@@ -68,6 +66,8 @@
       .attr('r', 5)
       .attr('class', 'enter')
   }
+
+
 
 
 function get_data() {
