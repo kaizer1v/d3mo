@@ -7,7 +7,7 @@
     text    { font: bold 35px monospace; }
     .enter  { fill: green; }
     .exit   { fill: red; }
-    .update { fill: #333; }
+    .update { fill: blue; }
   </style>
 </head>
 <body>
@@ -38,7 +38,7 @@
     .range([margin.left, svg.attr('width') - (margin.left + margin.right)])
 
   var yScale = d3.scaleLinear()
-    .domain([0, 26])
+    .domain([0, 10])
     .range([margin.top, svg.attr('width') - (margin.top*2 + margin.bottom)])
 
   function update(data) {
@@ -56,15 +56,19 @@
       .attr('r', 0)
       .remove()
 
-    circle.enter()      // `enter` the new ones
+    var c_enter = circle.enter()      // `enter` the new ones
       .append('circle')
-      // .attr('r', 0)
-    .merge(circle)      // `update` the existing ones, if changed
       .attr('cx', function(d) { return xScale(d.alpha) })
       .attr('cy', function(d) { return yScale(d.value) })
-    .transition(t)
-      .attr('r', 5)
       .attr('class', 'enter')
+
+    c_enter.transition(t)
+      .attr('r', 5)
+
+    c_enter.merge(circle)
+      .transition(t)
+        .attr('class', 'update')
+
   }
 
 
@@ -76,7 +80,7 @@ function get_data() {
     .map(function(alpha) {
       return {
         'alpha': alpha,
-        'value': Math.floor(Math.random() * 26)
+        'value': Math.floor(Math.random() * 10)
       }
     })
 }
@@ -87,9 +91,9 @@ d3.select('button').on('click', function() {
   update(get_data())
 })
 
-d3.interval(function() {
-  update(get_data())
-}, 1500)
+// d3.interval(function() {
+//   update(get_data())
+// }, 1500)
 
 </script>
 </body>
