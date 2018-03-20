@@ -24,8 +24,9 @@
     }
 
     .enter  { fill: green; }
-    .exit   { fill: #333; }
-    .update { fill: #ff1357; }
+    .exit   { fill: red; }
+    /*.update { fill: #ff1357; }*/
+    .update { fill: blue; }
   </style>
   <title>Bar Graph</title>
 </head>
@@ -93,21 +94,20 @@ function render(alpha) {
   var existing = bars.selectAll("rect")
     .data(alpha);
 
-  console.log(existing);
-
   var added = existing.enter().append("rect")
     .attr("width", xScale.bandwidth())
-    .attr("fill", "#ff1357")
+    // .attr("fill", "#ff1357")
     .attr("x", function(d) { return xScale(d.letter); })
     .attr("y", svgHeight)
     .attr("height", 0)
+    .attr("class", "enter")
   .transition(t)
     .attr("y", function(d) { return yScale(d.freq) })
     .attr("height", function(d) { return svgHeight - yScale(d.freq); })
 
   var merged = existing.merge(added)
-    .attr("class", "update")
   .transition(t)
+    .attr("class", "update")
     .attr("y", function(d) { return yScale(d.freq) })
     .attr("height", function(d) { return svgHeight - yScale(d.freq); })
 
