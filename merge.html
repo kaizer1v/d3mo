@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Scrolling Sections</title>
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+  <style type="text/css">
+    svg     { width: 600px; height: 250px; background: #eee; }
+    text    { font: bold 35px monospace; }
+    .enter  { fill: green; }
+    .exit   { fill: red; }
+    .merge  { fill: #333; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Enter Exit and Update</h1>
+  <svg id='vis' width="500" height="250">
+    <!-- graphs here are rendered via javascript -->
+    <circle cx="50" cy="50" fill="purple" r="10"></circle>
+  </svg>
+  <br />
+  <button>Update</button>
+</div>
+
+<script src="node_modules/d3v4/build/d3.min.js"></script>
+<script type="text/javascript">
+var svg = d3.select('svg');
+var numbers = [5, 14, 11, 4, 9, 17];
+var scale = d3.scaleLinear()
+  .domain([1, 20])
+  .range([10, 450])
+
+function update(data) {
+  var t = d3.transition()
+    .duration(950)
+    // .ease(d3.easeLinear)
+
+  var existing = svg.selectAll('circle')
+    .data(data)
+  // at this point d3 has identified how many are to be removed, added & merged
+
+  var added = existing.enter()
+      .append('circle')
+      .attr('fill', 'green')
+      .attr('r', 10)
+      .attr('cy', function(d) { return svg.attr("height") / 2; })
+    .transition(t)      // apply transition only on cx
+      .attr('cx', function(d) { return scale(d); })
+
+  existing.merge(added)
+    .transition(t)      // apply transition on fill, cx and cy
+      .attr('cx', function(d) { return scale(d); })
+      .attr('cy', function(d) { return svg.attr("height") / 2; })
+      .attr('fill', 'blue')
+
+  var exited = existing.exit()
+      .attr('fill', 'red')
+    .transition(t)
+      .attr('r', 20)
+    .transition(t)
+      .attr('r', 0)
+      .remove()
+}
+
+update(numbers)
+
+d3.select('button').on('click', function() {
+  update([8, 15, 16, 19, 3])
+})
+
+</script>
+</body>
+</html>

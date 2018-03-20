@@ -3,7 +3,7 @@
 <head>
   <title>Scrolling Sections</title>
   <style type="text/css">
-    svg     { width: 600px; height: 250px; background: #eee; }
+    svg     { background: #eee; }
     text    { font: bold 35px monospace; }
     .enter  { fill: green; }
     .exit   { fill: red; }
@@ -14,7 +14,7 @@
 
 <div class="container">
   <h1>Enter Exit and Update</h1>
-  <svg id='vis' width="500" height="250"><!-- graphs here are rendered via javascript --></svg>
+  <svg id='vis' width="600" height="250"><!-- graphs here are rendered via javascript --></svg>
 </div>
 
 <a href="https://bl.ocks.org/mbostock/3808234">Ref link 1</a><br />
@@ -23,12 +23,12 @@
 <script src="node_modules/d3v4/build/d3.min.js"></script>
 <script type="text/javascript">
 
-  var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
-
-  var svg = d3.select("svg"),
+  var alphabet = "abcdefghijklmnopqrstuvwxyz".split(""),
+      svg = d3.select("svg"),
       width = +svg.attr("width"),
-      height = +svg.attr("height")
+      height = +svg.attr("height"),
       g = svg.append("g").attr("transform", "translate(10, "+ height/2 +")")
+  ;
 
   function update(data) {
     // ? why do we have to define the transition everytime
@@ -43,6 +43,7 @@
     text.attr("class", "update")
       .attr("y", 0)
       .style("fill-opacity", 1)
+      .attr("x", function(d, i) { return i * 20 })
     .transition(t)
       .attr("x", function(d, i) { return i * 20 })
 
@@ -50,12 +51,12 @@
     text.enter().append("text")
       .attr("class", "enter")
       .attr("dy", ".35em")
-      .attr("y", -60)
+      .attr("y", 60)
       .attr("x", function(d, i) { return i * 20 })
       .style("fill-opacity", 1e-6)
-    .transition(t)
-      .attr("y", 0)
-      .style("fill-opacity", 1)
+    // .transition(t)
+    //   .attr("y", 0)
+    //   .style("fill-opacity", 1)
 
     // 4. remove already existing elements which are not necessary anymore
     text.exit()
@@ -64,7 +65,6 @@
       .attr("y", 60)
       .style("fill-opacity", 1e-6)
       .remove();
-
   }
 
   // default loading

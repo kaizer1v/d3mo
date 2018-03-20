@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+<head>
+  <style type="text/css">
+    svg {
+      background: #eee;
+      border: 1px solid #000;
+    }
+    text {
+      font-size: 0.7em;
+      font-family: sans-serif;
+    }
+    rect:hover {
+      background: #ff9999;
+      stroke-width: 1;
+      stroke: #000;
+      cursor: pointer;
+    }
+
+    .axis path, .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+
+    .enter  { fill: green; }
+    .exit   { fill: #333; }
+    .update { fill: #ff1357; }
+  </style>
+  <title>Bar Graph</title>
+</head>
+<body>
+<h1>bAR gRAPH tRANSITIONS</h1>
+<svg class="chart"></svg>
+<button>Update Graph</button>
+
+<script type="text/javascript" src="node_modules/d3v4/build/d3.min.js"></script>
+<script type="text/javascript">
+
+var outerWidth = 600,
+    outerHeight = 450,
+    margin = {
+      top: 20,
+      right: 30,
+      bottom: 30,
+      left: 60
+    },
+    placeholder = ".chart",
+    svgWidth = outerWidth - margin.left - margin.right,
+    svgHeight = outerHeight - margin.top - margin.bottom
+;
+
+// sample data
+var alphabets = "abcdefghijklmnopqrstuvwxyz".toUpperCase().split("");
+
+var chart = d3.select(placeholder)
+  .attr("width", outerWidth)
+  .attr("height", outerHeight)
+  .append("g").attr("transform", "translate("+ margin.left +", "+ margin.top +")");
+
+var bars = chart.append("g")
+  .attr("class", "bars")
+
+var xScale = d3.scaleBand()
+  .domain(alphabets)
+  .range([0, svgWidth])
+  .padding(0.1);
+
+var yScale = d3.scaleLinear()
+  .domain([0, alphabets.length])
+  .range([svgHeight, 0]);
+
+chart.append("g")
+  .attr("class", "x-axis")
+  .attr("transform", "translate(0," + svgHeight + ")")
+  .call(d3.axisBottom(xScale));
+
+chart.append("g")
+  .attr("class", "y-axis")
+  .call(
+    d3.axisLeft(yScale)
+    .ticks(10)
+    .tickSize(5)
+    // .tickFormat(d3.format(".0%"))
+  );
+
+
+// renders the bars, keeps the axis constant
+function render(alpha) {
+  var t = d3.transition()
+    .duration(950)
+
+  var existing = bars.selectAll("rect")
+    .data(alpha);
+
+  console.log(existing);
+
+  var added = existing.enter().append("rect")
+    .attr("width", xScale.bandwidth())
+    .attr("fill", "#ff1357")
+    .attr("x", function(d) { return xScale(d.letter); })
+    .attr("y", svgHeight)
+    .attr("height", 0)
+  .transition(t)
+    .attr("y", function(d) { return yScale(d.freq) })
+    .attr("height", function(d) { return svgHeight - yScale(d.freq); })
+
+  var merged = existing.merge(added)
+    .attr("class", "update")
+  .transition(t)
+    .attr("y", function(d) { return yScale(d.freq) })
+    .attr("height", function(d) { return svgHeight - yScale(d.freq); })
+
+  existing.exit()
+    .attr("class", "exit")
+  .transition(t)
+    .attr("y", svgHeight)
+    .attr("height", 0)
+    .remove()
+}
+
+
+// generate random data using alphabets
+function gen_rand_data() {
+  return d3.shuffle(alphabets)
+    .slice(0, Math.floor(Math.random() * 26))
+    .sort()
+    .map(function(d) {
+      return {
+        letter: d.toUpperCase(),
+        freq: Math.floor(Math.random() * 26)
+      }
+    })
+}
+
+render(gen_rand_data())
+
+// d3.interval(function() {
+//   render(gen_rand_data())
+// }, 2000)
+
+d3.select('button').on('click', function() {
+  render(gen_rand_data())
+})
+
+</script>
+</body>
+</html>
