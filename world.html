@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+  <style type="text/css">
+    svg {
+      background: #eee;
+      border: 1px solid #000;
+    }
+  </style>
+  <title>World Map</title>
+</head>
+<body>
+<h1>wORLD mAP</h1>
+<svg></svg>
+<script type="text/javascript" src="node_modules/d3v4/build/d3.min.js"></script>
+<script type="text/javascript" src="node_modules/topojson/dist/topojson.min.js"></script>
+<script type="text/javascript">
+
+var format = d3.format(",");
+
+var margin = {top: 0, right: 0, bottom: 0, left: 0},
+            width = 960 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom;
+
+var path = d3.geoPath();
+
+var svg = d3.select("svg")
+            .attr("width", width)
+            .attr("height", height)
+
+var projection = d3.geoMercator()
+                   .scale(130)
+                  .translate( [width / 2, height / 1.5]);
+
+var path = d3.geoPath().projection(projection);
+
+var sample_points = {
+  aa: [-122.490402, 37.786453],
+  bb: [-122.389809, 37.72728]
+};
+
+var g_circles = svg.append('g')
+            .attr('class', 'dots')
+
+
+svg = svg.append('g')
+        .attr('class', 'map');
+
+d3.json("data/world_countries.json", ready)
+
+function ready(data) {
+  console.log(data.features);
+
+  svg.append("g")
+      .attr("class", "countries")
+    .selectAll("path")
+      .data(data.features)
+    .enter().append("path")
+      .attr("d", path)
+      .style("fill", '#333')
+      .style('stroke', 'white')
+      .style('stroke-width', 1.5)
+      .style("opacity", 0.8)
+        .style("stroke", "white")
+        .style('stroke-width', 0.3)
+        .on('mouseover',function(d) {
+          d3.select(this)
+            .style("opacity", 1)
+            .style("stroke", "white")
+            .style("stroke-width", 2);
+        })
+        .on('mouseout', function(d) {
+          d3.select(this)
+            .style("opacity", 0.8)
+            .style("stroke", "white")
+            .style("stroke-width", 0.3);
+        });
+
+  svg.append("path")
+      .datum(topojson.mesh(data.features, function(a, b) { return a.id !== b.id; }))
+      .attr("class", "names")
+      .attr("d", path);
+
+  g_circles
+    .append('circle')
+    .attr('cx', projection(sample_points.aa)[0])
+    .attr('cy', projection(sample_points.aa)[1])
+    .attr('r', 10)
+    .attr('fill', 'red')
+}
+</script>
+</body>
+</html>
