@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+<head>
+  <style type="text/css">
+    svg {
+      width: 600px;
+      height: 350px;
+      background: #eee;
+      border: 1px solid #000;
+    }
+    input[type=range] { width: 200px; }
+    .section { margin: 20px 0px; border-bottom: 2px solid #eee; }
+  </style>
+  <title>Scales</title>
+</head>
+<body>
+<h1>sCALES</h1>
+<!-- <svg class="chart"></svg> -->
+<div class="section quantize">
+  <h3>QuantiZe Scale</h3>
+  <span class="min">0</span>
+  <input type="range" name="quantize" list="tickmarks">
+  <span class="max">100</span>
+  <datalist id="tickmarks">
+    <option value="0" label="0%" />
+    <option value="34" />
+    <!-- <option value="50" label="50%" /> -->
+    <option value="67" />
+    <option value="100" label="100%" />
+  </datalist>
+  <h4 class="quantize output">0</h4>
+</div>
+
+<div class="section linear">
+  <h3>Linear Scale</h3>
+  <span class="min">0</span>
+  <input type="range" name="linear" min="0" max="100" step="1">
+  <span class="max">100</span>
+  <h4 class="linear output">0</h4>
+</div>
+
+<div class="section quantile">
+  <h3>Quantize Scale</h3>
+  <span class="min">0</span>
+  <input type="range" name="quantile" min="0" max="100" step="10">
+  <span class="max">100</span>
+  <h4 class="quantile output">0</h4>
+</div>
+
+<script type="text/javascript" src="node_modules/d3v4/build/d3.min.js"></script>
+<script type="text/javascript">
+
+var quantizeScale = d3.scaleQuantize()
+  .domain([0, 100])
+  .range(['red', 'yellow', 'green'])
+
+var linearScale = d3.scaleLinear()
+  .domain([0, 50, 100])
+  .range(['red', 'yellow', 'green'])
+
+var quantileScale = d3.scaleQuantile()
+  .domain([0, 100])
+  .range(['red', 'yellow', 'green'])
+
+var scales = {
+  quantile: quantileScale,
+  linear: linearScale,
+  quantize: quantizeScale
+}
+
+
+/* interaction */
+d3.selectAll('.section > input').on('change', function(evt) {
+  var input = d3.select(this);
+  var value = this.value;
+  var name = input.attr('name');
+
+  update(name, value, scales[name](value))
+})
+
+function update(scale, val, color='#333') {
+  d3.select('.output.' + scale)
+    .text(val)
+    .style('color', color);
+}
+
+</script>
+</body>
+</html>
