@@ -1,93 +1,111 @@
 <!doctype html>
 <html>
+
 <head>
-  <style type="text/css">
-    svg {
-      background: #eee;
-      border: 1px solid #000;
-    }
-  </style>
   <title>World Map</title>
+  <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
+
 <body>
-<h1>wORLD mAP</h1>
-<svg></svg>
-<script type="text/javascript" src="node_modules/d3v4/build/d3.min.js"></script>
-<script type="text/javascript" src="node_modules/topojson/dist/topojson.min.js"></script>
-<script type="text/javascript">
+  <h1>wORLD mAP</h1>
+  <svg></svg>
+  <script type="text/javascript" src="node_modules/d3/dist/d3.min.js"></script>
+  <script type="text/javascript" src="node_modules/topojson/dist/topojson.min.js"></script>
+  <script type="text/javascript" src="node_modules/d3-tip/index.js"></script>
+  <script type="text/javascript" src="https://d3js.org/queue.v1.min.js"></script>
+  <script type="text/javascript">
+  var format = d3.format(",");
 
-var format = d3.format(",");
+  var margin = { top: 0, right: 0, bottom: 0, left: 0 },
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
 
-var margin = {top: 0, right: 0, bottom: 0, left: 0},
-            width = 960 - margin.left - margin.right,
-            height = 500 - margin.top - margin.bottom;
+  var tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset([-10, 0])
+    .html(function(d) {
+      return "<strong><span class='details'>" + d.properties.name + "</span></strong>";
+    })
 
-var path = d3.geoPath();
+  var path = d3.geoPath();
 
-var svg = d3.select("svg")
-            .attr("width", width)
-            .attr("height", height)
+  var svg = d3.select("svg")
+    .attr("width", width)
+    .attr("height", height)
 
-var projection = d3.geoMercator()
-                   .scale(130)
-                  .translate( [width / 2, height / 1.5]);
+  var projection = d3.geoMercator()
+    .scale(130)
+    .translate([width / 2, height / 1.5]);
 
-var path = d3.geoPath().projection(projection);
+  var path = d3.geoPath().projection(projection);
 
-var sample_points = {
-  aa: [-122.490402, 37.786453],
-  bb: [-122.389809, 37.72728]
-};
+  var sample_points = {
+    aa: [-122.490402, 37.786453],
+    bb: [-122.389809, 37.72728]
+  };
 
-var g_circles = svg.append('g')
-            .attr('class', 'dots')
+  var g_circles = svg.append('g')
+    .attr('class', 'dots')
 
 
-svg = svg.append('g')
-        .attr('class', 'map');
+  svg = svg.append('g')
+    .attr('class', 'map');
 
-d3.json("data/world_countries.json", ready)
+  svg.call(tip);
 
-function ready(data) {
-  console.log(data.features);
+  Promise.all([
+    d3.json("data/world_countries.json"),
+    d3.csv("data/2012_quakes.csv")
+  ]).then(ready)
+  // d3.json("data/world_countries.json", ready)
 
-  svg.append("g")
+  function ready(values) {
+    var data = values[0],
+        quakes = values[1];
+
+    svg.append("g")
       .attr("class", "countries")
-    .selectAll("path")
+      .selectAll("path")
       .data(data.features)
-    .enter().append("path")
+      .enter().append("path")
       .attr("d", path)
       .style("fill", '#333')
       .style('stroke', 'white')
       .style('stroke-width', 1.5)
       .style("opacity", 0.8)
-        .style("stroke", "white")
-        .style('stroke-width', 0.3)
-        .on('mouseover',function(d) {
-          d3.select(this)
-            .style("opacity", 1)
-            .style("stroke", "white")
-            .style("stroke-width", 2);
-        })
-        .on('mouseout', function(d) {
-          d3.select(this)
-            .style("opacity", 0.8)
-            .style("stroke", "white")
-            .style("stroke-width", 0.3);
-        });
+      .style("stroke", "white")
+      .style('stroke-width', 0.3)
+      .on('mouseover', function(d) {
+        tip.show(d);
+        d3.select(this)
+          .style("opacity", 1)
+          .style("stroke", "white")
+          .style("stroke-width", 2);
+      })
+      .on('mouseout', function(d) {
+        tip.hide(d);
+        d3.select(this)
+          .style("opacity", 0.8)
+          .style("stroke", "white")
+          .style("stroke-width", 0.3);
+      });
 
-  svg.append("path")
+    svg.append("path")
       .datum(topojson.mesh(data.features, function(a, b) { return a.id !== b.id; }))
       .attr("class", "names")
       .attr("d", path);
 
-  g_circles
-    .append('circle')
-    .attr('cx', projection(sample_points.aa)[0])
-    .attr('cy', projection(sample_points.aa)[1])
-    .attr('r', 10)
-    .attr('fill', 'red')
-}
-</script>
+    g_circles
+      // .data(quakes).enter()
+      .append('circle')
+      // .attr('cx', function(d) { console.log(projection(d['latitude'])[1]); return projection(d['latitude'])[1] })
+      // .attr('cy', function(d) { console.log(projection(d['longitude'])[1]); return projection(d['longitude'])[1] })
+      .attr('cx', projection(sample_points.aa)[0])
+      .attr('cy', projection(sample_points.aa)[1])
+      .attr('r', 10)
+      .attr('fill', 'red')
+  }
+  </script>
 </body>
+
 </html>
