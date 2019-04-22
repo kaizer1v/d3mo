@@ -1,6 +1,18 @@
-# d3
+# D3MO
 
-This repo is a playgroud of my experiments with d3.
+This repo is a playgroud of my experiments with d3. 
+
+## Contents
+
+- [Bar Graph](bar2.html)
+- [Playing with Classes](classes.html)
+- [Enter, Exit & Update - D3MO](enter_exit_update.html)
+- [Thin Donut Chart](pie.html)
+- [Different Scales in D3](scales.html)
+- [Scatter Plot using Enter, Exit & Merge](scatter_plot_efficient3.html)
+- [Exploring Transitions](transitions-latest.html)
+- [World Map](world.html)
+
 
 But, before that there are some basics of svg that one needs to understand
 
@@ -82,7 +94,7 @@ called as `cx` and `cy`. Also, the x and y values point to the center of the cir
 
 The `r` as you can imagine stands for the radius.
 
-**NOTE: You can have a special `none` value for the fill which will make the element transparent. **
+**NOTE: You can have a special `none` value for the fill which will make the element transparent.**
 
 #### Line
 
