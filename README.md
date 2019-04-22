@@ -1,6 +1,6 @@
 # D3MO
 
-This repo is a playgroud of my experiments with d3. 
+This repo is a playgroud of my experiments with d3. You can check some of these links to view the demo.
 
 ## Contents
 
@@ -14,7 +14,7 @@ This repo is a playgroud of my experiments with d3.
 - [World Map](world.html)
 
 
-But, before that there are some basics of svg that one needs to understand
+But before that there are some basics of svg that one needs to understand
 
 ## SVG
 
