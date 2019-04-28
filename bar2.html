@@ -123,21 +123,17 @@ function render(alpha) {
 // generate random data using alphabets
 function gen_rand_data() {
   return d3.shuffle(alphabets)
-    .slice(0, Math.floor(Math.random() * 26))
+    .slice(0, 26)
     .sort()
     .map(function(d) {
       return {
         letter: d.toUpperCase(),
-        freq: Math.floor(Math.random() * 26)
+        freq: Math.floor(Math.random() * (26 - 1) + 1)
       }
     })
 }
 
 render(gen_rand_data())
-
-// d3.interval(function() {
-//   render(gen_rand_data())
-// }, 2000)
 
 d3.select('button').on('click', function() {
   render(gen_rand_data())
