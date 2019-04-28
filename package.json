@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/kaizer1v/d3#readme",
   "dependencies": {
+    "d3": "^5.9.1",
+    "d3-tip": "^0.7.1",
     "d3v3": "^1.0.3",
     "d3v4": "^4.2.2",
     "jquery": "^3.3.1",
