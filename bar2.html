@@ -123,7 +123,6 @@ function render(alpha) {
 // generate random data using alphabets
 function gen_rand_data() {
   return d3.shuffle(alphabets)
-    .slice(0, 26)
     .sort()
     .map(function(d) {
       return {
