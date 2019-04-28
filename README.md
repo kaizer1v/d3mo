@@ -2,6 +2,13 @@
 
 This repo is a playgroud of my experiments with d3.
 
+## Table of Contents
+
+* [The Enter, Exit & Merge]() - The underlying principle for d3 and how it fundamentally works.
+* [Bar Graph](bar2.html)
+* []()
+* []()
+
 But, before that there are some basics of svg that one needs to understand
 
 ## SVG
