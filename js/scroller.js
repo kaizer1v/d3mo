@@ -1,4 +1,3 @@
-
 /**
  * scroller - handles the details
  * of figuring out which section
@@ -55,7 +54,7 @@ function scroller() {
     // @v4 timer no longer stops if you
     // return true at the end of the callback
     // function - so here we stop it explicitly.
-    var timer = d3.timer(function () {
+    var timer = d3.timer(function() {
       position();
       timer.stop();
     });
@@ -73,7 +72,7 @@ function scroller() {
     // of the first section.
     sectionPositions = [];
     var startPos;
-    sections.each(function (d, i) {
+    sections.each(function(d, i) {
       var top = this.getBoundingClientRect().top;
       if (i === 0) {
         startPos = top;
@@ -116,7 +115,7 @@ function scroller() {
    *
    * @param value - the new container value
    */
-  scroll.container = function (value) {
+  scroll.container = function(value) {
     if (arguments.length === 0) {
       return container;
     }
@@ -126,7 +125,7 @@ function scroller() {
 
   // @v4 There is now no d3.rebind, so this implements
   // a .on method to pass in a callback to the dispatcher.
-  scroll.on = function (action, callback) {
+  scroll.on = function(action, callback) {
     dispatch.on(action, callback);
   };
 
