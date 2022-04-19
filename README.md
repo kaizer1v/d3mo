@@ -1,129 +1,97 @@
-# D3MO
+Choose marks and channels based on your data attribute types and tasks
 
-This repo is a playgroud of my experiments with d3. You can check some of these links to view the demo.
+# Marks
 
-## Contents
+- Points
+- Lines
+- Areas
 
-- [Enter, Exit & Merge - D3MO](enter_exit_update.html)
-- [Bar Graph](bar2.html)
-- [Thin Donut Chart](pie.html)
-- [Different Scales in D3](scales.html)
-- [Scatter Plot using Enter, Exit & Merge](scatter_plot_efficient3.html)
-- [Exploring Transitions](transitions-latest.html)
-- [World Map](world.html)
+# Channels
 
+- X & Y positions
+- Colours (Hue, Saturation & Lumin)
+- Size
+- Shape
 
-But before that there are some basics of svg that one needs to understand
+# Types
 
-## SVG
+- Quantitative: that can be measured (Eg: numbers)
+- Orinal: Ordered but not 100% numerical (Eg: alphabetical order, colour names from light to dark)
+- Categorical: Unordered and can't be measured (Eg: Country names)
 
-### Basics
+# Links
 
-SVG stands for scalable vector graphics. This is an html tag itself and can be declared in an html file
-with some default attributes like
+- https://www.youtube.com/watch?v=2LhoCfjm8R4&ab_channel=freeCodeCamp.org
 
-```html
-<svg width="300px" height="450px"></svg>
-```
+----
 
-Think of the svg area in your html as a co-ordinate system, just like the co-ordinate system in mathematics.
-The only difference is that the co-ordinate system in the svg starts from the top-left corner i.e. `(0, 0)`;
-As you move down vertically, the `y` co-ordinate value keeps increasing and as you move from left towards the right,
-the `x` co-ordinate value keeps increasing.
+# Getting Started with Create React App
 
-### Shapes
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-SVG provides basic shapes that can be used as a tag with respective attributes. This helps you create
-from simple shapes like rectangle, circles, lines to complex shapes like bezier curves, sine waves and
-lot of other [cool stuff](https://d3js.org/).
+## Available Scripts
 
-Let us look the different kinds of shapes and their attributes.
+In the project directory, you can run:
 
-#### Rect
+### `npm start`
 
-```html
-<svg>
-  <rect x="25" y="50" width="50" height="40"></rect>
-</svg>
-```
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-We just created a rectangle with 50px as width and 40px as it's height. This rectangle will be drawn at `(25, 50)`
-in the svg. This point on the rectangle will be it's top-left corner.
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-You can also have some additional styling attributes like `fill` for a colour and a `stroke` for a border.
-For example,
+### `npm test`
 
-```html
-<svg>
-  <rect
-    x="25"
-    y="50"
-    width="50"
-    height="40"
-    fill="red"
-    stroke="blue"
-    stroke-width="3"
-  ></rect>
-</svg>
-```
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-Here the `stroke` attribute actually takes a colour value which can be either
+### `npm run build`
 
-- a valid colour text
-- hex value
-- rgb or an rgba value
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-#### Circle
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-```html
-<svg>
-  <circle
-    cx="100"
-    cy="100"
-    r="30"
-    fill="none"
-    stroke="red"
-  ></circle>
-</svg>
-```
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-Here just like in the rect, you can provide an x and y co-ordinate values. But instead in a circle, it is
-called as `cx` and `cy`. Also, the x and y values point to the center of the circle. Thus, a circle with
-`cx="0"` and `cy="0"` attributes will start its center from the top-left of the svg.
+### `npm run eject`
 
-The `r` as you can imagine stands for the radius.
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-**NOTE: You can have a special `none` value for the fill which will make the element transparent.**
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-#### Line
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-A line, just like in mathematical co-ordinate system, takes 2 points as arguments
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-```html
-<svg>
-  <line
-    x1="130"
-    y1="180"
-    x2="225"
-    y2="260"
-    stroke-width="10"
-  ></line>
-</svg>
-```
+## Learn More
 
-The line does not have a `fill` attribute since it is just a stroke itslef.
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-You can have multiple lines together like so
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-```html
-<svg>
-  <line x1="50" y1="50" x2="100" y2="150" stroke-width="10"></line>
-  <line x1="100" y1="150" x2="150" y2="100" stroke-width="10"></line>
-  <line x1="150" y1="100" x2="200" y2="150" stroke-width="10"></line>
-</svg>
-```
+### Code Splitting
 
-### References
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-- [Curran Kelleher's d3 presentation](https://youtu.be/8jvoTV54nXw)
-- [SVG Documentation on MDN](https://developer.mozilla.org/en-US/docs/Web/SVG)
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

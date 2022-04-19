@@ -1,3 +1,5 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
 # Ignore all files that generally ought not to be committed into the repo.
 # Never commit sensitive data.
 # Never commit useless files.
@@ -11,6 +13,10 @@
 
 # Ignore log files
 logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
 
 # Old vis.py used to produce xhtml output. Ignore these
 *.xhtml
@@ -43,6 +49,9 @@ logs/
 # Sublime-text workspaces, etc
 *.sublime-*
 
+# Production
+/build
+
 # IPython Notebook checkpoints
 .ipynb_checkpoints
 
@@ -52,6 +61,8 @@ logs/
 # Ignore bower components and npm modules
 node_modules/
 bower_components/
+/.pnp
+.pnp.js
 
 # Windows shortcut files
 *.lnk
@@ -61,3 +72,10 @@ Desktop.ini
 $RECYCLE.BIN/
 *[Tt]humbs.db
 *.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Testing
+/coverage
