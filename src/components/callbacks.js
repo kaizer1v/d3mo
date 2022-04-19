@@ -8,7 +8,7 @@ const width = 960,
         y: height / 2
       }
 
-const App = () => {
+export const Callbacks = () => {
   const [pos, setPos] = useState(posInit)
 
   const mouseMoveHandler = useCallback(e => {
@@ -25,5 +25,3 @@ const App = () => {
     </>
   )
 }
-
-export default App

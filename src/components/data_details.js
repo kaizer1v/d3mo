@@ -11,7 +11,7 @@ const msg = (data) => (
   </div>
 )
 
-const App = () => {
+export const DataDetails = () => {
   const [data, setData] = useState(null)
 
   // useEffect runs the content inside the function only once
@@ -26,5 +26,3 @@ const App = () => {
     </>
   )
 }
-
-export default App;

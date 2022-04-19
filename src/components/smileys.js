@@ -23,7 +23,7 @@ const Thopda = ({ children, width, height, cx, cy }) => (
 
 const array = range(5)
 
-const App = () => array.map(() => {
+export const Simley = () => array.map(() => {
   const eye_radius = Math.random() * 50
 
   return (
@@ -42,5 +42,3 @@ const App = () => array.map(() => {
     </Thopda>
   )
 })
-
-export default App;

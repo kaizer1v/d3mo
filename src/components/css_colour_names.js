@@ -28,7 +28,7 @@ const pieArc = arc()
   .innerRadius(0)
   .outerRadius(width)
 
-const App = () => {
+export const ColourNames = () => {
 
   const [data, setData] = useState(null)
 
@@ -49,5 +49,3 @@ const App = () => {
     </svg>
   )
 }
-
-export default App
