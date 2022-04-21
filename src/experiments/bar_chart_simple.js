@@ -1,6 +1,6 @@
 import { csv, scaleBand, scaleLinear, max } from 'd3'
 import { useState, useEffect } from 'react'
-import './css/App.css'
+import '../css/bar_chart_simple.css'
 
 const url = 'https://gist.githubusercontent.com/curran/0ac4077c7fc6390f5dd33bf5c06cb5ff/raw/605c54080c7a93a417a3cea93fd52e7550e76500/UN_Population_2019.csv',
       width = window.innerWidth,

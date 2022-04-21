@@ -1,6 +1,6 @@
 import { csv, arc, pie } from 'd3'
 import { useState, useEffect } from 'react'
-import './css/App.css'
+import '../css/css_colour_names.css'
 
 const url = 'https://gist.githubusercontent.com/curran/b236990081a24761f7000567094914e0/raw/cssNamedColors.csv',
       width = window.innerWidth,
@@ -9,12 +9,15 @@ const url = 'https://gist.githubusercontent.com/curran/b236990081a24761f70005670
       midY = height / 2
 
 /** To run this function, rename this to App & rename App to something else **/
-const Boxes = () => {
+export const Boxes = () => {
 
   const [data, setData] = useState(null)
 
   useEffect(() => {
-    csv(url).then(setData)
+    csv(url).then(d => {
+      d.sort((a, b) => b['RGB hex value'].localeCompare(a['RGB hex value']))
+      return setData(d)
+    })
   }, [])
 
 
