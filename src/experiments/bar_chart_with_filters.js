@@ -1,5 +1,5 @@
 import { csv, scaleBand, scaleLinear, max, format } from 'd3'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import '../css/bar_chart_simple.css'
 
 const url = 'https://gist.githubusercontent.com/curran/0ac4077c7fc6390f5dd33bf5c06cb5ff/raw/605c54080c7a93a417a3cea93fd52e7550e76500/UN_Population_2019.csv',
@@ -10,11 +10,6 @@ const url = 'https://gist.githubusercontent.com/curran/0ac4077c7fc6390f5dd33bf5c
       innerHeight = height - (margin['top'] + margin['bottom']),
       xVal = d => d['Population'],
       yVal = d => d['Country']
-
-
-const useData = (csv_url, sel_year) => {
-
-}
 
 const AxisBottom = ({xScale, innerHeight, tickFormat}) => {
   return xScale.ticks().map(tickVal => (
