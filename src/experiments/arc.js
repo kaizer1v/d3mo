@@ -1,5 +1,5 @@
 import { arc, range } from 'd3'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 const width = window.innerWidth,
       height = window.innerHeight,
@@ -9,8 +9,6 @@ const width = window.innerWidth,
 
 const arr = range(0, 250, 10),
       arcWidth = 10
-
-const handleInnerRadius = (e) => console.log(e.target.value)
 
 export const Curves = () => {
 
