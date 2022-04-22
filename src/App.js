@@ -4,16 +4,18 @@
 // import { States } from './experiments/react_exp_states'
 // import { WindowMaker } from './experiments/window_resize_effect'
 // import { ScatterPlot } from './experiments/scatter_plot'
-import { Curves } from './experiments/arc'
+// import { Curves } from './experiments/arc'
 // import { Stacks } from './experiments/stack'
+import { LineChart } from './experiments/line_chart'
 
 const App = () => {
   // return <SimpleBarChart />
   // return <States />
   // return <WindowMaker />
   // return <ScatterPlot />
-  return <Curves />
+  // return <Curves />
   // return <Stacks />
+  return <LineChart />
 }
 
 export default App

@@ -21,14 +21,17 @@ export const Curves = () => {
       .innerRadius(n * iRadius)
       .outerRadius(n * oRadius + arcWidth)
       .startAngle(0)
-      .endAngle(Math.PI * Math.sqrt(i + 1)/10 * 4)
+      .endAngle(Math.PI * Math.sqrt(i)/10 * 4)
       .cornerRadius(arcWidth / 2)
   }
 
   return (
     <>
-      <input type='range' name='volume' min='0' max='11' onChange={ (e) => setIRadius(+e.target.value) } />
+      <input type='range' name='volume' min='1' max='11' onChange={ (e) => setIRadius(+e.target.value) } />
       <label>InnerRadius</label>
+
+      <input type='range' name='volume' min='1' max='11' onChange={ (e) => setORadius(+e.target.value) } />
+      <label>OuterRadius</label>
 
       <svg width={width} height={height} style={{ background: '#eee' }}>
         <g transform={`translate(${innerWidth / 2}, ${innerHeight / 2})`}>

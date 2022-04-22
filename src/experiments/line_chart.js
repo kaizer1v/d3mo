@@ -1,22 +1,22 @@
-import { csv, scaleLinear, extent, format } from 'd3'
+import { csv, line, scaleLinear, scaleTime, extent, timeFormat } from 'd3'
 import { useState, useEffect } from 'react'
 
-const url = 'https://gist.githubusercontent.com/curran/a08a1080b88344b0c8a7/raw/0e7a9b0a5d22642a06d3d5b9bcbad9890c8ee534/iris.csv',
+const url = 'https://gist.githubusercontent.com/curran/90240a6d88bdb1411467b21ea0769029/raw/week_temperature_sf.csv',
       width = window.innerWidth,
       height = window.innerHeight,
-      margin = { 'top': 20, 'right': 20, 'bottom': 200, 'left': 100 },
+      margin = { 'top': 20, 'right': 20, 'bottom': 100, 'left': 100 },
       innerWidth = width - (margin['left'] + margin['right']),
       innerHeight = height - (margin['top'] + margin['bottom']),
-      xVal = d => d['petal_length'],
-      xLabel = 'Petal Length',
-      yVal = d => d['sepal_width'],
-      yLabel = 'Sepal Width'
+      xVal = d => d['timestamp'],
+      xLabel = 'Time',
+      yVal = d => d['temperature'],
+      yLabel = 'Temperature'
 
 const AxisBottom = ({xScale, innerHeight}) => {
   return xScale.ticks().map(tickVal => (
-    <g key={tickVal} transform={`translate(${xScale(tickVal)}, 0)`}>
+    <g transform={`translate(${xScale(tickVal)}, 0)`}>
       <line y2={innerHeight} stroke='black' />
-      <text style={{ textAnchor: 'middle' }} y={innerHeight + 5} dy='0.71em'>{tickVal}</text>
+      <text style={{ textAnchor: 'middle' }} y={innerHeight + 5} dy='0.71em'>{timeFormat('%a')(tickVal)}</text>
     </g>
   ))
 }
@@ -33,28 +33,43 @@ const AxisLeft = ({yScale}) => {
 }
 
 const Circles = ({data, xScale, yScale, xVal, yVal}) => {
-  return data.map(d => (
-    <circle
-      cx={xScale(xVal(d))}
-      cy={yScale(yVal(d))}
-      r='10'
-      fill='tomato'
-    >
-      <title>{xVal(d)},{yVal(d)}</title>
-    </circle>
-  ))
+  return data.map(d => {
+    return (
+      <circle
+        cx={xScale(xVal(d))}
+        cy={yScale(yVal(d))}
+        r='4'
+        fill='steelblue'
+      >
+        <title>{timeFormat('%a')(xVal(d))}, {Math.round(yVal(d) * 100 / 100)}</title>
+      </circle>
+    )
+  })
 }
 
-export const ScatterPlot = () => {
+const Lines = ({data, xScale, yScale, xVal, yVal}) => (
+  <path
+    fill='none'
+    stroke='steelblue'
+    stroke-width='2'
+    d={
+      line()
+        .x(d => xScale(xVal(d)))
+        .y(d => yScale(yVal(d)))(data)
+    }
+  />
+)
+
+export const LineChart = () => {
   const [data, setData] = useState()
 
   useEffect(() => {
-    const row = d => {
-      d['sepal_width'] = +d['sepal_width']
-      d['petal_length'] = +d['petal_length']
+    // get data from the url and set state for the 1st time
+    csv(url, d => {
+      d['temperature'] = +d['temperature']
+      d['timestamp'] = new Date(d['timestamp'])
       return d
-    }
-    csv(url, row).then(data => setData(data))
+    }).then(data => setData(data))
   }, [url])
 
 
@@ -65,13 +80,13 @@ export const ScatterPlot = () => {
     .range([innerHeight, 0])
     .nice()
 
-  const xScale = scaleLinear()
+  const xScale = scaleTime()
     .domain(extent(data, xVal))
     .range([0, innerWidth])
 
   return (
     <>
-      <h2>Iris Dataset</h2>
+      <h2>SF Week Temperature Data</h2>
 
       <svg width={width} height={height} style={{ background: '#eee' }}>
         <g transform={`translate(${margin['left']}, ${margin['top']})`}>
@@ -86,7 +101,15 @@ export const ScatterPlot = () => {
             <text style={{fontSize: '2rem'}} textAnchor='middle' transform={`translate(-50, ${innerHeight / 2}) rotate(-90)`}>{yLabel}</text>
           </g>
 
-          <g className='circles'><Circles
+          <g className='lines'><Lines
+            xScale={xScale}
+            yScale={yScale}
+            data={data}
+            xVal={xVal}
+            yVal={yVal}
+          /></g>
+
+          <g className='circle'><Circles
             xScale={xScale}
             yScale={yScale}
             data={data}
