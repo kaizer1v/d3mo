@@ -1,4 +1,4 @@
-import { csv, line, scaleLinear, scaleTime, extent, timeFormat } from 'd3'
+import { csv, line, scaleLinear, scaleTime, extent, timeFormat, curveNatural } from 'd3'
 import { useState, useEffect } from 'react'
 
 const url = 'https://gist.githubusercontent.com/curran/90240a6d88bdb1411467b21ea0769029/raw/week_temperature_sf.csv',
@@ -52,10 +52,13 @@ const Lines = ({data, xScale, yScale, xVal, yVal}) => (
     fill='none'
     stroke='steelblue'
     stroke-width='2'
+    stroke-linejoin='round'
+    stroke-linecap='round'
     d={
       line()
         .x(d => xScale(xVal(d)))
-        .y(d => yScale(yVal(d)))(data)
+        .y(d => yScale(yVal(d)))
+        .curve(curveNatural)(data)
     }
   />
 )
@@ -83,6 +86,7 @@ export const LineChart = () => {
   const xScale = scaleTime()
     .domain(extent(data, xVal))
     .range([0, innerWidth])
+    .nice()
 
   return (
     <>
