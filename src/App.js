@@ -6,7 +6,8 @@
 // import { ScatterPlot } from './experiments/scatter_plot'
 // import { Curves } from './experiments/arc'
 // import { Stacks } from './experiments/stack'
-import { LineChart } from './experiments/line_chart'
+// import { LineChart } from './experiments/line_chart'
+import { WorldMap } from './experiments/world_map'
 
 const App = () => {
   // return <SimpleBarChart />
@@ -15,7 +16,8 @@ const App = () => {
   // return <ScatterPlot />
   // return <Curves />
   // return <Stacks />
-  return <LineChart />
+  // return <LineChart />
+  return <WorldMap />
 }
 
 export default App
