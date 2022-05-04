@@ -51,9 +51,9 @@ const Lines = ({data, xScale, yScale, xVal, yVal}) => (
   <path
     fill='none'
     stroke='steelblue'
-    stroke-width='2'
-    stroke-linejoin='round'
-    stroke-linecap='round'
+    strokeWidth='2'
+    strokeLinejoin='round'
+    strokeLinecap='round'
     d={
       line()
         .x(d => xScale(xVal(d)))

@@ -7,7 +7,13 @@
 // import { Curves } from './experiments/arc'
 // import { Stacks } from './experiments/stack'
 // import { LineChart } from './experiments/line_chart'
-import { WorldMap } from './experiments/world_map'
+// import { WorldMap } from './experiments/world_map'
+// import { RadialChart } from './experiments/radial_chart'
+// import { RadialChart } from './experiments/spotify_stream'
+// import { RadialStuff } from './experiments/radial_basic'
+// import { RadialStuff } from './experiments/radial_filters'
+// import { RadialStuff } from './experiments/radial_scale_exp'
+import { Clock } from './experiments/clock'
 
 const App = () => {
   // return <SimpleBarChart />
@@ -17,7 +23,9 @@ const App = () => {
   // return <Curves />
   // return <Stacks />
   // return <LineChart />
-  return <WorldMap />
+  // return <WorldMap />
+  // return <RadialStuff />
+  return <Clock />
 }
 
 export default App

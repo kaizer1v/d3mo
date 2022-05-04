@@ -36,6 +36,7 @@ export const Curves = () => {
       <svg width={width} height={height} style={{ background: '#eee' }}>
         <g transform={`translate(${innerWidth / 2}, ${innerHeight / 2})`}>
           { arr.map((n, i) => <path key={i} fill='none' storke-width='1' stroke='black' d={getCurve(n, i)()} />) }
+          { arr.map((n, i) => <rect width='10' height='5' fill='red' x={getCurve(n, i)()} y='10' />) }
         </g>
         <circle cx={innerWidth / 2} cy={innerHeight / 2} r='5' />
       </svg>
