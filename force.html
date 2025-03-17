@@ -1,3 +1,14 @@
+<!--
+This is an experiment on using d3's force layout. I am using our team as the data set.
+
+TODO
+0. Initial setup, put all the circles in a group, with collision detection
+1. Add a tooltip, photo and other details
+2. Add filters to group by different properties, these should be extracted
+3. Use photo as the circle
+4. Add background map of India for `from` property
+
+-->
 <html>
 <head>
   <style>
@@ -190,9 +201,11 @@
   const simulation = d3.forceSimulation(nodes)
     // .force('x', d => d3.forceX(d.x))    // use the property of x set by the force set by the forceSimualtion function
     // .force('y', d => d3.forceY(d.y))
-    .force('charge', d3.forceManyBody().strength(-50))
+    .force('charge', d3.forceManyBody().strength(0))
+    .force("collide", d3.forceCollide(11))    // avoid overlapping (11 = radius + 1)
   
   // run the simulation for every 'tick'
+  // this is for every frame of the simulation, you need to position the circle
   simulation.on('tick', () => {
     node
       .attr('cx', d => d.x)
@@ -203,7 +216,7 @@
   // controlling force via input
   const charge = document.getElementById('charge')
   charge.addEventListener('input', function() {
-    simulation.force('charge', d3.forceRadial(charge.value))
+    simulation.force('charge', d3.forceRadial(charge.value).strength(0.1))
     simulation.alpha(1).restart()
   })
 
