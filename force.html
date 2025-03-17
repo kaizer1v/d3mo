@@ -1,0 +1,250 @@
+<html>
+<head>
+  <style>
+    svg {
+      border: 1px solid #000;
+      background-color: beige;
+    }
+    </style>
+</head>
+<body>
+
+  <h1>Force Layout</h1>
+  <button id="by-hub">Group by Hub</button>
+  <button id="by-from">Group by where they are from</button>
+
+  <input type="range" id="charge" min="-10" max="100" value="30" step="1" />
+  <label for="charge">Radial Charge</label>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script>
+  // create an svg element
+  const svg = d3.select('body')
+    .selectAll('svg')
+    .data([null])
+    .join('svg')
+    .attr('width', 400)
+    .attr('height', 500)
+    .attr("viewBox", [-400 / 2, -500 / 2, 400, 500])
+    .attr("style", "max-width: 100%; height: auto;")
+
+  const category_centers = [{
+    name: 'logistics',
+    x: 10,
+    y: 10
+  }, {
+    name: 'manufacturing',
+    x: 50,
+    y: 50
+  }, {
+    name: 'asset',
+    x: 100,
+    y: 100
+  }, {
+    name: 'epd',
+    x: 130,
+    y: 90
+  }]
+
+  const location_centers = [{
+    name: 'Chennai',
+    x: 10,
+    y: 10
+  }, {
+    name: 'Pondicherry',
+    x: 50,
+    y: 50
+  }, {
+    name: 'Lucknow',
+    x: 100,
+    y: 100
+  }, {
+    name: 'Bihar',
+    x: 130,
+    y: 90
+  }, {
+    name: 'Calcutta',
+    x: 230,
+    y: 70
+  }, {
+    name: 'Mumbai',
+    x: 10,
+    y: 60
+  }]
+
+  // data
+  const nodes = [{
+    name: 'Raj',
+    hub: 'manufacturing',
+    about: 'I am a manager',
+    from: {
+      orginally: 'Kumbakonam',
+      grew_up: 'Pondicherry',
+      lat_lng_grew_up: '11.9139, 79.8145',
+      comment: 'I am a Tamilian'
+    },
+    role: 'manager',
+    hobbies: {
+      all: ['sketching', 'reading', 'woodworking'],
+      comment: 'I am a creative person'
+    },
+    joined: 2000,
+    bday: {
+      month: 'January',
+      day: 1
+    },
+    quit: false
+  }, {
+    name: 'Selva',
+    hub: 'logistics',
+    about: '',
+    from: {
+      orginally: 'Chennai',
+      grew_up: 'Chennai',
+      lat_lng_grew_up: '13.0827, 80.2707',
+      comment: 'I am a Tamilian'
+    },
+    role: 'visual designer',
+    hobbies: {
+      all: ['farming'],
+      comment: 'I am a farmer'
+    },
+    joined: 2004,
+    bday: {
+      month: 'January',
+      day: 1
+    },
+    quit: false
+  }, {
+    name: 'Richa',
+    hub: 'logistics',
+    about: 'lorem ',
+    from: {
+      orginally: 'Lucknow',
+      grew_up: 'Lucknow',
+      lat_lng_grew_up: '26.8467, 80.9462',
+      comment: 'I am a North Indian'
+    },
+    role: 'manager',
+    hobbies: {
+      all: ['painting'],
+      comment: 'I am a creative person'
+    }
+  }, {
+    name: 'Roseline',
+    hub: 'asset',
+    from: {
+      orginally: 'Belgaum',
+      grew_up: 'Bihar',
+      lat_lng_grew_up: '11.9139, 79.8145',
+      comment: 'I am a ...'
+    },
+    role: 'lead',
+    hobbies: {
+      all: ['sketching', 'reading'],
+      comment: 'I am a creative person'
+    }
+  }, {
+    name: 'Koel',
+    hub: 'epd',
+    from: {
+      orginally: 'Calcutta',
+      grew_up: 'New Delhi',
+      lat_lng_grew_up: '',
+      comment: 'I am a ...'
+    },
+    role: 'lead',
+    hobbies: {
+      all: ['sketching', 'collecting cars'],
+      comment: 'I am a creative person'
+    }
+  }, {
+    name: 'Sanket',
+    hub: 'asset',
+    from: {
+      orginally: 'Mumbai',
+      grew_up: 'Mumbai',
+      lat_lng_grew_up: '',
+      comment: 'I am a ...'
+    },
+    role: 'desginer',
+    hobbies: {
+      all: ['break dancing'],
+      comment: 'I am a creative person'
+    }
+  }]
+
+  // add each circle for a data point
+  const node = svg.append('g')
+    .selectAll('circle')
+    .data(nodes)
+    .enter()
+    .append('circle')
+    .attr('r', 10)
+    .attr('stroke', 'black')
+    .attr('stroke-width', 1)
+    .attr('fill', (d) => { return d['hub'] === 'logistics' ? 'steelblue' : 'orange' })
+
+
+  // simulate a force and describe how it should behave
+  const simulation = d3.forceSimulation(nodes)
+    // .force('x', d => d3.forceX(d.x))    // use the property of x set by the force set by the forceSimualtion function
+    // .force('y', d => d3.forceY(d.y))
+    .force('charge', d3.forceManyBody().strength(-50))
+  
+  // run the simulation for every 'tick'
+  simulation.on('tick', () => {
+    node
+      .attr('cx', d => d.x)
+      .attr('cy', d => d.y)
+  })
+
+
+  // controlling force via input
+  const charge = document.getElementById('charge')
+  charge.addEventListener('input', function() {
+    simulation.force('charge', d3.forceRadial(charge.value))
+    simulation.alpha(1).restart()
+  })
+
+
+
+  // group by hub
+  const by_hub = document.getElementById('by-hub')
+  const by_location = document.getElementById('by-from')
+  
+  by_hub.addEventListener('click', () => {
+    simulation.force('x', d3.forceX(d => {
+      const hub = category_centers.find(c => c.name === d.hub)
+      if(!hub) return 0
+      return hub['x']
+    }).strength(0.1))
+
+    simulation.force('y', d3.forceY(d => {
+      const hub = category_centers.find(c => c.name === d.hub)
+      if(!hub) { console.log(d); return 0 }
+      return hub['y']
+    }).strength(0.1))
+
+    simulation.alpha(1).restart()
+  })
+
+  by_location.addEventListener('click', () => {
+    simulation.force('x', d3.forceX(d => {
+      const location = location_centers.find(c => c.name === d.from.grew_up)
+      if(!location) { console.log(d); return 0 }
+      return location['x']
+    }).strength(0.1))
+
+    simulation.force('y', d3.forceY(d => {
+      const location = location_centers.find(c => c.name === d.from.grew_up)
+      if(!location) return 0
+      return location['y']
+    }).strength(0.1))
+
+    simulation.alpha(1).restart()
+  })
+
+</script>
+</body>
+</html>
