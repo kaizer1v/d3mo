@@ -185,6 +185,26 @@ TODO
     }
   }]
 
+
+  // background image to circles
+  const defs = svg.append('svg:defs')
+
+  defs.append('svg:pattern')
+    .selectAll('pattern')
+    .data(nodes)
+    .enter()
+    .append('svg:pattern')
+    .attr('id', (d) => d.name.toLowerCase() + '_avatar')
+    .attr('width', 1)
+    .attr('height', 1)
+    .append('svg:image')
+    .attr('xlink:href', (d => `data/photos/${d.name.toLowerCase()}.jpg`))
+    .attr('width',40)
+    .attr('height',40)
+    .attr('x',0)
+    .attr('y',0)
+
+
   // add each circle for a data point
   const node = svg.append('g')
     .selectAll('circle')
@@ -195,6 +215,7 @@ TODO
     .attr('stroke', 'black')
     .attr('stroke-width', 1)
     .attr('fill', (d) => { return d['hub'] === 'logistics' ? 'steelblue' : 'orange' })
+    .style('fill', (d) => `url(#${d.name.toLowerCase()}_avatar)`)
 
 
   // simulate a force and describe how it should behave
