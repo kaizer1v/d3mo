@@ -34,157 +34,60 @@ TODO
     .selectAll('svg')
     .data([null])
     .join('svg')
-    .attr('width', 400)
-    .attr('height', 500)
-    .attr("viewBox", [-400 / 2, -500 / 2, 400, 500])
-    .attr("style", "max-width: 100%; height: auto;")
+    .attr('width', '90vh')
+    .attr('height', '90vh')
+  
+  const svg_width = svg._groups[0][0].clientWidth
+  const svg_height = svg._groups[0][0].clientHeight  
+  svg.attr('viewBox', [-svg_width/2, -svg_height/2, svg_width, svg_height])
 
-  const category_centers = [{
-    name: 'logistics',
-    x: 10,
-    y: 10
-  }, {
-    name: 'manufacturing',
-    x: 50,
-    y: 50
-  }, {
-    name: 'asset',
-    x: 100,
-    y: 100
-  }, {
-    name: 'epd',
-    x: 130,
-    y: 90
-  }]
+  /**
+   * given a set of grouped data, generate centers coordinates for each group
+   * in the canvas that is spaced out
+   * 
+   * @param {Array} data - the data set
+   * @param {String} key - the key to group by
+   */
+  function generate_centers(data, key) {
+    const centers = []
+    const groups = data.reduce((acc, d) => {
+      // if nested structure, then split and reduce
+      const keyValue = key.split('.').reduce((obj, k) => (obj && obj[k] !== undefined) ? obj[k] : null, d)
+      if (!acc[keyValue]) acc[keyValue] = []
+      acc[keyValue].push(d)
+      return acc
+    }, {})
 
-  const location_centers = [{
-    name: 'Chennai',
-    x: 10,
-    y: 10
-  }, {
-    name: 'Pondicherry',
-    x: 50,
-    y: 50
-  }, {
-    name: 'Lucknow',
-    x: 100,
-    y: 100
-  }, {
-    name: 'Bihar',
-    x: 130,
-    y: 90
-  }, {
-    name: 'Calcutta',
-    x: 230,
-    y: 70
-  }, {
-    name: 'Mumbai',
-    x: 10,
-    y: 60
-  }]
+    const keys = Object.keys(groups)
+    const angle = 2 * Math.PI / keys.length
+
+    keys.forEach((k, i) => {
+      centers.push({
+        name: k,
+        x: 200 * Math.cos(angle * i),
+        y: 200 * Math.sin(angle * i)
+      })
+    })
+
+    return centers
+  }
 
   // data
-  const nodes = [{
-    name: 'Raj',
-    hub: 'manufacturing',
-    about: 'I am a manager',
-    from: {
-      orginally: 'Kumbakonam',
-      grew_up: 'Pondicherry',
-      lat_lng_grew_up: '11.9139, 79.8145',
-      comment: 'I am a Tamilian'
-    },
-    role: 'manager',
-    hobbies: {
-      all: ['sketching', 'reading', 'woodworking'],
-      comment: 'I am a creative person'
-    },
-    joined: 2000,
-    bday: {
-      month: 'January',
-      day: 1
-    },
-    quit: false
-  }, {
-    name: 'Selva',
-    hub: 'logistics',
-    about: '',
-    from: {
-      orginally: 'Chennai',
-      grew_up: 'Chennai',
-      lat_lng_grew_up: '13.0827, 80.2707',
-      comment: 'I am a Tamilian'
-    },
-    role: 'visual designer',
-    hobbies: {
-      all: ['farming'],
-      comment: 'I am a farmer'
-    },
-    joined: 2004,
-    bday: {
-      month: 'January',
-      day: 1
-    },
-    quit: false
-  }, {
-    name: 'Richa',
-    hub: 'logistics',
-    about: 'lorem ',
-    from: {
-      orginally: 'Lucknow',
-      grew_up: 'Lucknow',
-      lat_lng_grew_up: '26.8467, 80.9462',
-      comment: 'I am a North Indian'
-    },
-    role: 'manager',
-    hobbies: {
-      all: ['painting'],
-      comment: 'I am a creative person'
-    }
-  }, {
-    name: 'Roseline',
-    hub: 'asset',
-    from: {
-      orginally: 'Belgaum',
-      grew_up: 'Bihar',
-      lat_lng_grew_up: '11.9139, 79.8145',
-      comment: 'I am a ...'
-    },
-    role: 'lead',
-    hobbies: {
-      all: ['sketching', 'reading'],
-      comment: 'I am a creative person'
-    }
-  }, {
-    name: 'Koel',
-    hub: 'epd',
-    from: {
-      orginally: 'Calcutta',
-      grew_up: 'New Delhi',
-      lat_lng_grew_up: '',
-      comment: 'I am a ...'
-    },
-    role: 'lead',
-    hobbies: {
-      all: ['sketching', 'collecting cars'],
-      comment: 'I am a creative person'
-    }
-  }, {
-    name: 'Sanket',
-    hub: 'asset',
-    from: {
-      orginally: 'Mumbai',
-      grew_up: 'Mumbai',
-      lat_lng_grew_up: '',
-      comment: 'I am a ...'
-    },
-    role: 'desginer',
-    hobbies: {
-      all: ['break dancing'],
-      comment: 'I am a creative person'
-    }
-  }]
+  const nodes = d3.json('data/ux_team.json')
+    .then(data => data.data)
+    .then(data => load_force(data))
+    .catch(err => console.error(err)) 
 
+
+/**
+ * given a set of nodes, create a force layout
+ * 
+ * @param {Array} nodes - the data set 
+ */
+function load_force(nodes) {
+
+  const hub_centres = generate_centers(nodes, 'hub')
+  const location_centres = generate_centers(nodes, 'from.state')
 
   // background image to circles
   const defs = svg.append('svg:defs')
@@ -199,10 +102,10 @@ TODO
     .attr('height', 1)
     .append('svg:image')
     .attr('xlink:href', (d => `data/photos/${d.name.toLowerCase()}.jpg`))
-    .attr('width',40)
-    .attr('height',40)
-    .attr('x',0)
-    .attr('y',0)
+    .attr('width', 40)
+    .attr('height', 40)
+    .attr('x', 0)
+    .attr('y', 0)
 
 
   // add each circle for a data point
@@ -211,7 +114,7 @@ TODO
     .data(nodes)
     .enter()
     .append('circle')
-    .attr('r', 10)
+    .attr('r', 20)
     .attr('stroke', 'black')
     .attr('stroke-width', 1)
     .attr('fill', (d) => { return d['hub'] === 'logistics' ? 'steelblue' : 'orange' })
@@ -223,7 +126,7 @@ TODO
     // .force('x', d => d3.forceX(d.x))    // use the property of x set by the force set by the forceSimualtion function
     // .force('y', d => d3.forceY(d.y))
     .force('charge', d3.forceManyBody().strength(0))
-    .force("collide", d3.forceCollide(11))    // avoid overlapping (11 = radius + 1)
+    .force('collide', d3.forceCollide(21))    // avoid overlapping (11 = radius + 1)
   
   // run the simulation for every 'tick'
   // this is for every frame of the simulation, you need to position the circle
@@ -242,42 +145,54 @@ TODO
   })
 
 
+  /**
+   * given a data key, group the data by the key
+   * 
+   * @param {String} key - the key to group by
+   * @param {Array} centres - the centers to group by
+   */
+  function groupBy(key, centres) {
+    simulation.force('x', d3.forceX(d => {
+      const center = centres.find(c => c.name === key.split('.').reduce((obj, k) => (obj && obj[k] !== undefined) ? obj[k] : null, d))
+      if (!center) return 0
+      return center['x']
+    }).strength(0.1))
+
+    simulation.force('y', d3.forceY(d => {
+      const center = centres.find(c => c.name === key.split('.').reduce((obj, k) => (obj && obj[k] !== undefined) ? obj[k] : null, d))
+      if (!center) return 0
+      return center['y']
+    }).strength(0.1))
+
+    simulation.alpha(1).restart()
+  }
 
   // group by hub
   const by_hub = document.getElementById('by-hub')
   const by_location = document.getElementById('by-from')
   
-  by_hub.addEventListener('click', () => {
-    simulation.force('x', d3.forceX(d => {
-      const hub = category_centers.find(c => c.name === d.hub)
-      if(!hub) return 0
-      return hub['x']
-    }).strength(0.1))
+  by_hub.addEventListener('click', () => groupBy('hub', hub_centres))
+  by_location.addEventListener('click', () => groupBy('from.state', location_centres))
 
-    simulation.force('y', d3.forceY(d => {
-      const hub = category_centers.find(c => c.name === d.hub)
-      if(!hub) { console.log(d); return 0 }
-      return hub['y']
-    }).strength(0.1))
-
-    simulation.alpha(1).restart()
+  // show tooltip on hover of the svg circle & remove on mouseout
+  node.on('mouseout', function() {
+    d3.selectAll('.tooltip').remove()
   })
-
-  by_location.addEventListener('click', () => {
-    simulation.force('x', d3.forceX(d => {
-      const location = location_centers.find(c => c.name === d.from.grew_up)
-      if(!location) { console.log(d); return 0 }
-      return location['x']
-    }).strength(0.1))
-
-    simulation.force('y', d3.forceY(d => {
-      const location = location_centers.find(c => c.name === d.from.grew_up)
-      if(!location) return 0
-      return location['y']
-    }).strength(0.1))
-
-    simulation.alpha(1).restart()
+  node.on('mouseover', function(event, d) {
+    const tooltip = d3.select('body')
+      .append('div')
+      .attr('class', 'tooltip')
+      .style('position', 'absolute')
+      .style('background-color', 'white')
+      .style('border', '1px solid black')
+      .style('padding', '5px')
+      .style('border-radius', '5px')
+      .style('opacity', 0.9)
+      .style('left', (event.pageX + 10) + 'px')
+      .style('top', (event.pageY + 10) + 'px')
+      .text(d.name)
   })
+}
 
 </script>
 </body>
