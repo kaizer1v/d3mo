@@ -1,11 +1,12 @@
 {
   "data": [{
-    "name": "Raj",
+    "name": "raj",
     "hub": "manufacturing",
     "about": "I am a manager",
     "from": {
-      "orginally": "Kumbakonam",
-      "grew_up": "Pondicherry",
+      "state": "tamil nadu",
+      "orginally": "kumbakonam",
+      "grew_up": "pondicherry",
       "lat_lng_grew_up": "11.9139, 79.8145",
       "comment": "I am a Tamilian"
     },
@@ -21,12 +22,13 @@
     },
     "quit": false
   }, {
-    "name": "Selva",
+    "name": "selva",
     "hub": "logistics",
     "about": "",
     "from": {
-      "orginally": "Chennai",
-      "grew_up": "Chennai",
+      "state": "tamil nadu",
+      "orginally": "chennai",
+      "grew_up": "chennai",
       "lat_lng_grew_up": "13.0827, 80.2707",
       "comment": "I am a Tamilian"
     },
@@ -42,12 +44,13 @@
     },
     "quit": false
   }, {
-    "name": "Richa",
+    "name": "richa",
     "hub": "logistics",
     "about": "lorem ",
     "from": {
-      "orginally": "Lucknow",
-      "grew_up": "Lucknow",
+      "state": "uttar pradesh",
+      "orginally": "lucknow",
+      "grew_up": "lucknow",
       "lat_lng_grew_up": "26.8467, 80.9462",
       "comment": "I am a North Indian"
     },
@@ -57,11 +60,12 @@
       "comment": "I am a creative person"
     }
   }, {
-    "name": "Roseline",
+    "name": "roseline",
     "hub": "asset",
     "from": {
-      "orginally": "Belgaum",
-      "grew_up": "Bihar",
+      "state": "bihar",
+      "orginally": "belgaum",
+      "grew_up": "bihar",
       "lat_lng_grew_up": "11.9139, 79.8145",
       "comment": "I am a ..."
     },
@@ -71,11 +75,12 @@
       "comment": "I am a creative person"
     }
   }, {
-    "name": "Koel",
+    "name": "koel",
     "hub": "epd",
     "from": {
-      "orginally": "Calcutta",
-      "grew_up": "New Delhi",
+      "state": "west bengal",
+      "orginally": "calcutta",
+      "grew_up": "delhi",
       "lat_lng_grew_up": "",
       "comment": "I am a .."
     },
@@ -85,11 +90,12 @@
       "comment": "I am a creative person"
     }
   }, {
-    "name": "Sanket",
+    "name": "sanket",
     "hub": "asset",
     "from": {
-      "orginally": "Mumbai",
-      "grew_up": "Mumbai",
+      "state": "maharashtra",
+      "orginally": "mumbai",
+      "grew_up": "mumbai",
       "lat_lng_grew_up": "",
       "comment": "I am a .."
     },
@@ -99,12 +105,13 @@
       "comment": "I am a creative person"
     }
   }, {
-    "name": "Devi",
+    "name": "devi",
     "hub": "manufacturing",
     "about": "I am a lead",
     "from": {
-      "orginally": "Mangalore",
-      "grew_up": "Mangalore",
+      "state": "karnataka",
+      "orginally": "mangalore",
+      "grew_up": "mangalore",
       "lat_lng_grew_up": "11.9139, 79.8145",
       "comment": "I am a Mangalorean"
     },
@@ -115,17 +122,18 @@
     },
     "joined": 2018,
     "bday": {
-      "month": "January",
+      "month": "january",
       "day": 1
     },
     "quit": false
   }, {
-    "name": "John",
+    "name": "john",
     "hub": "manufacturing",
     "about": "I am an Gantt expert",
     "from": {
-      "orginally": "Somewhere in Kerala",
-      "grew_up": "Somewhere in Kerala",
+      "state": "kerala",
+      "orginally": "palakkad",
+      "grew_up": "mangalore",
       "lat_lng_grew_up": "11.9139, 79.8145",
       "comment": "I am a Mallu"
     },
@@ -136,17 +144,18 @@
     },
     "joined": 2000,
     "bday": {
-      "month": "January",
+      "month": "january",
       "day": 1
     },
     "quit": false
   }, {
-    "name": "Shehjar",
+    "name": "shehjar",
     "hub": "manufacturing",
     "about": "...",
     "from": {
-      "orginally": "Srinagar",
-      "grew_up": "Muscat",
+      "state": "jammu and kashmir",
+      "orginally": "srinagar",
+      "grew_up": "muscat",
       "lat_lng_grew_up": "11.9139, 79.8145",
       "comment": "I am from J&K"
     },
@@ -157,17 +166,18 @@
     },
     "joined": 2000,
     "bday": {
-      "month": "January",
+      "month": "january",
       "day": 1
     },
     "quit": false
   }, {
-    "name": "Riddhi",
+    "name": "riddhi",
     "hub": "manufacturing",
     "about": "...",
     "from": {
-      "orginally": "Kachchh",
-      "grew_up": "Mumbai",
+      "state": "gujarat",
+      "orginally": "kachchh",
+      "grew_up": "mumbai",
       "lat_lng_grew_up": "11.9139, 79.8145",
       "comment": "I am ..."
     },
@@ -178,17 +188,18 @@
     },
     "joined": 2000,
     "bday": {
-      "month": "January",
+      "month": "january",
       "day": 1
     },
     "quit": false
   }, {
-    "name": "Manvi",
+    "name": "manvi",
     "hub": "manufacturing",
     "about": "...",
     "from": {
-      "orginally": "Srinagar",
-      "grew_up": "New Delhi",
+      "state":"jammu and kashmir",
+      "orginally": "srinagar",
+      "grew_up": "delhi",
       "lat_lng_grew_up": "11.9139, 79.8145",
       "comment": "I am ..."
     },
@@ -199,16 +210,17 @@
     },
     "joined": 2000,
     "bday": {
-      "month": "January",
+      "month": "january",
       "day": 1
     },
     "quit": false
   }, {
-    "name": "Anoushka",
+    "name": "anoushka",
     "hub": "manufacturing",
     "about": "...",
     "from": {
-      "orginally": "Bharuch",
+      "state": "gujarat",
+      "orginally": "bharuch",
       "grew_up": "...",
       "lat_lng_grew_up": "11.9139, 79.8145",
       "comment": "I am ..."
@@ -220,7 +232,337 @@
     },
     "joined": 2000,
     "bday": {
-      "month": "January",
+      "month": "january",
+      "day": 1
+    },
+    "quit": false
+  }, {
+    "name": "ankit",
+    "hub": "logistics",
+    "about": "...",
+    "from": {
+      "state": "bihar",
+      "orginally": "bihar",
+      "grew_up": "...",
+      "lat_lng_grew_up": "11.9139, 79.8145",
+      "comment": "I am ..."
+    },
+    "role": "designer",
+    "hobbies": {
+      "all": ["", "...", "..."],
+      "comment": "I am a creative person"
+    },
+    "joined": 2000,
+    "bday": {
+      "month": "january",
+      "day": 1
+    },
+    "quit": false
+  }, {
+    "name": "sparshad",
+    "hub": "epd",
+    "about": "...",
+    "from": {
+      "state": "maharashtra",
+      "orginally": "pune",
+      "grew_up": "muscat",
+      "lat_lng_grew_up": "11.9139, 79.8145",
+      "comment": "I am ..."
+    },
+    "role": "designer",
+    "hobbies": {
+      "all": ["", "...", "..."],
+      "comment": "I am a creative person"
+    },
+    "joined": 2000,
+    "bday": {
+      "month": "january",
+      "day": 1
+    },
+    "quit": false
+  }, {
+    "name": "santhosh",
+    "hub": "assets",
+    "about": "...",
+    "from": {
+      "state": "karnataka",
+      "orginally": "bangalore",
+      "grew_up": "bangalore",
+      "lat_lng_grew_up": "11.9139, 79.8145",
+      "comment": "I am ..."
+    },
+    "role": "designer",
+    "hobbies": {
+      "all": ["", "...", "..."],
+      "comment": "I am a creative person"
+    },
+    "joined": 2000,
+    "bday": {
+      "month": "january",
+      "day": 1
+    },
+    "quit": false
+  }, {
+    "name": "varsha",
+    "hub": "assets",
+    "about": "...",
+    "from": {
+      "state": "maharashtra",
+      "orginally": "pune",
+      "grew_up": "pune",
+      "lat_lng_grew_up": "11.9139, 79.8145",
+      "comment": "I am ..."
+    },
+    "role": "designer",
+    "hobbies": {
+      "all": ["", "...", "..."],
+      "comment": "I am a creative person"
+    },
+    "joined": 2000,
+    "bday": {
+      "month": "january",
+      "day": 1
+    },
+    "quit": false
+  }, {
+    "name": "rathan",
+    "hub": "assets",
+    "about": "...",
+    "from": {
+      "state": "karnataka",
+      "orginally": "bangalore",
+      "grew_up": "bangalore",
+      "lat_lng_grew_up": "11.9139, 79.8145",
+      "comment": "I am ..."
+    },
+    "role": "designer",
+    "hobbies": {
+      "all": ["", "...", "..."],
+      "comment": "I am a creative person"
+    },
+    "joined": 2000,
+    "bday": {
+      "month": "january",
+      "day": 1
+    },
+    "quit": false
+  }, {
+    "name": "surabhi",
+    "hub": "assets",
+    "about": "...",
+    "from": {
+      "state": "madhya pradesh",
+      "orginally": "jabalpur",
+      "grew_up": "bangalore",
+      "lat_lng_grew_up": "11.9139, 79.8145",
+      "comment": "I am ..."
+    },
+    "role": "designer",
+    "hobbies": {
+      "all": ["", "...", "..."],
+      "comment": "I am a creative person"
+    },
+    "joined": 2000,
+    "bday": {
+      "month": "january",
+      "day": 1
+    },
+    "quit": false
+  }, {
+    "name": "vanshika",
+    "hub": "epd",
+    "about": "...",
+    "from": {
+      "state": "delhi",
+      "orginally": "delhi",
+      "grew_up": "delhi",
+      "lat_lng_grew_up": "11.9139, 79.8145",
+      "comment": "I am ..."
+    },
+    "role": "designer",
+    "hobbies": {
+      "all": ["", "...", "..."],
+      "comment": "I am a creative person"
+    },
+    "joined": 2000,
+    "bday": {
+      "month": "january",
+      "day": 1
+    },
+    "quit": false
+  }, {
+    "name": "dileep",
+    "hub": "logistics",
+    "about": "...",
+    "from": {
+      "state": "kerala",
+      "orginally": "kochi",
+      "grew_up": "kochi",
+      "lat_lng_grew_up": "11.9139, 79.8145",
+      "comment": "I am ..."
+    },
+    "role": "designer",
+    "hobbies": {
+      "all": ["", "...", "..."],
+      "comment": "I am a creative person"
+    },
+    "joined": 2000,
+    "bday": {
+      "month": "january",
+      "day": 1
+    },
+    "quit": false
+  }, {
+    "name": "harsha",
+    "hub": "logistics",
+    "about": "...",
+    "from": {
+      "state": "andra pradesh",
+      "orginally": "hyderabad",
+      "grew_up": "hyderabad",
+      "lat_lng_grew_up": "11.9139, 79.8145",
+      "comment": "I am ..."
+    },
+    "role": "designer",
+    "hobbies": {
+      "all": ["", "...", "..."],
+      "comment": "I am a creative person"
+    },
+    "joined": 2000,
+    "bday": {
+      "month": "january",
+      "day": 1
+    },
+    "quit": false
+  }, {
+    "name": "gautam",
+    "hub": "epd",
+    "about": "...",
+    "from": {
+      "state": "west bengal",
+      "orginally": "calcutta",
+      "grew_up": "calcutta",
+      "lat_lng_grew_up": "11.9139, 79.8145",
+      "comment": "I am ..."
+    },
+    "role": "designer",
+    "hobbies": {
+      "all": ["", "...", "..."],
+      "comment": "I am a creative person"
+    },
+    "joined": 2000,
+    "bday": {
+      "month": "january",
+      "day": 1
+    },
+    "quit": false
+  }, {
+    "name": "sarath",
+    "hub": "logistics",
+    "about": "...",
+    "from": {
+      "state": "kerala",
+      "orginally": "palakkad",
+      "grew_up": "palakkad",
+      "lat_lng_grew_up": "11.9139, 79.8145",
+      "comment": "I am ..."
+    },
+    "role": "designer",
+    "hobbies": {
+      "all": ["", "...", "..."],
+      "comment": "I am a creative person"
+    },
+    "joined": 2000,
+    "bday": {
+      "month": "january",
+      "day": 1
+    },
+    "quit": false
+  }, {
+    "name": "debadrita",
+    "hub": "manufacturing",
+    "about": "...",
+    "from": {
+      "state": "west bengal",
+      "orginally": "calcutta",
+      "grew_up": "calcutta",
+      "lat_lng_grew_up": "11.9139, 79.8145",
+      "comment": "I am ..."
+    },
+    "role": "designer",
+    "hobbies": {
+      "all": ["", "...", "..."],
+      "comment": "I am a creative person"
+    },
+    "joined": 2000,
+    "bday": {
+      "month": "january",
+      "day": 1
+    },
+    "quit": false
+  }, {
+    "name": "aravinth",
+    "hub": "asset",
+    "about": "...",
+    "from": {
+      "state": "tamil nadu",
+      "orginally": "coimbatore",
+      "grew_up": "coimbatore",
+      "lat_lng_grew_up": "11.9139, 79.8145",
+      "comment": "I am ..."
+    },
+    "role": "designer",
+    "hobbies": {
+      "all": ["", "...", "..."],
+      "comment": "I am a creative person"
+    },
+    "joined": 2000,
+    "bday": {
+      "month": "january",
+      "day": 1
+    },
+    "quit": false
+  }, {
+    "name": "adhirah",
+    "hub": "epd",
+    "about": "...",
+    "from": {
+      "state": "tamil nadu",
+      "orginally": "chennai",
+      "grew_up": "bangalore",
+      "lat_lng_grew_up": "11.9139, 79.8145",
+      "comment": "I am ..."
+    },
+    "role": "designer",
+    "hobbies": {
+      "all": ["", "...", "..."],
+      "comment": "I am a creative person"
+    },
+    "joined": 2000,
+    "bday": {
+      "month": "january",
+      "day": 1
+    },
+    "quit": false
+  }, {
+    "name": "vivek",
+    "hub": "manufacturing",
+    "about": "...",
+    "from": {
+      "state": "karnataka",
+      "orginally": "bangalore",
+      "grew_up": "baroda",
+      "lat_lng_grew_up": "11.9139, 79.8145",
+      "comment": "I am ..."
+    },
+    "role": "designer",
+    "hobbies": {
+      "all": ["", "...", "..."],
+      "comment": "I am a creative person"
+    },
+    "joined": 2000,
+    "bday": {
+      "month": "january",
       "day": 1
     },
     "quit": false
