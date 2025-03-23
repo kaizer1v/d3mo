@@ -2,11 +2,9 @@
 This is an experiment on using d3's force layout. I am using our team as the data set.
 
 TODO
-0. Initial setup, put all the circles in a group, with collision detection
-1. Add a tooltip, photo and other details
-2. Add filters to group by different properties, these should be extracted
-3. Use photo as the circle
-4. Add background map of India for `from` property
+1. click on person to show deets (dialog)
+2. background images for each category (india map, scm map etc.)
+3. 
 
 -->
 <html>
@@ -20,18 +18,34 @@ TODO
 </head>
 <body>
 
-  <h1>Force Layout</h1>
-  <button id="by-hub">Group by Hub</button>
-  <button id="by-from">Group by where they are from</button>
+  <div>
+    <h1>This is SCM UX</h1>
+    <button id='by-everyone'>👏 this is us</button>
+    <button id='by-hub'>💪 our hubs</button>
+    <button id='by-from'>🌏 where they are from</button>
+    <button id='by-joining-date'>⏰ since how long have we been here</button>
+    <button id='by-interests'>🤔 what we are interested in</button>
+    <button id='by-bday'>🥳 our birth months</button>
+    <button id='by-alumni'>😔 our alumni</button>
 
-  <input type="range" id="charge" min="-10" max="100" value="30" step="1" />
-  <label for="charge">Radial Charge</label>
+    <!-- <input type="range" id="charge" min="-10" max="100" value="30" step="1" />
+    <label for="charge">Radial Charge</label> -->
+  </div>
+
+  <!-- change background based on category -->
+  <div id='background-image'>
+    <!-- <img src='data/india.webp' alt='India' /> -->
+  </div>
+
+  <div>
+    <svg id="playground"></svg>
+  </div>
 
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 <script>
   // create an svg element
-  const svg = d3.select('body')
-    .selectAll('svg')
+  const svg = d3.select('#playground')
+    // .selectAll('svg')
     .data([null])
     .join('svg')
     .attr('width', '90vh')
@@ -138,11 +152,11 @@ function load_force(nodes) {
 
 
   // controlling force via input
-  const charge = document.getElementById('charge')
-  charge.addEventListener('input', function() {
-    simulation.force('charge', d3.forceRadial(charge.value).strength(0.1))
-    simulation.alpha(1).restart()
-  })
+  // const charge = document.getElementById('charge')
+  // charge.addEventListener('input', function() {
+  //   simulation.force('charge', d3.forceRadial(charge.value).strength(0.1))
+  //   simulation.alpha(1).restart()
+  // })
 
 
   /**
@@ -151,7 +165,10 @@ function load_force(nodes) {
    * @param {String} key - the key to group by
    * @param {Array} centres - the centers to group by
    */
-  function groupBy(key, centres) {
+  function groupBy(key, centres, cb) {
+    if(cb) cb()
+    else svg.style('background-image', 'none')  // reset background image
+
     simulation.force('x', d3.forceX(d => {
       const center = centres.find(c => c.name === key.split('.').reduce((obj, k) => (obj && obj[k] !== undefined) ? obj[k] : null, d))
       if (!center) return 0
@@ -168,11 +185,25 @@ function load_force(nodes) {
   }
 
   // group by hub
+  const everyone = document.getElementById('by-everyone')
   const by_hub = document.getElementById('by-hub')
   const by_location = document.getElementById('by-from')
   
+  // reset force layout
+  everyone.addEventListener('click', () => {
+    console.log('reset')
+    simulation.force('charge', d3.forceManyBody().strength(0))
+    simulation.force('collide', d3.forceCollide(21))    // avoid overlapping (11 = radius + 1)
+    simulation.alpha(1).restart()
+  })
+
   by_hub.addEventListener('click', () => groupBy('hub', hub_centres))
-  by_location.addEventListener('click', () => groupBy('from.state', location_centres))
+
+  // for location centers, send custom coordinates based on states & bg image
+  by_location.addEventListener('click', () => groupBy('from.state', location_centres, () => {
+    svg.style('background-image', 'url(data/india.webp)')
+    svg.style('background-repeat', 'no-repeat')
+  }))
 
   // show tooltip on hover of the svg circle & remove on mouseout
   node.on('mouseout', function() {
