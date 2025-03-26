@@ -39,7 +39,7 @@
     },
     "joined": 2004,
     "bday": {
-      "month": "January",
+      "month": "march",
       "day": 1
     },
     "quit": false
@@ -47,6 +47,7 @@
     "name": "richa",
     "hub": "logistics",
     "about": "lorem ",
+    "joined": 2015,
     "from": {
       "state": "uttar pradesh",
       "orginally": "lucknow",
@@ -58,10 +59,18 @@
     "hobbies": {
       "all": ["painting"],
       "comment": "I am a creative person"
-    }
+    },
+    "bday": {
+      "month": "february",
+      "day": 1
+    },
+    "quit": false
   }, {
     "name": "roseline",
     "hub": "asset",
+    "about": "lorem ",
+    "joined": 2015,
+    "leave": 2025,
     "from": {
       "state": "bihar",
       "orginally": "belgaum",
@@ -73,10 +82,17 @@
     "hobbies": {
       "all": ["sketching", "reading"],
       "comment": "I am a creative person"
-    }
+    },
+    "bday": {
+      "month": "august",
+      "day": 1
+    },
+    "quit": true
   }, {
     "name": "koel",
-    "hub": "epd",
+    "hub": "ipd",
+    "about": "lorem ",
+    "joined": 2014,
     "from": {
       "state": "west bengal",
       "orginally": "calcutta",
@@ -88,10 +104,17 @@
     "hobbies": {
       "all": ["sketching", "collecting cars"],
       "comment": "I am a creative person"
-    }
+    },
+    "bday": {
+      "month": "december",
+      "day": 1
+    },
+    "quit": false
   }, {
     "name": "sanket",
     "hub": "asset",
+    "about": "lorem ",
+    "joined": 2021,
     "from": {
       "state": "maharashtra",
       "orginally": "mumbai",
@@ -101,10 +124,27 @@
     },
     "role": "desginer",
     "hobbies": {
-      "all": "break dancing",
+      "all": ["break dancing"],
       "comment": "I am a creative person"
     }
   }, {
+    "name": "bonani",
+    "hub": "ipd",
+    "about": "lorem ",
+    "joined": 2024,
+    "from": {
+      "state": "assam",
+      "orginally": "west bengal",
+      "grew_up": "guwahati",
+      "lat_lng_grew_up": "",
+      "comment": "I am a .."
+    },
+    "role": "desginer",
+    "hobbies": {
+      "all": ["break dancing"],
+      "comment": "I am a creative person"
+    }
+  },{
     "name": "devi",
     "hub": "manufacturing",
     "about": "I am a lead",
@@ -144,7 +184,7 @@
     },
     "joined": 2000,
     "bday": {
-      "month": "january",
+      "month": "april",
       "day": 1
     },
     "quit": false
@@ -188,7 +228,7 @@
     },
     "joined": 2000,
     "bday": {
-      "month": "january",
+      "month": "april",
       "day": 1
     },
     "quit": false
@@ -232,7 +272,7 @@
     },
     "joined": 2000,
     "bday": {
-      "month": "january",
+      "month": "july",
       "day": 1
     },
     "quit": false
@@ -254,13 +294,13 @@
     },
     "joined": 2000,
     "bday": {
-      "month": "january",
+      "month": "april",
       "day": 1
     },
     "quit": false
   }, {
     "name": "sparshad",
-    "hub": "epd",
+    "hub": "ipd",
     "about": "...",
     "from": {
       "state": "maharashtra",
@@ -301,7 +341,7 @@
       "month": "january",
       "day": 1
     },
-    "quit": false
+    "quit": true
   }, {
     "name": "varsha",
     "hub": "assets",
@@ -320,7 +360,7 @@
     },
     "joined": 2000,
     "bday": {
-      "month": "january",
+      "month": "june",
       "day": 1
     },
     "quit": false
@@ -342,7 +382,7 @@
     },
     "joined": 2000,
     "bday": {
-      "month": "january",
+      "month": "july",
       "day": 1
     },
     "quit": false
@@ -364,13 +404,13 @@
     },
     "joined": 2000,
     "bday": {
-      "month": "january",
+      "month": "september",
       "day": 1
     },
     "quit": false
   }, {
     "name": "vanshika",
-    "hub": "epd",
+    "hub": "ipd",
     "about": "...",
     "from": {
       "state": "delhi",
@@ -380,16 +420,16 @@
       "comment": "I am ..."
     },
     "role": "designer",
-    "hobbies": {
+    "s": {
       "all": ["", "...", "..."],
       "comment": "I am a creative person"
     },
     "joined": 2000,
     "bday": {
-      "month": "january",
+      "month": "may",
       "day": 1
     },
-    "quit": false
+    "quit": true
   }, {
     "name": "dileep",
     "hub": "logistics",
@@ -436,7 +476,7 @@
     "quit": false
   }, {
     "name": "gautam",
-    "hub": "epd",
+    "hub": "ipd",
     "about": "...",
     "from": {
       "state": "west bengal",
@@ -496,7 +536,7 @@
     },
     "joined": 2000,
     "bday": {
-      "month": "january",
+      "month": "september",
       "day": 1
     },
     "quit": false
@@ -518,13 +558,13 @@
     },
     "joined": 2000,
     "bday": {
-      "month": "january",
+      "month": "may",
       "day": 1
     },
     "quit": false
   }, {
     "name": "adhirah",
-    "hub": "epd",
+    "hub": "ipd",
     "about": "...",
     "from": {
       "state": "tamil nadu",
@@ -540,7 +580,7 @@
     },
     "joined": 2000,
     "bday": {
-      "month": "january",
+      "month": "august",
       "day": 1
     },
     "quit": false
@@ -562,7 +602,7 @@
     },
     "joined": 2000,
     "bday": {
-      "month": "january",
+      "month": "september",
       "day": 1
     },
     "quit": false
