@@ -17,7 +17,7 @@
     },
     "joined": 2000,
     "bday": {
-      "month": "January",
+      "month": "january",
       "day": 1
     },
     "quit": false
@@ -57,7 +57,7 @@
     },
     "role": "manager",
     "hobbies": {
-      "all": ["painting"],
+      "all": ["painting", "spending money"],
       "comment": "I am a creative person"
     },
     "bday": {
@@ -124,8 +124,12 @@
     },
     "role": "desginer",
     "hobbies": {
-      "all": ["break dancing"],
+      "all": ["break dancing", "rapping"],
       "comment": "I am a creative person"
+    },
+    "bday": {
+      "month": "january",
+      "day": 1
     }
   }, {
     "name": "bonani",
@@ -143,6 +147,10 @@
     "hobbies": {
       "all": ["break dancing"],
       "comment": "I am a creative person"
+    },
+    "bday": {
+      "month": "january",
+      "day": 1
     }
   },{
     "name": "devi",
@@ -201,7 +209,7 @@
     },
     "role": "designer",
     "hobbies": {
-      "all": ["sketching", "reading", "woodworking"],
+      "all": ["reading", "baking"],
       "comment": "I am a creative person"
     },
     "joined": 2000,
@@ -223,7 +231,7 @@
     },
     "role": "designer",
     "hobbies": {
-      "all": ["cats", "...", "..."],
+      "all": ["travelling", "..."],
       "comment": "I am a creative person"
     },
     "joined": 2000,
@@ -245,7 +253,7 @@
     },
     "role": "designer",
     "hobbies": {
-      "all": ["birds", "...", "..."],
+      "all": ["birding", "photography", "trekking"],
       "comment": "I am a creative person"
     },
     "joined": 2000,
@@ -267,7 +275,7 @@
     },
     "role": "designer",
     "hobbies": {
-      "all": ["", "...", "..."],
+      "all": ["cooking", "...", "..."],
       "comment": "I am a creative person"
     },
     "joined": 2000,
@@ -289,7 +297,7 @@
     },
     "role": "designer",
     "hobbies": {
-      "all": ["", "...", "..."],
+      "all": ["tea", "...", "..."],
       "comment": "I am a creative person"
     },
     "joined": 2000,
@@ -311,7 +319,7 @@
     },
     "role": "designer",
     "hobbies": {
-      "all": ["", "...", "..."],
+      "all": ["biking", "...", "..."],
       "comment": "I am a creative person"
     },
     "joined": 2000,
@@ -333,7 +341,7 @@
     },
     "role": "designer",
     "hobbies": {
-      "all": ["", "...", "..."],
+      "all": ["biking", "brewing", "hoarding "],
       "comment": "I am a creative person"
     },
     "joined": 2000,
@@ -355,7 +363,7 @@
     },
     "role": "designer",
     "hobbies": {
-      "all": ["", "...", "..."],
+      "all": ["complaining", "...", "..."],
       "comment": "I am a creative person"
     },
     "joined": 2000,
@@ -377,7 +385,7 @@
     },
     "role": "designer",
     "hobbies": {
-      "all": ["", "...", "..."],
+      "all": ["biking", "paragliding", "..."],
       "comment": "I am a creative person"
     },
     "joined": 2000,
@@ -399,7 +407,7 @@
     },
     "role": "designer",
     "hobbies": {
-      "all": ["", "...", "..."],
+      "all": ["sketching", "reading", "..."],
       "comment": "I am a creative person"
     },
     "joined": 2000,
@@ -420,8 +428,8 @@
       "comment": "I am ..."
     },
     "role": "designer",
-    "s": {
-      "all": ["", "...", "..."],
+    "hobbies": {
+      "all": ["travelling", "research", "..."],
       "comment": "I am a creative person"
     },
     "joined": 2000,
@@ -443,7 +451,7 @@
     },
     "role": "designer",
     "hobbies": {
-      "all": ["", "...", "..."],
+      "all": ["toy photography", "anime", "..."],
       "comment": "I am a creative person"
     },
     "joined": 2000,
@@ -465,7 +473,7 @@
     },
     "role": "designer",
     "hobbies": {
-      "all": ["", "...", "..."],
+      "all": ["travelling", "property shopping", "..."],
       "comment": "I am a creative person"
     },
     "joined": 2000,
@@ -487,7 +495,7 @@
     },
     "role": "designer",
     "hobbies": {
-      "all": ["", "...", "..."],
+      "all": ["stock trading", "...", "..."],
       "comment": "I am a creative person"
     },
     "joined": 2000,
@@ -509,7 +517,7 @@
     },
     "role": "designer",
     "hobbies": {
-      "all": ["", "...", "..."],
+      "all": ["painting", "...", "..."],
       "comment": "I am a creative person"
     },
     "joined": 2000,
@@ -531,7 +539,7 @@
     },
     "role": "designer",
     "hobbies": {
-      "all": ["", "...", "..."],
+      "all": ["foodie", "...", "..."],
       "comment": "I am a creative person"
     },
     "joined": 2000,
@@ -553,7 +561,7 @@
     },
     "role": "designer",
     "hobbies": {
-      "all": ["", "...", "..."],
+      "all": ["video making", "...", "..."],
       "comment": "I am a creative person"
     },
     "joined": 2000,
@@ -575,7 +583,7 @@
     },
     "role": "designer",
     "hobbies": {
-      "all": ["", "...", "..."],
+      "all": ["anime", "sketching", "..."],
       "comment": "I am a creative person"
     },
     "joined": 2000,
@@ -597,7 +605,7 @@
     },
     "role": "designer",
     "hobbies": {
-      "all": ["", "...", "..."],
+      "all": ["football", "coding", "trekking"],
       "comment": "I am a creative person"
     },
     "joined": 2000,
