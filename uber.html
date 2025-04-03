@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SVG Path Scroll Animation</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      height: 400vh;
+      /* Ensure enough scrollable height */
+    }
+
+    .section {
+      position: fixed;
+      left: 10;
+      top: 10;
+      height: 100vh;
+      padding: 20px;
+      display: none;
+      /* Initially hidden */
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .section.active {
+      display: block;
+      /* Show the active section */
+      opacity: 1;
+    }
+
+    svg {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100vw;
+      height: 100vh;
+    }
+
+    #circle {
+      fill: #3498db;
+      transition: cx 0.2s ease, cy 0.2s ease;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="section" id="section1">
+    <h2>Section 1</h2>
+    <p>This is section 1 content.</p>
+  </div>
+  <div class="section" id="section2">
+    <h2>Section 2</h2>
+    <p>This is section 2 content.</p>
+  </div>
+  <div class="section" id="section3">
+    <h2>Section 3</h2>
+    <p>This is section 3 content.</p>
+  </div>
+
+  <!-- SVG Path -->
+  <svg width="100%" height="100%">
+    <path id="path" d="M200,0 C150,500 250,1000 200,1500 C150,2000 250,2500 200,3000 C150,3500 250,4000 200,4500"
+      stroke="gray" fill="none" />
+    <circle id="circle" r="10" />
+  </svg>
+
+  <script>
+    // Get the SVG path and circle
+    const path = document.getElementById('path');
+    const circle = document.getElementById('circle');
+    const sections = document.querySelectorAll('.section');
+
+    // Ensure the path length is calculated correctly
+    const pathLength = path.getTotalLength();
+    path.style.strokeDasharray = pathLength;
+    path.style.strokeDashoffset = pathLength;
+
+    // Function to get the point along the path based on a given percentage (0 to 1)
+    function getPointAtLength(path, percent) {
+      const length = path.getTotalLength();
+      const point = path.getPointAtLength(length * percent);
+      return point;
+    }
+
+    // Scroll event listener to move circle along the path and display sections
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = scrollY / scrollHeight;
+
+      // Ensure the circle stays within the viewport
+      const visibleScrollPercent = Math.min(scrollPercent, 1);
+
+      // Move the circle along the path based on scroll
+      const point = getPointAtLength(path, visibleScrollPercent);
+      circle.setAttribute('cx', point.x);
+      circle.setAttribute('cy', point.y);
+
+      // Show the section based on the scroll position
+      const activeIndex = Math.min(
+        Math.floor(visibleScrollPercent * sections.length),
+        sections.length - 1
+      );
+      sections.forEach((section, index) => {
+        section.classList.remove('active');
+        if (index === activeIndex) {
+          section.classList.add('active');
+        }
+      });
+    });
+
+    // Initialize the first section as active
+    sections[0].classList.add('active');
+  </script>
+</body>
+
+</html>

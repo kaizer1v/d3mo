@@ -231,15 +231,16 @@ function load_force(nodes) {
   // by birthdate
   by_bday.addEventListener('click', () => {
     svg.style('background-image', 'url(data/months.webp)')
+    svg.selectAll('.x-axis').remove()
     reposition('bday.month', bday_centres)
   })
 
   // by alumni
   by_alumni.addEventListener('click', () => {
+    svg.style('background-image', 'none')
+    svg.selectAll('.x-axis').remove()
     // filter nodes where `quit = true`
     // const alumni = nodes.filter(d => d.quit)
-    svg.selectAll('.x-axis').remove()
-    svg.style('background-image', 'none')
   })
 
   by_interests.addEventListener('click', () => {
@@ -272,7 +273,6 @@ function load_force(nodes) {
         y: centerY
       }
     })
-    // console.log(coords)
 
     simulation.stop()
 
@@ -290,9 +290,9 @@ function load_force(nodes) {
     simulation.restart()
   })
 
-  function showTooltip(event, d, key) {
+  function showTooltip(e, d, key) {
     const tooltipValue = '' + key.split('.').reduce((obj, k) => (obj && obj[k] !== undefined) ? obj[k] : null, d)
-    // console.log('key', key, 'value', tooltipValue)
+    console.log('key', key, 'value', tooltipValue)
 
     const tooltip = d3.select('body')
       .append('div')
@@ -303,8 +303,8 @@ function load_force(nodes) {
       .style('padding', '5px')
       .style('border-radius', '5px')
       .style('opacity', 0.9)
-      .style('left', (event.pageX + 10) + 'px')
-      .style('top', (event.pageY + 10) + 'px')
+      .style('left', e.pageX + 10 + 'px')
+      .style('top', e.pageY + 10 + 'px')
       .text(toCamelCase(tooltipValue))
   }
 
