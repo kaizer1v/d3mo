@@ -47,7 +47,7 @@
     "name": "richa",
     "hub": "logistics",
     "about": "lorem ",
-    "joined": 2015,
+    "joined": 2000,
     "from": {
       "state": "uttar pradesh",
       "orginally": "lucknow",
@@ -600,6 +600,72 @@
       "state": "karnataka",
       "orginally": "bangalore",
       "grew_up": "baroda",
+      "lat_lng_grew_up": "11.9139, 79.8145",
+      "comment": "I am ..."
+    },
+    "role": "designer",
+    "hobbies": {
+      "all": ["football", "coding", "trekking"],
+      "comment": "I am a creative person"
+    },
+    "joined": 2000,
+    "bday": {
+      "month": "september",
+      "day": 1
+    },
+    "quit": false
+  }, {
+    "name": "sarika",
+    "hub": "manufacturing",
+    "about": "...",
+    "from": {
+      "state": "tamil nadu",
+      "orginally": "bangalore",
+      "grew_up": "baroda",
+      "lat_lng_grew_up": "11.9139, 79.8145",
+      "comment": "I am ..."
+    },
+    "role": "designer",
+    "hobbies": {
+      "all": ["football", "coding", "trekking"],
+      "comment": "I am a creative person"
+    },
+    "joined": 2000,
+    "bday": {
+      "month": "september",
+      "day": 1
+    },
+    "quit": false
+  }, {
+    "name": "shachi",
+    "hub": "manufacturing",
+    "about": "...",
+    "from": {
+      "state": "maharashtra",
+      "orginally": "bangalore",
+      "grew_up": "baroda",
+      "lat_lng_grew_up": "11.9139, 79.8145",
+      "comment": "I am ..."
+    },
+    "role": "designer",
+    "hobbies": {
+      "all": ["football", "coding", "trekking"],
+      "comment": "I am a creative person"
+    },
+    "joined": 2000,
+    "bday": {
+      "month": "september",
+      "day": 1
+    },
+    "quit": false
+  }, {
+    "name": "simha",
+    "hub": "manufacturing",
+    "about": "...",
+    "from": {
+      "state": "karnataka",
+      "orginally": "bangalore",
+      "grew_up": "bangalore",
       "lat_lng_grew_up": "11.9139, 79.8145",
       "comment": "I am ..."
     },
