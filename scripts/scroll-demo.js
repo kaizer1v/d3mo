@@ -5,7 +5,8 @@ const scroller = scrollama()
 const scrolly = document.querySelector('#scrolly')
 const article = scrolly.querySelector('article')
 const step = article.querySelectorAll('.step')
-const figure = scrolly.querySelector('figure')
+// const figure = scrolly.querySelector('figure')
+const svg = scrolly.querySelector('svg')
 
 // initialize the scrollama
 // var scroller = scrollama()
@@ -16,8 +17,6 @@ function handleStepEnter(response) {
   console.log(response)
   // add to color to current step
   response.element.classList.add('is-active')
-
-  figure.querySelector('p').innerText = `${response.index + 1}`
 }
 
 function handleStepExit(response) {
@@ -30,15 +29,13 @@ function handleStepExit(response) {
 function handleResize() {
   // 1. update height of step elements
   const stepH = Math.floor(window.innerHeight * 0.75)
-  // step.style('height', stepH + 'px')
-  // debugger
-  step.forEach(d => d.style.height = stepH + 'px')
+  step.forEach(d => d.style.height = `${stepH}px`)
 
-  const figureHeight = window.innerHeight / 2
-  const figureMarginTop = (window.innerHeight - figureHeight) / 2
+  const figureHeight = window.innerHeight / 1.5
+  const figureMarginTop = (window.innerHeight - figureHeight) / 1.5
 
-  figure.style.height = figureHeight + 'px'
-  figure.style.top = figureMarginTop + 'px'
+  svg.style.height = `${figureHeight}px`
+  svg.style.top = `${figureMarginTop}px`
 
   // 3. tell scrollama to update new element dimensions
   scroller.resize();
