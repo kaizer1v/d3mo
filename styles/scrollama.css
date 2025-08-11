@@ -1,0 +1,139 @@
+.bg-svg {
+  position: fixed;
+  display: block;
+  margin-top: 100px;
+  top: 30;
+  left: 0;
+  width: 100vw;
+  height: 90vh;
+  z-index: -1;
+  /* border: 1px solid #000; */
+}
+
+#intro {
+  max-width: 40rem;
+  margin: 1rem auto;
+  text-align: center;
+  margin-bottom: 320px;
+}
+
+#scrolly {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #f3f3f3;
+  padding: 1rem;
+}
+
+#scrolly > * {
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+article {
+  position: relative;
+  padding: 0 1rem;
+  max-width: 20rem;
+}
+
+ figure {
+  position: -webkit-sticky;
+  position: sticky;
+  width: 100%;
+  margin: 0;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  background-color: #8a8a8a;
+  z-index: 0;
+}
+
+figure p {
+  text-align: center;
+  padding: 1rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -moz-transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  font-size: 8rem;
+  font-weight: 900;
+  color: #fff;
+}
+
+.step {
+  margin: 0 auto 2rem auto;
+  background-color: #3b3b3b;
+  color: #fff;
+}
+
+.step:last-child {
+  margin-bottom: 0;
+}
+
+.step.is-active {
+  background-color: goldenrod;
+  color: #3b3b3b;
+}
+
+.step p {
+  text-align: center;
+  padding: 1rem;
+  font-size: 1.5rem;
+}
+
+/* svg {
+  width: 100%;
+  height: 100%;
+} */
+/* 
+#scrolly {
+  position: relative;
+}
+
+.scroll__graphic.is-fixed { position: fixed; }
+.scroll__graphic.is-bottom {
+  bottom: 0;
+  top: auto;
+} */
+
+article {
+  position: relative;
+  padding: 0 1rem;
+  margin: 0 auto;
+  width: 33%;
+}
+
+.step {
+  margin: 2rem auto 4rem auto;
+  background-color: #3b3b3b;
+  color: #fff;
+  position: relative;
+  visibility: hidden;
+}
+
+.step.is-active {
+  background-color: goldenrod;
+  transition: background-color 0.5s ease-in-out;
+  color: #3b3b3b;
+  visibility: visible;
+}
+
+.step p {
+  text-align: center;
+  padding: 1rem;
+  font-size: 1.5rem;
+}
+/* 
+.step[data-step="1"] { left: 20% }
+.step[data-step="2"] { left: 40% }
+.step[data-step="3"] { left: 60% }
+.step[data-step="4"] { left: 70% }
+.step[data-step="5"] { left: 30% } */
+
+.outro {
+  height: 30vh;
+}

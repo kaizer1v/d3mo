@@ -1,0 +1,22 @@
+{
+  "dependencies": {
+    "arquero": "^8.0.1",
+    "intersection-observer": "^0.12.2",
+    "lodash": "^4.17.21",
+    "scrollama": "^3.2.0"
+  },
+  "scripts": {
+    "dev": "concurrently \"rollup -c --watch\" \"serve -l 8998\"",
+    "build": "rollup -c",
+    "start": "rollup -c --watch"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.6",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "concurrently": "^9.2.0",
+    "rollup": "^4.46.2",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "serve": "^14.2.4"
+  }
+}
