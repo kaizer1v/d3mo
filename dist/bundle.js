@@ -1,412 +1,579 @@
 (function () {
   'use strict';
 
-  // DOM helper functions
-
-  // public
   function selectAll(selector, parent = document) {
     if (typeof selector === 'string') {
-      return Array.from(parent.querySelectorAll(selector));
+      return [...parent.querySelectorAll(selector)];
     } else if (selector instanceof Element) {
       return [selector];
     } else if (selector instanceof NodeList) {
-      return Array.from(selector);
+      return [...selector];
     } else if (selector instanceof Array) {
       return selector;
     }
     return [];
   }
 
-  // SETUP
-  function create(className) {
-  	const el = document.createElement("div");
-  	el.className = `scrollama__debug-step ${className}`;
-  	el.style.position = "fixed";
-  	el.style.left = "0";
-  	el.style.width = "100%";
-  	el.style.zIndex = "9999";
-  	el.style.borderTop = "2px solid black";
-  	el.style.borderBottom = "2px solid black";
+  const getOffsetId = (id) => `scrollama__debug-offset--${id}`;
 
-  	const p = document.createElement("p");
-  	p.style.position = "absolute";
-  	p.style.left = "0";
-  	p.style.height = "1px";
-  	p.style.width = "100%";
-  	p.style.borderTop = "1px dashed black";
+  const setupOffset = ({ id, offsetVal, stepClass }) => {
+    const el = document.createElement('div');
+    el.id = getOffsetId(id);
+    el.className = 'scrollama__debug-offset';
+    el.style.position = 'fixed';
+    el.style.left = '0';
+    el.style.width = '100%';
+    el.style.height = '0';
+    el.style.borderTop = '2px dashed black';
+    el.style.zIndex = '9999';
 
-  	el.appendChild(p);
-  	document.body.appendChild(el);
-  	return el;
-  }
+    const p = document.createElement('p');
+    p.innerHTML = `".${stepClass}" trigger: <span>${offsetVal}</span>`;
+    p.style.fontSize = '12px';
+    p.style.fontFamily = 'monospace';
+    p.style.color = 'black';
+    p.style.margin = '0';
+    p.style.padding = '6px';
+    el.appendChild(p);
+    document.body.appendChild(el);
+  };
 
-  // UPDATE
-  function update({ id, step, marginTop }) {
-  	const { index, height } = step;
-  	const className = `scrollama__debug-step--${id}-${index}`;
-  	let el = document.querySelector(`.${className}`);
-  	if (!el) el = create(className);
+  const update = ({ id, offsetMargin, offsetVal, format }) => {
+    const post = format === 'pixels' ? 'px' : '';
+    const idVal = getOffsetId(id);
+    const el = document.getElementById(idVal);
+    el.style.top = `${offsetMargin}px`;
+    el.querySelector('span').innerText = `${offsetVal}${post}`;
+  };
 
-  	el.style.top = `${marginTop * -1}px`;
-  	el.style.height = `${height}px`;
-  	el.querySelector("p").style.top = `${height / 2}px`;
-  }
+  const notifyStep = ({ id, index, state }) => {
+    const prefix = `scrollama__debug-step--${id}-${index}`;
+    const elA = document.getElementById(`${prefix}_above`);
+    const elB = document.getElementById(`${prefix}_below`);
+    const display = state === 'enter' ? 'block' : 'none';
 
-  function generateId() {
-      const alphabet = "abcdefghijklmnopqrstuvwxyz";
-      const date = Date.now();
-      const result = [];
-      for (let i = 0; i < 6; i += 1) {
-        const char = alphabet[Math.floor(Math.random() * alphabet.length)];
-        result.push(char);
+    if (elA) elA.style.display = display;
+    if (elB) elB.style.display = display;
+  };
+
+  function scrollama() {
+    const OBSERVER_NAMES = [
+      'stepAbove',
+      'stepBelow',
+      'stepProgress',
+      'viewportAbove',
+      'viewportBelow',
+    ];
+
+    let cb = {};
+    let io = {};
+
+    let id = null;
+    let stepEl = [];
+    let stepOffsetHeight = [];
+    let stepOffsetTop = [];
+    let stepStates = [];
+
+    let offsetVal = 0;
+    let offsetMargin = 0;
+    let viewH = 0;
+    let pageH = 0;
+    let previousYOffset = 0;
+    let progressThreshold = 0;
+
+    let isReady = false;
+    let isEnabled = false;
+    let isDebug = false;
+
+    let progressMode = false;
+    let preserveOrder = false;
+    let triggerOnce = false;
+
+    let direction = 'down';
+    let format = 'percent';
+
+    let exclude = [];
+
+    const err = (msg) => console.error(`scrollama error: ${msg}`);
+
+    const reset = () => {
+      cb = {
+        stepEnter: () => {},
+        stepExit: () => {},
+        stepProgress: () => {},
+      };
+      io = {};
+    };
+
+    const generateInstanceID = () => {
+      const a = 'abcdefghijklmnopqrstuv';
+      const l = a.length;
+      const t = Date.now();
+      const r = [0, 0, 0].map(() => a[Math.floor(Math.random() * l)]).join('');
+      return `${r}${t}`;
+    };
+
+    const getOffsetTop = (el) => {
+      const { top } = el.getBoundingClientRect();
+      const scrollTop = window.pageYOffset;
+      const clientTop = document.body.clientTop || 0;
+      return top + scrollTop - clientTop;
+    };
+
+    const getPageHeight = () => {
+      const body = document.body;
+      const html = document.documentElement;
+      return Math.max(
+        body.scrollHeight,
+        body.offsetHeight,
+        html.clientHeight,
+        html.scrollHeight,
+        html.offsetHeight
+      );
+    };
+
+    const getIndex = (element) => +element.getAttribute('data-scrollama-index');
+
+    const updateDirection = () => {
+      const y = window.pageYOffset;
+      if (y > previousYOffset) direction = 'down';
+      else if (y < previousYOffset) direction = 'up';
+      previousYOffset = y;
+    };
+
+    const disconnectObserver = (name) => {
+      if (io[name]) io[name].forEach((d) => d.disconnect());
+    };
+
+    const handleResize = () => {
+      viewH = window.innerHeight;
+      pageH = getPageHeight();
+
+      const mult = format === 'pixels' ? 1 : viewH;
+      offsetMargin = offsetVal * mult;
+
+      if (isReady) {
+        stepOffsetHeight = stepEl.map((el) => el.getBoundingClientRect().height);
+        stepOffsetTop = stepEl.map(getOffsetTop);
+        if (isEnabled) updateIO();
       }
-      return `${result.join("")}${date}`;
-    }
 
-  function err$1(msg) {
-  	console.error(`scrollama error: ${msg}`);
-  }
+      if (isDebug) update({ id, offsetMargin, offsetVal, format });
+    };
 
-  function getIndex(node) {
-  	return +node.getAttribute("data-scrollama-index");
-  }
+    const handleEnable = (enable) => {
+      if (enable && !isEnabled) {
+        if (isReady) {
+          updateIO();
+        } else {
+          err('scrollama error: enable() called before scroller was ready');
+          isEnabled = false;
+          return;
+        }
+      }
+      if (!enable && isEnabled) {
+        OBSERVER_NAMES.forEach(disconnectObserver);
+      }
+      isEnabled = enable;
+    };
 
-  function createProgressThreshold(height, threshold) {
-      const count = Math.ceil(height / threshold);
+    const createThreshold = (height) => {
+      const count = Math.ceil(height / progressThreshold);
       const t = [];
       const ratio = 1 / count;
-      for (let i = 0; i < count + 1; i += 1) {
+      for (let i = 0; i < count; i++) {
         t.push(i * ratio);
       }
       return t;
-    }
+    };
 
-  function parseOffset(x) {
-  	if (typeof x === "string" && x.indexOf("px") > 0) {
-  		const v = +x.replace("px", "");
-  		if (!isNaN(v)) return { format: "pixels", value: v };
-  		else {
-  			err("offset value must be in 'px' format. Fallback to 0.5.");
-  			return { format: "percent", value: 0.5 };
-  		}
-  	} else if (typeof x === "number" || !isNaN(+x)) {
-  		if (x > 1) err("offset value is greater than 1. Fallback to 1.");
-  		if (x < 0) err("offset value is lower than 0. Fallback to 0.");
-  		return { format: "percent", value: Math.min(Math.max(0, x), 1) };
-  	}
-  	return null;
+    const notifyStepProgress = (element, progress) => {
+      const index = getIndex(element);
+      if (progress !== undefined) stepStates[index].progress = progress;
+      const resp = { element, index, progress: stepStates[index].progress };
+
+      if (stepStates[index].state === 'enter') cb.stepProgress(resp);
+    };
+
+    const notifyOthers = (index, location) => {
+      if (location === 'above') {
+        for (let i = 0; i < index; i++) {
+          const ss = stepStates[i];
+          if (ss.state !== 'enter' && ss.direction !== 'down') {
+            notifyStepEnter(stepEl[i], 'down', false);
+            notifyStepExit(stepEl[i], 'down');
+          } else if (ss.state === 'enter') notifyStepExit(stepEl[i], 'down');
+        }
+      } else if (location === 'below') {
+        for (let i = stepStates.length - 1; i > index; i--) {
+          const ss = stepStates[i];
+          if (ss.state === 'enter') {
+            notifyStepExit(stepEl[i], 'up');
+          }
+          if (ss.direction === 'down') {
+            notifyStepEnter(stepEl[i], 'up', false);
+            notifyStepExit(stepEl[i], 'up');
+          }
+        }
+      }
+    };
+
+    const notifyStepEnter = (element, dir, check = true) => {
+      const index = getIndex(element);
+      const resp = { element, index, direction: dir };
+
+      stepStates[index].direction = dir;
+      stepStates[index].state = 'enter';
+      if (preserveOrder && check && dir === 'down') notifyOthers(index, 'above');
+
+      if (preserveOrder && check && dir === 'up') notifyOthers(index, 'below');
+
+      if (cb.stepEnter && !exclude[index]) {
+        cb.stepEnter(resp, stepStates);
+        if (isDebug) notifyStep({ id, index, state: 'enter' });
+        if (triggerOnce) exclude[index] = true;
+      }
+
+      if (progressMode) notifyStepProgress(element);
+    };
+
+    const notifyStepExit = (element, dir) => {
+      const index = getIndex(element);
+      const resp = { element, index, direction: dir };
+
+      if (progressMode) {
+        if (dir === 'down' && stepStates[index].progress < 1)
+          notifyStepProgress(element, 1);
+        else if (dir === 'up' && stepStates[index].progress > 0)
+          notifyStepProgress(element, 0);
+      }
+
+      stepStates[index].direction = dir;
+      stepStates[index].state = 'exit';
+
+      cb.stepExit(resp, stepStates);
+      if (isDebug) notifyStep({ id, index, state: 'exit' });
+    };
+
+    const intersectStepAbove = ([entry]) => {
+      updateDirection();
+      const { isIntersecting, boundingClientRect, target } = entry;
+      const { top, bottom } = boundingClientRect;
+      const topAdjusted = top - offsetMargin;
+      const bottomAdjusted = bottom - offsetMargin;
+      const index = getIndex(target);
+      const ss = stepStates[index];
+
+      if (
+        isIntersecting &&
+        topAdjusted <= 0 &&
+        bottomAdjusted >= 0 &&
+        direction === 'down' &&
+        ss.state !== 'enter'
+      )
+        notifyStepEnter(target, direction);
+
+      if (
+        !isIntersecting &&
+        topAdjusted > 0 &&
+        direction === 'up' &&
+        ss.state === 'enter'
+      )
+        notifyStepExit(target, direction);
+    };
+
+    const intersectStepBelow = ([entry]) => {
+      updateDirection();
+      const { isIntersecting, boundingClientRect, target } = entry;
+      const { top, bottom } = boundingClientRect;
+      const topAdjusted = top - offsetMargin;
+      const bottomAdjusted = bottom - offsetMargin;
+      const index = getIndex(target);
+      const ss = stepStates[index];
+
+      if (
+        isIntersecting &&
+        topAdjusted <= 0 &&
+        bottomAdjusted >= 0 &&
+        direction === 'up' &&
+        ss.state !== 'enter'
+      )
+        notifyStepEnter(target, direction);
+
+      if (
+        !isIntersecting &&
+        bottomAdjusted < 0 &&
+        direction === 'down' &&
+        ss.state === 'enter'
+      )
+        notifyStepExit(target, direction);
+    };
+
+    const intersectViewportAbove = ([entry]) => {
+      updateDirection();
+      const { isIntersecting, target } = entry;
+      const index = getIndex(target);
+      const ss = stepStates[index];
+
+      if (
+        isIntersecting &&
+        direction === 'down' &&
+        ss.direction !== 'down' &&
+        ss.state !== 'enter'
+      ) {
+        notifyStepEnter(target, 'down');
+        notifyStepExit(target, 'down');
+      }
+    };
+
+    const intersectViewportBelow = ([entry]) => {
+      updateDirection();
+      const { isIntersecting, target } = entry;
+      const index = getIndex(target);
+      const ss = stepStates[index];
+      if (
+        isIntersecting &&
+        direction === 'up' &&
+        ss.direction === 'down' &&
+        ss.state !== 'enter'
+      ) {
+        notifyStepEnter(target, 'up');
+        notifyStepExit(target, 'up');
+      }
+    };
+
+    const intersectStepProgress = ([entry]) => {
+      updateDirection();
+      const { isIntersecting, intersectionRatio, boundingClientRect, target } = entry;
+      const { bottom } = boundingClientRect;
+      const bottomAdjusted = bottom - offsetMargin;
+      if (isIntersecting && bottomAdjusted >= 0) {
+        notifyStepProgress(target, +intersectionRatio.toFixed(3)); // Round for performance
+      }
+    };
+
+    const updateViewportAboveIO = () => {
+      io.viewportAbove = stepEl.map((el, i) => {
+        const marginTop = pageH - stepOffsetTop[i];
+        const marginBottom = offsetMargin - viewH - stepOffsetHeight[i];
+        const rootMargin = `${marginTop}px 0px ${marginBottom}px 0px`;
+        const options = { rootMargin };
+        const obs = new IntersectionObserver(intersectViewportAbove, options);
+        obs.observe(el);
+        return obs;
+      });
+    };
+
+    const updateViewportBelowIO = () => {
+      io.viewportBelow = stepEl.map((el, i) => {
+        const marginTop = -offsetMargin - stepOffsetHeight[i];
+        const marginBottom = offsetMargin - viewH + stepOffsetHeight[i] + pageH;
+        const rootMargin = `${marginTop}px 0px ${marginBottom}px 0px`;
+        const options = { rootMargin };
+        const obs = new IntersectionObserver(intersectViewportBelow, options);
+        obs.observe(el);
+        return obs;
+      });
+    };
+
+    const updateStepAboveIO = () => {
+      io.stepAbove = stepEl.map((el, i) => {
+        const marginTop = -offsetMargin + stepOffsetHeight[i];
+        const marginBottom = offsetMargin - viewH;
+        const rootMargin = `${marginTop}px 0px ${marginBottom}px 0px`;
+        const options = { rootMargin };
+        const obs = new IntersectionObserver(intersectStepAbove, options);
+        obs.observe(el);
+        return obs;
+      });
+    };
+
+    const updateStepBelowIO = () => {
+      io.stepBelow = stepEl.map((el, i) => {
+        const marginTop = -offsetMargin;
+        const marginBottom = offsetMargin - viewH + stepOffsetHeight[i];
+        const rootMargin = `${marginTop}px 0px ${marginBottom}px 0px`;
+        const options = { rootMargin };
+        const obs = new IntersectionObserver(intersectStepBelow, options);
+        obs.observe(el);
+        return obs;
+      });
+    };
+
+    const updateStepProgressIO = () => {
+      io.stepProgress = stepEl.map((el, i) => {
+        const marginTop = stepOffsetHeight[i] - offsetMargin;
+        const marginBottom = -viewH + offsetMargin;
+        const rootMargin = `${marginTop}px 0px ${marginBottom}px 0px`;
+        const threshold = createThreshold(stepOffsetHeight[i]);
+        const options = { rootMargin, threshold };
+        const obs = new IntersectionObserver(intersectStepProgress, options);
+        obs.observe(el);
+        return obs;
+      });
+    };
+
+    const updateIO = () => {
+      OBSERVER_NAMES.forEach(disconnectObserver);
+
+      updateViewportAboveIO();
+      updateViewportBelowIO();
+      updateStepAboveIO();
+      updateStepBelowIO();
+
+      if (progressMode) updateStepProgressIO();
+    };
+
+    const indexSteps = () => {
+      stepEl.forEach((el, i) => el.setAttribute('data-scrollama-index', i));
+    };
+
+    const setupStates = () => {
+      stepStates = stepEl.map(() => ({
+        direction: null,
+        state: null,
+        progress: 0,
+      }));
+    };
+
+    const addDebug = () => {
+      if (isDebug) setupOffset({ id, offsetVal, stepClass: stepEl[0]?.className });
+    };
+
+    const isYScrollable = (element) => {
+      const style = window.getComputedStyle(element);
+      return (
+        (style.overflowY === 'scroll' || style.overflowY === 'auto') &&
+        element.scrollHeight > element.clientHeight
+      );
+    };
+
+    const anyScrollableParent = (element) => {
+      if (element && element.nodeType === 1) {
+        return isYScrollable(element)
+          ? element
+          : anyScrollableParent(element.parentNode);
+      }
+      return false;
+    };
+
+    const S = {};
+
+    S.setup = ({
+      step,
+      parent,
+      offset = 0.5,
+      progress = false,
+      threshold = 4,
+      debug = false,
+      order = true,
+      once = false,
+    }) => {
+      reset();
+      id = generateInstanceID();
+
+      stepEl = selectAll(step, parent);
+
+      if (!stepEl.length) {
+        err('no step elements');
+        return S;
+      }
+
+      const scrollableParent = stepEl.reduce(
+        (foundScrollable, s) => foundScrollable || anyScrollableParent(s.parentNode),
+        false
+      );
+      if (scrollableParent) {
+        console.error(
+          'scrollama error: step elements cannot be children of a scrollable element. Remove any css on the parent element with overflow: scroll; or overflow: auto; on elements with fixed height.',
+          scrollableParent
+        );
+      }
+
+      isDebug = debug;
+      progressMode = progress;
+      preserveOrder = order;
+      triggerOnce = once;
+
+      S.offsetTrigger(offset);
+      progressThreshold = Math.max(1, +threshold);
+
+      isReady = true;
+
+      addDebug();
+      indexSteps();
+      setupStates();
+      handleResize();
+      S.enable();
+      return S;
+    };
+
+    S.resize = () => {
+      handleResize();
+      return S;
+    };
+
+    S.enable = () => {
+      handleEnable(true);
+      return S;
+    };
+
+    S.disable = () => {
+      handleEnable(false);
+      return S;
+    };
+
+    S.destroy = () => {
+      handleEnable(false);
+      reset();
+    };
+
+    S.offsetTrigger = (x) => {
+      if (x === null) return offsetVal;
+
+      if (typeof x === 'number') {
+        format = 'percent';
+        if (x > 1) err('offset value is greater than 1. Fallback to 1.');
+        if (x < 0) err('offset value is lower than 0. Fallback to 0.');
+        offsetVal = Math.min(Math.max(0, x), 1);
+      } else if (typeof x === 'string' && x.includes('px')) {
+        const v = +x.replace('px', '');
+        if (!Number.isNaN(v)) {
+          format = 'pixels';
+          offsetVal = v;
+        } else {
+          err('offset value must be in "px" format. Fallback to 0.5.');
+          offsetVal = 0.5;
+        }
+      } else {
+        err('offset value does not include "px". Fallback to 0.5.');
+        offsetVal = 0.5;
+      }
+      return S;
+    };
+
+    S.onStepEnter = (f) => {
+      if (typeof f === 'function') cb.stepEnter = f;
+      else err('onStepEnter requires a function');
+      return S;
+    };
+
+    S.onStepExit = (f) => {
+      if (typeof f === 'function') cb.stepExit = f;
+      else err('onStepExit requires a function');
+      return S;
+    };
+
+    S.onStepProgress = (f) => {
+      if (typeof f === 'function') cb.stepProgress = f;
+      else err('onStepProgress requires a function');
+      return S;
+    };
+
+    return S;
   }
 
-  function indexSteps(steps) {
-  	steps.forEach((step) =>
-  		step.node.setAttribute("data-scrollama-index", step.index)
-  	);
-  }
-
-  function getOffsetTop(node) {
-    const { top } = node.getBoundingClientRect();
-    const scrollTop = window.pageYOffset;
-    const clientTop = document.body.clientTop || 0;
-    return top + scrollTop - clientTop;
-  }
-
-  let currentScrollY;
-  let comparisonScrollY;
-  let direction;
-
-  function onScroll(container) {
-  	const scrollTop = container ? container.scrollTop : window.pageYOffset;
-
-  	if (currentScrollY === scrollTop) return;
-  	currentScrollY = scrollTop;
-  	if (currentScrollY > comparisonScrollY) direction = "down";
-  	else if (currentScrollY < comparisonScrollY) direction = "up";
-  	comparisonScrollY = currentScrollY;
-  }
-
-  function setupScroll(container) {
-  	currentScrollY = 0;
-  	comparisonScrollY = 0;
-  	document.addEventListener("scroll", () => onScroll(container));
-  }
-
-  function scrollama() {
-  	let cb = {};
-
-  	let id = generateId();
-  	let steps = [];
-  	let globalOffset;
-  	let containerElement;
-  	let rootElement;
-
-  	let progressThreshold = 0;
-
-  	let isEnabled = false;
-  	let isProgress = false;
-  	let isDebug = false;
-  	let isTriggerOnce = false;
-
-  	let exclude = [];
-
-  	/* HELPERS */
-  	function reset() {
-  		cb = {
-  			stepEnter: () => { },
-  			stepExit: () => { },
-  			stepProgress: () => { },
-  		};
-  		exclude = [];
-  	}
-
-  	function handleEnable(shouldEnable) {
-  		if (shouldEnable && !isEnabled) updateObservers();
-  		if (!shouldEnable && isEnabled) disconnectObservers();
-  		isEnabled = shouldEnable;
-  	}
-
-  	/* NOTIFY CALLBACKS */
-  	function notifyProgress(element, progress) {
-  		const index = getIndex(element);
-  		const step = steps[index];
-  		if (progress !== undefined) step.progress = progress;
-  		const response = { element, index, progress, direction };
-  		if (step.state === "enter") cb.stepProgress(response);
-  	}
-
-  	function notifyStepEnter(element, check = true) {
-  		const index = getIndex(element);
-  		const step = steps[index];
-  		const response = { element, index, direction };
-
-  		step.direction = direction;
-  		step.state = "enter";
-
-  		// if (isPreserveOrder && check && direction !== "up")
-  		//   notifyOthers(index, "above");
-  		// if (isPreserveOrder && check && direction === "up")
-  		//   notifyOthers(index, "below");
-
-  		if (!exclude[index]) cb.stepEnter(response);
-  		if (isTriggerOnce) exclude[index] = true;
-  	}
-
-  	function notifyStepExit(element, check = true) {
-  		const index = getIndex(element);
-  		const step = steps[index];
-
-  		if (!step.state) return false;
-
-  		const response = { element, index, direction };
-
-  		if (isProgress) {
-  			if (direction === "down" && step.progress < 1) notifyProgress(element, 1);
-  			else if (direction === "up" && step.progress > 0)
-  				notifyProgress(element, 0);
-  		}
-
-  		step.direction = direction;
-  		step.state = "exit";
-
-  		cb.stepExit(response);
-  	}
-
-  	/* OBSERVERS - HANDLING */
-  	function resizeStep([entry]) {
-  		const index = getIndex(entry.target);
-  		const step = steps[index];
-  		const h = entry.target.offsetHeight;
-  		if (h !== step.height) {
-  			step.height = h;
-  			disconnectObserver(step);
-  			updateStepObserver(step);
-  			updateResizeObserver(step);
-  		}
-  	}
-
-  	function intersectStep([entry]) {
-  		onScroll(containerElement);
-
-  		const { isIntersecting, target } = entry;
-  		if (isIntersecting) notifyStepEnter(target);
-  		else notifyStepExit(target);
-  	}
-
-  	function intersectProgress([entry]) {
-  		const index = getIndex(entry.target);
-  		const step = steps[index];
-  		const { isIntersecting, intersectionRatio, target } = entry;
-  		if (isIntersecting && step.state === "enter")
-  			notifyProgress(target, intersectionRatio);
-  	}
-
-  	/*  OBSERVERS - CREATION */
-  	function disconnectObserver({ observers }) {
-  		Object.keys(observers).map((name) => {
-  			observers[name].disconnect();
-  		});
-  	}
-
-  	function disconnectObservers() {
-  		steps.forEach(disconnectObserver);
-  	}
-
-  	function updateResizeObserver(step) {
-  		const observer = new ResizeObserver(resizeStep);
-  		observer.observe(step.node);
-  		step.observers.resize = observer;
-  	}
-
-  	function updateResizeObservers() {
-  		steps.forEach(updateResizeObserver);
-  	}
-
-  	function updateStepObserver(step) {
-  		const h = window.innerHeight;
-  		const off = step.offset || globalOffset;
-  		const factor = off.format === "pixels" ? 1 : h;
-  		const offset = off.value * factor;
-  		const marginTop = step.height / 2 - offset;
-  		const marginBottom = step.height / 2 - (h - offset);
-  		const rootMargin = `${marginTop}px 0px ${marginBottom}px 0px`;
-  		const root = rootElement;
-
-  		const threshold = 0.5;
-  		const options = { rootMargin, threshold, root };
-  		const observer = new IntersectionObserver(intersectStep, options);
-
-  		observer.observe(step.node);
-  		step.observers.step = observer;
-
-  		if (isDebug) update({ id, step, marginTop});
-  	}
-
-  	function updateStepObservers() {
-  		steps.forEach(updateStepObserver);
-  	}
-
-  	function updateProgressObserver(step) {
-  		const h = window.innerHeight;
-  		const off = step.offset || globalOffset;
-  		const factor = off.format === "pixels" ? 1 : h;
-  		const offset = off.value * factor;
-  		const marginTop = -offset + step.height;
-  		const marginBottom = offset - h;
-  		const rootMargin = `${marginTop}px 0px ${marginBottom}px 0px`;
-
-  		const threshold = createProgressThreshold(step.height, progressThreshold);
-  		const options = { rootMargin, threshold };
-  		const observer = new IntersectionObserver(intersectProgress, options);
-
-  		observer.observe(step.node);
-  		step.observers.progress = observer;
-  	}
-
-  	function updateProgressObservers() {
-  		steps.forEach(updateProgressObserver);
-  	}
-
-  	function updateObservers() {
-  		disconnectObservers();
-  		updateResizeObservers();
-  		updateStepObservers();
-  		if (isProgress) updateProgressObservers();
-  	}
-
-  	/* SETUP */
-  	const S = {};
-
-  	S.setup = ({
-  		step,
-  		parent,
-  		offset = 0.5,
-  		threshold = 4,
-  		progress = false,
-  		once = false,
-  		debug = false,
-  		container = undefined,
-  		root = null
-  	}) => {
-
-  		setupScroll(container);
-
-  		steps = selectAll(step, parent).map((node, index) => ({
-  			index,
-  			direction: undefined,
-  			height: node.offsetHeight,
-  			node,
-  			observers: {},
-  			offset: parseOffset(node.dataset.offset),
-  			top: getOffsetTop(node),
-  			progress: 0,
-  			state: undefined,
-  		}));
-
-  		if (!steps.length) {
-  			err$1("no step elements");
-  			return S;
-  		}
-
-  		isProgress = progress;
-  		isTriggerOnce = once;
-  		isDebug = debug;
-  		progressThreshold = Math.max(1, +threshold);
-  		globalOffset = parseOffset(offset);
-  		containerElement = container;
-  		rootElement = root;
-
-  		reset();
-  		indexSteps(steps);
-  		handleEnable(true);
-  		return S;
-  	};
-
-  	S.enable = () => {
-  		handleEnable(true);
-  		return S;
-  	};
-
-  	S.disable = () => {
-  		handleEnable(false);
-  		return S;
-  	};
-
-  	S.destroy = () => {
-  		handleEnable(false);
-  		reset();
-  		return S;
-  	};
-
-  	S.resize = () => {
-  		updateObservers();
-  		return S;
-  	};
-
-  	S.offset = (x) => {
-  		if (x === null || x === undefined) return globalOffset.value;
-  		globalOffset = parseOffset(x);
-  		updateObservers();
-  		return S;
-  	};
-
-  	S.onStepEnter = (f) => {
-  		if (typeof f === "function") cb.stepEnter = f;
-  		else err$1("onStepEnter requires a function");
-  		return S;
-  	};
-
-  	S.onStepExit = (f) => {
-  		if (typeof f === "function") cb.stepExit = f;
-  		else err$1("onStepExit requires a function");
-  		return S;
-  	};
-
-  	S.onStepProgress = (f) => {
-  		if (typeof f === "function") cb.stepProgress = f;
-  		else err$1("onStepProgress requires a function");
-  		return S;
-  	};
-  	return S;
-  }
+  // import scrollama from 'scrollama'
 
   // instantiate the scrollama
   const scroller = scrollama();
@@ -415,14 +582,38 @@
   const step = article.querySelectorAll('.step');
   // const figure = scrolly.querySelector('figure')
   const svg = scrolly.querySelector('svg');
+  const pathlength = mypath.getTotalLength();
 
-  // initialize the scrollama
-  // var scroller = scrollama()
+  /**
+   * svg path scrolling function
+   */
+  function handlePathScroll(response) {
+    console.log('progress = ', response);
+    const length = (window.scrollY * pathlength) / document.body.scrollHeight * 1.5;
+
+    // Current position
+    const pt = mypath.getPointAtLength(length);
+
+    // A small offset ahead to find direction
+    const delta = 0.5; // smaller = smoother rotation
+    const nextPt = mypath.getPointAtLength(length + delta);
+
+    // Calculate angle from current point to next point
+    const angle = Math.atan2(nextPt.y - pt.y, nextPt.x - pt.x) * (180 / Math.PI);
+
+    // Move and rotate rectangle around its center
+    myrect.setAttribute(
+      "transform",
+      `translate(${pt.x - 10}, ${pt.y - 25}) rotate(${angle}, 10, 25)`
+    );
+  }
 
   // scrollama event handlers
   function handleStepEnter(response) {
     // response = { element, direction, index }
     console.log(response);
+    // debugger
+    // handlePathScroll()
     // add to color to current step
     response.element.classList.add('is-active');
   }
@@ -451,11 +642,11 @@
 
   function init() {
 
-    handleResize();
+
 
     // set random padding for different step heights (not required)
     step.forEach((step) => {
-      step.style.padding = `${100 + Math.floor((Math.random() * window.innerHeight) / 4)}px 0px`;
+      step.style.padding = `${100 + Math.floor((Math.random() * window.innerHeight) / 6)}px 0px`;
     });
 
     // 1. setup the scroller with the bare-bones options
@@ -464,11 +655,15 @@
     scroller
       .setup({
         step: '#scrolly article .step',
-        debug: false,
-        offset: 0.3
+        // debug: true,
+        progress: true,
+        // offset: 0.3
       })
       .onStepEnter(handleStepEnter)
-      .onStepExit(handleStepExit);
+      .onStepExit(handleStepExit)
+      .onStepProgress(handlePathScroll);
+
+      handleResize();
 
   }
 
@@ -476,28 +671,28 @@
 
   init();
 
-  const pathlength = mypath.getTotalLength();
+  // const pathlength = mypath.getTotalLength()
 
-  window.onscroll = () => {
-    // Progress along path (scale factor can be adjusted)
-    const length = (window.scrollY * pathlength) / document.body.scrollHeight * 1.5;
+  // window.onscroll = () => {
+  //   // Progress along path (scale factor can be adjusted)
+  //   const length = (window.scrollY * pathlength) / document.body.scrollHeight * 1.5
 
-    // Current position
-    const pt = mypath.getPointAtLength(length);
+  //   // Current position
+  //   const pt = mypath.getPointAtLength(length)
 
-    // A small offset ahead to find direction
-    const delta = 0.5; // smaller = smoother rotation
-    const nextPt = mypath.getPointAtLength(length + delta);
+  //   // A small offset ahead to find direction
+  //   const delta = 0.5 // smaller = smoother rotation
+  //   const nextPt = mypath.getPointAtLength(length + delta)
 
-    // Calculate angle from current point to next point
-    const angle = Math.atan2(nextPt.y - pt.y, nextPt.x - pt.x) * (180 / Math.PI);
+  //   // Calculate angle from current point to next point
+  //   const angle = Math.atan2(nextPt.y - pt.y, nextPt.x - pt.x) * (180 / Math.PI)
 
-    // Move and rotate rectangle around its center
-    myrect.setAttribute(
-      "transform",
-      `translate(${pt.x - 10}, ${pt.y - 25}) rotate(${angle}, 10, 25)`
-    );
-  };
+  //   // Move and rotate rectangle around its center
+  //   myrect.setAttribute(
+  //     "transform",
+  //     `translate(${pt.x - 10}, ${pt.y - 25}) rotate(${angle}, 10, 25)`
+  //   )
+  // }
 
 })();
 //# sourceMappingURL=bundle.js.map

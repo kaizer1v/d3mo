@@ -55,9 +55,11 @@ article {
 } */
 
 .step {
-  margin: 0 auto 2rem auto;
   background-color: #3b3b3b;
   color: #fff;
+  margin: 2rem auto 4rem auto;
+  position: relative;
+  visibility: hidden;
 }
 
 .step:last-child {
@@ -67,23 +69,6 @@ article {
 .step.is-active {
   background-color: goldenrod;
   color: #3b3b3b;
-}
-
-.step p {
-  text-align: center;
-  padding: 1rem;
-  font-size: 1.5rem;
-}
-
-.step {
-  margin: 2rem auto 4rem auto;
-  background-color: #3b3b3b;
-  color: #fff;
-  position: relative;
-  visibility: hidden;
-}
-
-.step.is-active {
   background-color: goldenrod;
   transition: background-color 0.5s ease-in-out;
   color: #3b3b3b;
@@ -95,6 +80,8 @@ article {
   padding: 1rem;
   font-size: 1.5rem;
 }
+
+
 /* 
 .step[data-step="1"] { left: 20% }
 .step[data-step="2"] { left: 40% }

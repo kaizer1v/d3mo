@@ -1,4 +1,5 @@
-import scrollama from 'scrollama'
+// import scrollama from 'scrollama'
+import scrollama from './grok-scrollama.js'
 
 // instantiate the scrollama
 const scroller = scrollama()
@@ -7,14 +8,38 @@ const article = scrolly.querySelector('article')
 const step = article.querySelectorAll('.step')
 // const figure = scrolly.querySelector('figure')
 const svg = scrolly.querySelector('svg')
+const pathlength = mypath.getTotalLength()
 
-// initialize the scrollama
-// var scroller = scrollama()
+/**
+ * svg path scrolling function
+ */
+function handlePathScroll(response) {
+  console.log('progress = ', response)
+  const length = (window.scrollY * pathlength) / document.body.scrollHeight * 1.5
+
+  // Current position
+  const pt = mypath.getPointAtLength(length)
+
+  // A small offset ahead to find direction
+  const delta = 0.5 // smaller = smoother rotation
+  const nextPt = mypath.getPointAtLength(length + delta)
+
+  // Calculate angle from current point to next point
+  const angle = Math.atan2(nextPt.y - pt.y, nextPt.x - pt.x) * (180 / Math.PI)
+
+  // Move and rotate rectangle around its center
+  myrect.setAttribute(
+    "transform",
+    `translate(${pt.x - 10}, ${pt.y - 25}) rotate(${angle}, 10, 25)`
+  )
+}
 
 // scrollama event handlers
 function handleStepEnter(response) {
   // response = { element, direction, index }
   console.log(response)
+  // debugger
+  // handlePathScroll()
   // add to color to current step
   response.element.classList.add('is-active')
 }
@@ -43,11 +68,11 @@ function handleResize() {
 
 function init() {
 
-  handleResize()
+
 
   // set random padding for different step heights (not required)
   step.forEach((step) => {
-    step.style.padding = `${100 + Math.floor((Math.random() * window.innerHeight) / 4)}px 0px`
+    step.style.padding = `${100 + Math.floor((Math.random() * window.innerHeight) / 6)}px 0px`
   })
 
   // 1. setup the scroller with the bare-bones options
@@ -56,11 +81,15 @@ function init() {
   scroller
     .setup({
       step: '#scrolly article .step',
-      debug: false,
-      offset: 0.3
+      // debug: true,
+      progress: true,
+      // offset: 0.3
     })
     .onStepEnter(handleStepEnter)
     .onStepExit(handleStepExit)
+    .onStepProgress(handlePathScroll)
+
+    handleResize()
 
 }
 
