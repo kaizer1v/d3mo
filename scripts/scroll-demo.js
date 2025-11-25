@@ -3,9 +3,12 @@ import scrollama from './grok-scrollama.js'
 
 // instantiate the scrollama
 const scroller = scrollama()
+const scroller2 = scrollama()
 const scrolly = document.querySelector('#scrolly')
 const article = scrolly.querySelector('article')
 const step = article.querySelectorAll('.step')
+
+const intro_steps = document.querySelectorAll('.intro-step')
 // const figure = scrolly.querySelector('figure')
 const svg = scrolly.querySelector('svg')
 const pathlength = mypath.getTotalLength()
@@ -14,7 +17,8 @@ const pathlength = mypath.getTotalLength()
  * svg path scrolling function
  */
 function handlePathScroll(response) {
-  console.log('progress = ', response)
+
+  // get the scroll posiition at this step and make that starting point of path
   const length = (window.scrollY * pathlength) / document.body.scrollHeight * 1.5
 
   // Current position
@@ -32,6 +36,7 @@ function handlePathScroll(response) {
     "transform",
     `translate(${pt.x - 10}, ${pt.y - 25}) rotate(${angle}, 10, 25)`
   )
+
 }
 
 // scrollama event handlers
@@ -63,15 +68,17 @@ function handleResize() {
   svg.style.top = `${figureMarginTop}px`
 
   // 3. tell scrollama to update new element dimensions
-  scroller.resize();
+  scroller.resize()
+  scroller2.resize()
 }
 
 function init() {
-
-
-
   // set random padding for different step heights (not required)
   step.forEach((step) => {
+    step.style.padding = `${100 + Math.floor((Math.random() * window.innerHeight) / 6)}px 0px`
+  })
+
+  intro_steps.forEach((step) => {
     step.style.padding = `${100 + Math.floor((Math.random() * window.innerHeight) / 6)}px 0px`
   })
 
@@ -89,10 +96,20 @@ function init() {
     .onStepExit(handleStepExit)
     .onStepProgress(handlePathScroll)
 
+    scroller2
+      .setup({
+        step: '#intro article .step',
+        // debug: true,
+        progress: true,
+        // offset: 0.3
+      })
+      .onStepEnter(handleStepEnter)
+      .onStepExit(handleStepExit)
+      // .onStepProgress(handlePathScroll)
+
+
     handleResize()
 
 }
 
-// kick things off
-// init()
 export { init }

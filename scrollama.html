@@ -6,19 +6,131 @@
 
 <main>
 
+  <svg width="300" height="600" viewBox="0 0 300 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Definitions for halftone patterns -->
+  <defs>
+    <pattern id="halftone" patternUnits="userSpaceOnUse" width="6" height="6">
+      <circle cx="3" cy="3" r="2" fill="#000" />
+    </pattern>
+    <pattern id="halftone-dense" patternUnits="userSpaceOnUse" width="4" height="4">
+      <circle cx="2" cy="2" r="1.5" fill="#000" />
+    </pattern>
+  </defs>
+
+  <!-- Panel 1: Planning at 3 PM -->
+  <g transform="translate(0, 0)">
+    <!-- Background (faded yellow) -->
+    <rect width="300" height="200" fill="#FFC107" fill-opacity="0.7" />
+    <!-- Room outline -->
+    <rect x="10" y="10" width="280" height="180" fill="none" stroke="#000" stroke-width="4" />
+    <!-- Clock -->
+    <circle cx="250" cy="40" r="25" fill="#FF6F61" stroke="#000" stroke-width="3" />
+    <text x="250" y="45" font-size="14" font-family="Arial, sans-serif" text-anchor="middle" fill="#000">3 PM</text>
+    <line x1="250" y1="40" x2="250" y2="30" stroke="#000" stroke-width="2" />
+    <line x1="250" y1="40" x2="260" y2="40" stroke="#000" stroke-width="2" />
+    <!-- Person -->
+    <circle cx="100" cy="70" r="25" fill="#4FC3F7" stroke="#000" stroke-width="3" />
+    <path d="M95 65 Q100 55 105 65 M90 70 L95 70 M105 70 L110 70" fill="none" stroke="#000" stroke-width="2" />
+    <rect x="85" y="95" width="30" height="60" fill="#AB47BC" stroke="#000" stroke-width="3" />
+    <path d="M85 115 H70 M115 115 H130" fill="none" stroke="#000" stroke-width="3" />
+    <!-- Suitcase -->
+    <rect x="50" y="140" width="50" height="40" fill="#FFCA28" stroke="#000" stroke-width="3" />
+    <rect x="70" y="130" width="10" height="10" fill="#FFCA28" stroke="#000" stroke-width="2" />
+    <!-- Map of Bangalore -->
+    <rect x="150" y="50" width="120" height="80" fill="url(#halftone)" stroke="#000" stroke-width="3" />
+    <text x="210" y="90" font-size="12" font-family="Arial, sans-serif" text-anchor="middle" fill="#FFF">Jayanagar</text>
+    <!-- Thought bubble -->
+    <path d="M120 30 Q140 20 160 30 H240 V10 H120 Z M140 30 Q145 40 150 50" fill="#FFF" stroke="#000" stroke-width="2" />
+    <text x="180" y="25" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" fill="#000">Gotta plan for that 6 AM flight!</text>
+    <!-- Halftone shading -->
+    <rect x="10" y="100" width="280" height="90" fill="url(#halftone-dense)" fill-opacity="0.4" />
+  </g>
+
+  <!-- Panel 2: Anxiety about Uber -->
+  <g transform="translate(0, 200)">
+    <!-- Background (faded teal) -->
+    <rect width="300" height="200" fill="#26A69A" fill-opacity="0.7" />
+    <!-- Night sky -->
+    <rect x="10" y="10" width="280" height="90" fill="#0288D1" stroke="#000" stroke-width="4" />
+    <circle cx="50" cy="30" r="10" fill="#FFF" />
+    <!-- Clock -->
+    <circle cx="250" cy="40" r="25" fill="#FF6F61" stroke="#000" stroke-width="3" />
+    <text x="250" y="45" font-size="14" font-family="Arial, sans-serif" text-anchor="middle" fill="#000">3:20 AM</text>
+    <line x1="250" y1="40" x2="250" y2="30" stroke="#000" stroke-width="2" />
+    <line x1="250" y1="40" x2="260" y2="40" stroke="#000" stroke-width="2" />
+    <!-- Person (worried) -->
+    <circle cx="100" cy="70" r="25" fill="#4FC3F7" stroke="#000" stroke-width="3" />
+    <path d="M95 65 Q100 55 105 65 M90 70 Q95 75 100 70 Q105 75 110 70" fill="none" stroke="#000" stroke-width="2" />
+    <rect x="85" y="95" width="30" height="60" fill="#AB47BC" stroke="#000" stroke-width="3" />
+    <path d="M85 115 H70 M115 115 H130" fill="none" stroke="#000" stroke-width="3" />
+    <!-- Phone -->
+    <rect x="120" y="80" width="25" height="40" fill="#FFF" stroke="#000" stroke-width="3" />
+    <text x="132.5" y="100" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" fill="#000">Uber</text>
+    <!-- Cab -->
+    <rect x="180" y="130" width="80" height="40" fill="#FFCA28" stroke="#000" stroke-width="3" />
+    <circle cx="195" cy="170" r="8" fill="#000" />
+    <circle cx="245" cy="170" r="8" fill="#000" />
+    <rect x="200" y="110" width="40" height="20" fill="#FFF" stroke="#000" stroke-width="2" />
+    <!-- Thought bubble -->
+    <path d="M120 30 Q140 20 160 30 H240 V10 H120 Z M140 30 Q145 40 150 50" fill="#FFF" stroke="#000" stroke-width="2" />
+    <text x="180" y="25" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" fill="#000">Will the Uber show up on time?</text>
+    <!-- Halftone shading -->
+    <rect x="10" y="100" width="280" height="90" fill="url(#halftone-dense)" fill-opacity="0.4" />
+  </g>
+
+  <!-- Panel 3: Waking up at 2:40 AM -->
+  <g transform="translate(0, 400)">
+    <!-- Background (faded purple) -->
+    <rect width="300" height="200" fill="#AB47BC" fill-opacity="0.7" />
+    <!-- Room outline -->
+    <rect x="10" y="10" width="280" height="180" fill="none" stroke="#000" stroke-width="4" />
+    <!-- Clock -->
+    <circle cx="250" cy="40" r="25" fill="#FF6F61" stroke="#000" stroke-width="3" />
+    <text x="250" y="45" font-size="14" font-family="Arial, sans-serif" text-anchor="middle" fill="#000">2:40 AM</text>
+    <line x1="250" y1="40" x2="250" y2="30" stroke="#000" stroke-width="2" />
+    <line x1="250" y1="40" x2="260" y2="40" stroke="#000" stroke-width="2" />
+    <!-- Person (waking up) -->
+    <circle cx="100" cy="70" r="25" fill="#4FC3F7" stroke="#000" stroke-width="3" />
+    <path d="M95 65 Q100 55 105 65 M90 70 Q95 75 100 70" fill="none" stroke="#000" stroke-width="2" />
+    <rect x="85" y="95" width="30" height="60" fill="#AB47BC" stroke="#000" stroke-width="3" />
+    <path d="M85 115 H70 M115 115 H130" fill="none" stroke="#000" stroke-width="3" />
+    <!-- Bed -->
+    <rect x="50" y="130" width="100" height="40" fill="#0288D1" stroke="#000" stroke-width="3" />
+    <rect x="50" y="110" width="60" height="20" fill="#FFF" stroke="#000" stroke-width="2" />
+    <!-- Suitcase -->
+    <rect x="160" y="140" width="50" height="40" fill="#FFCA28" stroke="#000" stroke-width="3" />
+    <rect x="180" y="130" width="10" height="10" fill="#FFCA28" stroke="#000" stroke-width="2" />
+    <!-- Speech bubble -->
+    <path d="M120 30 Q140 20 160 30 H240 V10 H120 Z M140 30 Q145 40 150 50" fill="#FFF" stroke="#000" stroke-width="2" />
+    <text x="180" y="25" font-size="10" font-family="Arial, sans-serif" text-anchor="middle" fill="#000">Time to get ready for the flight!</text>
+    <!-- Halftone shading -->
+    <rect x="10" y="100" width="280" height="90" fill="url(#halftone-dense)" fill-opacity="0.4" />
+  </g>
+</svg>
+  
   <header id="intro">
     <h1 class="intro__hed">A ride to the Bangalore Airport</h1>
     <p class="intro__dek">This is not for the weak hearted...</p>
 
-    <p>It's 3pm the day before you leave for your flight the next day. Your flight departs at 6am tomorrow. You stay 38km away from the airport, in Jayanagar in Bangalore.</p>
-    <p>You need to plan to get to the airport. Even before you start your trip, there are a few things that you might want know, based on the facts stated above</p>
-    <p>Anxiety 1: You are not sure if you'll get enough sleep before leaving for the airport. Actually you are more concerned about whether your cab will arrive on time to pick you up, or will they cancel last moment or whether they'll cancel after you hail the cab and the driver asks you to cancel trip on the app and pay direct cash to him.</p>
-    <p>But somehow you book an Uber the night before scheduled at 03:20 AM, hoping the cab would arrive by 03:30 AM expecting to take 1 hour 30 mins to reach the airport at 05:00, leaving you an hour to finish security and check-in at the airport.</p>
-    <p>You set an alarm for 02:40 am + 5 min snooze, leaving 45 mins to freshen up and be ready for your 3 hour Indigo flight.</p>
+    <article>
+      <div class="step is-active" data-step="1" data-scrollama-index="0">
+        <p>It's 3pm the day before you leave for your flight the next day. Your flight departs at 6am tomorrow. You stay 38km away from the airport, in Jayanagar in Bangalore.</p>
+        <p>You need to plan to get to the airport. Even before you start your trip, there are a few things that you might want know, based on the facts stated above</p>
+      </div>
+      <div class="step" data-step="2" data-scrollama-index="1">
+        <p>Anxiety 1: You are not sure if you'll get enough sleep before leaving for the airport. Actually you are more concerned about whether your cab will arrive on time to pick you up, or will they cancel last moment or whether they'll cancel after you hail the cab and the driver asks you to cancel trip on the app and pay direct cash to him.</p>
+        <p>But somehow you book an Uber the night before scheduled at 03:20 AM, hoping the cab would arrive by 03:30 AM expecting to take 1 hour 30 mins to reach the airport at 05:00, leaving you an hour to finish security and check-in at the airport.</p>\
+      </div>
+      <div class="step" data-step="3" data-scrollama-index="2">
+        <p>You set an alarm for 02:40 am + 5 min snooze, leaving 45 mins to freshen up and be ready for your 3 hour Indigo flight.</p>
+        <p>It's 3pm the day before you leave for your flight the next day. Your flight departs at 6am tomorrow. You stay 38km away from the airport, in Jayanagar in Bangalore.</p>
+        <p>You need to plan to get to the airport. Even before you start your trip, there are a few things that you might want know, based on the facts stated above</p>
+      </div>
+    </article>
   </header>
 
   <section id="scrolly">
-    <article>
+    <article>  
       <div class="step is-active" data-step="1" data-scrollama-index="0">
         <p>You somehow wake up after sleeping at 11:30 trying to look for the most reasonable cab options, but somehow how settle on booking an Uber and ready to pay 💰1300 for a one-way ride towards the end-of-the-earth airport, because it's a little more reliable than Ola or Deepam cabs.</p>
         <p>But you wake up half-asleep to realise that this 'schedule' option doesn't confirm the cab booking - it just starts looking for a cab at the scheduled time - how transprent!</p>
